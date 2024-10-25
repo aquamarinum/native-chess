@@ -33,12 +33,14 @@ local.properties
 .cxx/
 *.keystore
 !debug.keystore
+google-services.json
 
 # node.js
 #
 node_modules/
 npm-debug.log
 yarn-error.log
+.yarn/
 
 # fastlane
 #
