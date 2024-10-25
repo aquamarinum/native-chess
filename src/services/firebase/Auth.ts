@@ -10,21 +10,10 @@ class Auth {
     }
   };
 
-  signIn = async (email: string, password: string) => {
-    try {
-      auth().signInWithEmailAndPassword(email, password);
-    } catch (error: any) {
-      if (error.code === 'auth/wrong-password') {
-        console.error('Неправильный пароль!');
-      } else if (error.code === 'auth/user-not-found') {
-        console.error('Пользователь не найден!');
-      } else if (error.code === 'auth/invalid-email') {
-        console.log('Некорректный email!');
-      } else {
-        console.error('Произошла неизвестная ошибка:', error);
-      }
-    }
-  };
+  signIn: (e: string, p: string) => Promise<FirebaseAuthTypes.UserCredential> =
+    async (email: string, password: string) => {
+      return auth().signInWithEmailAndPassword(email, password);
+    };
 
   signOut = async () => {
     try {

@@ -16,11 +16,18 @@ import Auth from '../../services/firebase/Auth';
 import {navigate} from '../../services/navigator/Navigator';
 import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Validator} from '../../services/validation/Validator';
+import Splash from '../Splash';
+import Title from '../../components/Title';
+
+//'testuser@example.com', 'qwerty12345'
+//admin@admin.com qwerty12345
 
 const SignIn = () => {
   const {t} = useTranslation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const checkValidation = () => {
     const loginValidator = new Validator(login);
@@ -37,14 +44,34 @@ const SignIn = () => {
       passwordValidator.notEmpty().matchPassword().getStatus() ===
       SignStatuses.SUCCESS
     ) {
-      Auth.signIn(login, password);
+      setLoading(true);
+      Auth.signIn(login, password)
+        .then(res => Alert.alert('success'))
+        .catch(error => {
+          if (error.code === 'auth/wrong-password') {
+            setError('Неправильный пароль!');
+          } else if (error.code === 'auth/user-not-found') {
+            setError('Пользователь не найден!');
+          } else if (error.code === 'auth/invalid-email') {
+            setError('Некорректный email!');
+          } else {
+            setError(String(error));
+          }
+        })
+        .finally(() => setLoading(false));
     } else {
       Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
     }
   };
+  if (error)
+    return (
+      <Wrapper>
+        <Title>{error}</Title>
+      </Wrapper>
+    );
 
-  //'testuser@example.com', 'qwerty12345'
-  //admin@admin.com qwerty12345
+  if (loading) return <Splash />;
+
   return (
     <Wrapper>
       <View style={styles.container}>
