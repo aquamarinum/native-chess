@@ -22,7 +22,29 @@ const SignIn = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
 
+  const checkValidation = () => {
+    const loginValidator = new Validator(login);
+    const passwordValidator = new Validator(password);
+
+    if (
+      loginValidator.notEmpty().matchMail().getStatus() !== SignStatuses.SUCCESS
+    ) {
+      Alert.alert(`Exception. ${loginValidator.getStatus()}`);
+      return;
+    }
+
+    if (
+      passwordValidator.notEmpty().matchPassword().getStatus() ===
+      SignStatuses.SUCCESS
+    ) {
+      Auth.signIn(login, password);
+    } else {
+      Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
+    }
+  };
+
   //'testuser@example.com', 'qwerty12345'
+  //admin@admin.com qwerty12345
   return (
     <Wrapper>
       <View style={styles.container}>
@@ -41,25 +63,7 @@ const SignIn = () => {
           <MainButton
             content={t('buttonSignIn')}
             active={true}
-            onClick={() => {
-              const loginValidator = new Validator(login);
-              if (
-                loginValidator.notEmpty().matchMail().getStatus() !==
-                SignStatuses.SUCCESS
-              ) {
-                Alert.alert(`Exception. ${loginValidator.getStatus()}`);
-                return;
-              }
-              const passwordValidator = new Validator(password);
-              if (
-                passwordValidator.notEmpty().matchPassword().getStatus() ===
-                SignStatuses.SUCCESS
-              ) {
-                Auth.signIn(login, password);
-              } else {
-                Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
-              }
-            }}
+            onClick={() => checkValidation()}
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>New to native chess? Click to </Text>

@@ -1,6 +1,5 @@
 import {ReactNativeFirebase} from '@react-native-firebase/app';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {Alert} from 'react-native';
 
 class Auth {
   signUp = async (email: string, password: string) => {
