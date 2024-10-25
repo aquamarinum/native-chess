@@ -1,5 +1,6 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Alert,
   KeyboardAvoidingView,
   Text,
   TouchableHighlight,
@@ -13,12 +14,14 @@ import Header from '../../components/Header';
 import Wrapper from '../../components/Wrapper';
 import Auth from '../../services/firebase/Auth';
 import {navigate} from '../../services/navigator/Navigator';
-import {useInput} from '../../hooks/useInput';
+import {SignStatuses} from '../../services/validation/SignStatuses';
+import {Validator} from '../../services/validation/Validator';
 
 const SignIn = () => {
   const {t} = useTranslation();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+
   //'testuser@example.com', 'qwerty12345'
   return (
     <Wrapper>
@@ -27,20 +30,36 @@ const SignIn = () => {
           <Header>{t('welcome')}</Header>
           <Input
             placeholder={t('login')}
-            isSecret={false}
             inputValue={login}
             setInputValue={setLogin}
           />
           <Input
             placeholder={t('password')}
-            isSecret={false}
             inputValue={password}
             setInputValue={setPassword}
           />
           <MainButton
             content={t('buttonSignIn')}
             active={true}
-            onClick={() => Auth.signIn(login, password)}
+            onClick={() => {
+              const loginValidator = new Validator(login);
+              if (
+                loginValidator.notEmpty().matchMail().getStatus() !==
+                SignStatuses.SUCCESS
+              ) {
+                Alert.alert(`Exception. ${loginValidator.getStatus()}`);
+                return;
+              }
+              const passwordValidator = new Validator(password);
+              if (
+                passwordValidator.notEmpty().matchPassword().getStatus() ===
+                SignStatuses.SUCCESS
+              ) {
+                Auth.signIn(login, password);
+              } else {
+                Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
+              }
+            }}
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>New to native chess? Click to </Text>

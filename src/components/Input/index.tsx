@@ -2,12 +2,13 @@ import React, {Dispatch, SetStateAction, useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import {styles} from './styles';
 import {Colors} from '../../constants/Colors';
+import {SignStatuses} from '../../services/validation/SignStatuses';
 
 type InputProps = {
   inputValue: string;
   setInputValue: Dispatch<SetStateAction<string>>;
   placeholder: string;
-  isSecret: boolean;
+  isSecret?: boolean;
 };
 
 const Input: React.FC<InputProps> = ({
@@ -17,7 +18,8 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.label}>Use only A-Z and 0-9 and less than 10</Text> */}
+      {/* <Text style={styles.label}>Exception called </Text> */}
+
       <TextInput
         value={inputValue}
         onChangeText={setInputValue}

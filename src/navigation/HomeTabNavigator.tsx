@@ -37,7 +37,7 @@ const HomeTabNavigator = () => {
         component={Home}
         options={{
           tabBarLabel: ({focused}) => (
-            <TabText content={t('bottombarHome')} focused={focused} />
+            <TabText content={t('Play')} focused={focused} />
           ),
           tabBarIcon: ({focused}) => (
             <TabIcon
