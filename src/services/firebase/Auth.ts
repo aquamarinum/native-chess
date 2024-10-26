@@ -17,9 +17,10 @@ class Auth {
 
   signUp = async (email: string, password: string) => {
     try {
-      auth().createUserWithEmailAndPassword(email, password);
+      await auth().createUserWithEmailAndPassword(email, password);
+      return SignStatuses.SUCCESS;
     } catch (error) {
-      console.log(error);
+      return this.errorHandler(error);
     }
   };
 
@@ -34,9 +35,10 @@ class Auth {
 
   signOut = async () => {
     try {
-      auth().signOut();
+      await auth().signOut();
+      return SignStatuses.SUCCESS;
     } catch (error) {
-      console.error('Error during sign out:', error);
+      return this.errorHandler(error);
     }
   };
 

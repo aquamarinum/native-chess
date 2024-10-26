@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   View,
 } from 'react-native';
-import Input from '../../components/Input';
 import MainButton from '../../components/MainButton';
 import {styles} from './styles';
 import {useTranslation} from 'react-i18next';
@@ -19,43 +18,31 @@ import Auth from '../../services/firebase/Auth';
 import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Colors} from '../../constants/Colors';
 import {useAuthInput} from '../../hooks/useAuthInput';
+import Splash from '../Splash';
 
 const SignUp = () => {
   const {t} = useTranslation();
   const Email = useAuthInput('email');
   const Password = useAuthInput('password');
   const RepPassword = useAuthInput('password');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
 
-  // const checkValidation = () => {
-  //   const loginValidator = new Validator(login);
-  //   const passwordValidator = new Validator(password);
+  const onSubmit = () => {
+    if (
+      Email.fallback === SignStatuses.SUCCESS &&
+      Password.fallback === SignStatuses.SUCCESS &&
+      Password.value === RepPassword.value
+    ) {
+      setLoading(true);
+      Auth.signUp(Email.value, Password.value).then(res => setError(res));
+      setLoading(false);
+    }
+  };
 
-  //   if (
-  //     loginValidator
-  //       .notEmpty()
-  //       .minLength(4)
-  //       .maxLength(40)
-  //       .matchMail()
-  //       .getStatus() !== SignStatuses.SUCCESS
-  //   ) {
-  //     Alert.alert(`Exception. ${loginValidator.getStatus()}`);
-  //     return;
-  //   }
+  if (loading) return <Splash />;
 
-  //   if (
-  //     passwordValidator
-  //       .notEmpty()
-  //       .minLength(5)
-  //       .maxLength(20)
-  //       .matchPassword()
-  //       .getStatus() === SignStatuses.SUCCESS
-  //   ) {
-  //     Auth.signUp(login, password);
-  //     Alert.alert('Success');
-  //   } else {
-  //     Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
-  //   }
-  // };
+  if (error !== SignStatuses.SUCCESS) Alert.alert('ERROR', error);
 
   return (
     <Wrapper>
@@ -119,9 +106,7 @@ const SignUp = () => {
                 SignStatuses.SUCCESS &&
               Password.value === RepPassword.value
             }
-            onClick={() => {
-              Alert.alert('URAAAAA');
-            }}
+            onClick={() => onSubmit()}
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>Or back to </Text>
