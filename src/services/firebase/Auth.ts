@@ -1,7 +1,20 @@
-import {ReactNativeFirebase} from '@react-native-firebase/app';
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {SignStatuses} from '../validation/SignStatuses';
 
 class Auth {
+  private errorHandler = (error: any) => {
+    switch (error.code) {
+      case 'auth/wrong-password':
+        return SignStatuses.WRONGPASS;
+      case 'auth/user-not-found':
+        return SignStatuses.NOTFOUND;
+      case 'auth/invalid-email':
+        return SignStatuses.BADEMAIL;
+      default:
+        return SignStatuses.FAILED;
+    }
+  };
+
   signUp = async (email: string, password: string) => {
     try {
       auth().createUserWithEmailAndPassword(email, password);
@@ -10,10 +23,14 @@ class Auth {
     }
   };
 
-  signIn: (e: string, p: string) => Promise<FirebaseAuthTypes.UserCredential> =
-    async (email: string, password: string) => {
-      return auth().signInWithEmailAndPassword(email, password);
-    };
+  signIn = async (email: string, password: string) => {
+    try {
+      await auth().signInWithEmailAndPassword(email, password);
+      return SignStatuses.SUCCESS;
+    } catch (error: any) {
+      return this.errorHandler(error);
+    }
+  };
 
   signOut = async () => {
     try {

@@ -25,4 +25,18 @@ export const styles = StyleSheet.create({
   link: {
     textDecorationLine: 'underline',
   },
+  input: {
+    position: 'relative',
+    width: '100%',
+    marginVertical: '3%',
+    paddingVertical: '3%',
+    paddingHorizontal: '4%',
+    borderWidth: 2,
+    borderRadius: 5,
+    borderColor: Colors.grey_dark,
+    color: Colors.grey_light,
+    fontSize: TextSize.small,
+    fontFamily: 'Ubuntu-Regular',
+    backgroundColor: Colors.dark_black,
+  },
 });

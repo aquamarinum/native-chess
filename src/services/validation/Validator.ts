@@ -35,7 +35,7 @@ export class Validator {
   }
   matchPassword() {
     if (this.status === SignStatuses.SUCCESS) {
-      if (!this.value.match(/[a-zA-Z0-9]/))
+      if (!this.value.match(/[a-zA-Z0-9]{5, 20}/))
         this.status = SignStatuses.BADPASSWORD;
     }
     return this;

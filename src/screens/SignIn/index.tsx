@@ -1,12 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
   Text,
+  TextInput,
   TouchableHighlight,
   View,
 } from 'react-native';
-import Input from '../../components/Input';
 import MainButton from '../../components/MainButton';
 import {styles} from './styles';
 import {useTranslation} from 'react-i18next';
@@ -17,7 +17,7 @@ import {navigate} from '../../services/navigator/Navigator';
 import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Validator} from '../../services/validation/Validator';
 import Splash from '../Splash';
-import Title from '../../components/Title';
+import {Colors} from '../../constants/Colors';
 
 //'testuser@example.com', 'qwerty12345'
 //admin@admin.com qwerty12345
@@ -27,70 +27,54 @@ const SignIn = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
 
-  const checkValidation = () => {
-    const loginValidator = new Validator(login);
-    const passwordValidator = new Validator(password);
-
-    if (
-      loginValidator.notEmpty().matchMail().getStatus() !== SignStatuses.SUCCESS
-    ) {
-      Alert.alert(`Exception. ${loginValidator.getStatus()}`);
-      return;
-    }
-
-    if (
-      passwordValidator.notEmpty().matchPassword().getStatus() ===
-      SignStatuses.SUCCESS
-    ) {
-      setLoading(true);
-      Auth.signIn(login, password)
-        .then(res => Alert.alert('success'))
-        .catch(error => {
-          if (error.code === 'auth/wrong-password') {
-            setError('Неправильный пароль!');
-          } else if (error.code === 'auth/user-not-found') {
-            setError('Пользователь не найден!');
-          } else if (error.code === 'auth/invalid-email') {
-            setError('Некорректный email!');
-          } else {
-            setError(String(error));
-          }
-        })
-        .finally(() => setLoading(false));
-    } else {
-      Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
-    }
+  const onSubmit = () => {
+    setLoading(true);
+    Auth.signIn(login, password).then(res => {
+      setError(res);
+    });
+    setLoading(false);
   };
-  if (error)
-    return (
-      <Wrapper>
-        <Title>{error}</Title>
-      </Wrapper>
-    );
 
   if (loading) return <Splash />;
+
+  //TODO !!!MODAL-UI-ERROR!!! + CLEAR ERROR = FIX INFINITY ALERT BUG
+  if (error !== SignStatuses.SUCCESS) {
+    Alert.alert(
+      error,
+      'Something gone wrong. Change your information and try again!!!',
+    );
+  }
 
   return (
     <Wrapper>
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>
-          <Input
+          <TextInput
+            value={login}
+            onChangeText={setLogin}
+            style={styles.input}
             placeholder={t('login')}
-            inputValue={login}
-            setInputValue={setLogin}
+            placeholderTextColor={Colors.grey_dark}
           />
-          <Input
+          <TextInput
+            value={password}
+            onChangeText={setPassword}
+            style={styles.input}
             placeholder={t('password')}
-            inputValue={password}
-            setInputValue={setPassword}
+            placeholderTextColor={Colors.grey_dark}
           />
           <MainButton
             content={t('buttonSignIn')}
-            active={true}
-            onClick={() => checkValidation()}
+            active={
+              new Validator(login).notEmpty().getStatus() ===
+                SignStatuses.SUCCESS &&
+              new Validator(password).notEmpty().getStatus() ===
+                SignStatuses.SUCCESS
+            }
+            onClick={() => onSubmit()}
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>New to native chess? Click to </Text>
