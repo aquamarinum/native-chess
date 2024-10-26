@@ -3,6 +3,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Text,
+  TextInput,
   TouchableHighlight,
   View,
 } from 'react-native';
@@ -16,71 +17,110 @@ import {navigate} from '../../services/navigator/Navigator';
 import {Validator} from '../../services/validation/Validator';
 import Auth from '../../services/firebase/Auth';
 import {SignStatuses} from '../../services/validation/SignStatuses';
+import {Colors} from '../../constants/Colors';
+import {useAuthInput} from '../../hooks/useAuthInput';
 
 const SignUp = () => {
   const {t} = useTranslation();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [repPassword, setRepPassword] = useState('');
+  const Email = useAuthInput('email');
+  const Password = useAuthInput('password');
+  const RepPassword = useAuthInput('password');
 
-  const checkValidation = () => {
-    const loginValidator = new Validator(login);
-    const passwordValidator = new Validator(password);
+  // const checkValidation = () => {
+  //   const loginValidator = new Validator(login);
+  //   const passwordValidator = new Validator(password);
 
-    if (
-      loginValidator
-        .notEmpty()
-        .minLength(4)
-        .maxLength(40)
-        .matchMail()
-        .getStatus() !== SignStatuses.SUCCESS
-    ) {
-      Alert.alert(`Exception. ${loginValidator.getStatus()}`);
-      return;
-    }
+  //   if (
+  //     loginValidator
+  //       .notEmpty()
+  //       .minLength(4)
+  //       .maxLength(40)
+  //       .matchMail()
+  //       .getStatus() !== SignStatuses.SUCCESS
+  //   ) {
+  //     Alert.alert(`Exception. ${loginValidator.getStatus()}`);
+  //     return;
+  //   }
 
-    if (
-      passwordValidator
-        .notEmpty()
-        .minLength(5)
-        .maxLength(20)
-        .matchPassword()
-        .getStatus() === SignStatuses.SUCCESS
-    ) {
-      Auth.signUp(login, password);
-      Alert.alert('Success');
-    } else {
-      Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
-    }
-  };
+  //   if (
+  //     passwordValidator
+  //       .notEmpty()
+  //       .minLength(5)
+  //       .maxLength(20)
+  //       .matchPassword()
+  //       .getStatus() === SignStatuses.SUCCESS
+  //   ) {
+  //     Auth.signUp(login, password);
+  //     Alert.alert('Success');
+  //   } else {
+  //     Alert.alert(`Exception. ${passwordValidator.getStatus()}`);
+  //   }
+  // };
 
   return (
     <Wrapper>
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>
-          <Input
-            placeholder={t('login')}
-            inputValue={login}
-            setInputValue={setLogin}
-          />
-          <Input
-            placeholder={t('password')}
-            inputValue={password}
-            setInputValue={setPassword}
-          />
-          <Input
-            placeholder={t('repeat password')}
-            inputValue={repPassword}
-            setInputValue={setRepPassword}
-          />
+          <View style={styles.inputContainer}>
+            {Email.fallback !== SignStatuses.SUCCESS && (
+              <Text style={styles.label}>{Email.fallback}</Text>
+            )}
+            <TextInput
+              value={Email.value}
+              onChangeText={Email.setter}
+              style={
+                Email.fallback !== SignStatuses.SUCCESS
+                  ? [styles.input, styles.inputOutlined]
+                  : styles.input
+              }
+              placeholder={t('login')}
+              placeholderTextColor={Colors.grey_dark}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            {Password.fallback !== SignStatuses.SUCCESS && (
+              <Text style={styles.label}>{Password.fallback}</Text>
+            )}
+            <TextInput
+              value={Password.value}
+              onChangeText={Password.setter}
+              style={
+                Password.fallback !== SignStatuses.SUCCESS
+                  ? [styles.input, styles.inputOutlined]
+                  : styles.input
+              }
+              placeholder={t('password')}
+              placeholderTextColor={Colors.grey_dark}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            {RepPassword.fallback !== SignStatuses.SUCCESS && (
+              <Text style={styles.label}>{RepPassword.fallback}</Text>
+            )}
+            <TextInput
+              value={RepPassword.value}
+              onChangeText={RepPassword.setter}
+              style={
+                RepPassword.fallback !== SignStatuses.SUCCESS
+                  ? [styles.input, styles.inputOutlined]
+                  : styles.input
+              }
+              placeholder={t('login')}
+              placeholderTextColor={Colors.grey_dark}
+            />
+          </View>
           <MainButton
             content={t('buttonSignUp')}
-            active={true}
+            active={
+              new Validator(Email.value).notEmpty().getStatus() ===
+                SignStatuses.SUCCESS &&
+              new Validator(Password.value).notEmpty().getStatus() ===
+                SignStatuses.SUCCESS &&
+              Password.value === RepPassword.value
+            }
             onClick={() => {
-              repPassword === password
-                ? checkValidation()
-                : Alert.alert('Passwords are not the same!!!');
+              Alert.alert('URAAAAA');
             }}
           />
           <View style={styles.link_container}>

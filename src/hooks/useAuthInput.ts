@@ -2,7 +2,10 @@ import {useEffect, useState} from 'react';
 import {SignStatuses} from '../services/validation/SignStatuses';
 import {Validator} from '../services/validation/Validator';
 
-function useAuthInput(type: 'email' | 'password', initialValue: string = '') {
+export function useAuthInput(
+  type: 'email' | 'password',
+  initialValue: string = '',
+) {
   const [value, setValue] = useState(initialValue);
   const [fallback, setFallback] = useState(SignStatuses.SUCCESS);
 
@@ -22,7 +25,7 @@ function useAuthInput(type: 'email' | 'password', initialValue: string = '') {
       if (type === 'password') {
         setFallback(new Validator(value).matchPassword().getStatus());
       }
-    }, 2000);
+    }, 500);
 
     return () => {
       clearTimeout(handler);

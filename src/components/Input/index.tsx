@@ -18,7 +18,7 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.label}>Exception called </Text> */}
+      <Text style={styles.label}>Exception called </Text>
 
       <TextInput
         value={inputValue}
