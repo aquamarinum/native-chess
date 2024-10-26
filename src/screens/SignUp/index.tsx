@@ -19,6 +19,8 @@ import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Colors} from '../../constants/Colors';
 import {useAuthInput} from '../../hooks/useAuthInput';
 import Splash from '../Splash';
+import Popup from '../../components/Popup';
+import ShadowButton from '../../components/ShadowButton';
 
 const SignUp = () => {
   const {t} = useTranslation();
@@ -27,6 +29,7 @@ const SignUp = () => {
   const RepPassword = useAuthInput('password');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = () => {
     if (
@@ -42,10 +45,22 @@ const SignUp = () => {
 
   if (loading) return <Splash />;
 
-  if (error !== SignStatuses.SUCCESS) Alert.alert('ERROR', error);
+  if (error !== SignStatuses.SUCCESS) {
+    setError(SignStatuses.SUCCESS);
+    setModalVisible(true);
+  }
 
   return (
     <Wrapper>
+      <Popup
+        header="Error"
+        text="Cannot create user. Maybe user with this credentials exists. Check your data and then try again"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        buttonLeft={() => (
+          <ShadowButton content="Ok" event={() => setModalVisible(false)} />
+        )}
+      />
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>

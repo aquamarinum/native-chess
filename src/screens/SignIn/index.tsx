@@ -18,6 +18,8 @@ import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Validator} from '../../services/validation/Validator';
 import Splash from '../Splash';
 import {Colors} from '../../constants/Colors';
+import Popup from '../../components/Popup';
+import ShadowButton from '../../components/ShadowButton';
 
 //'testuser@example.com', 'qwerty12345'
 //admin@admin.com qwerty12345
@@ -28,6 +30,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = () => {
     setLoading(true);
@@ -39,16 +42,22 @@ const SignIn = () => {
 
   if (loading) return <Splash />;
 
-  //TODO !!!MODAL-UI-ERROR!!! + CLEAR ERROR = FIX INFINITY ALERT BUG
   if (error !== SignStatuses.SUCCESS) {
-    Alert.alert(
-      error,
-      'Something gone wrong. Change your information and try again!!!',
-    );
+    setError(SignStatuses.SUCCESS);
+    setModalVisible(true);
   }
 
   return (
     <Wrapper>
+      <Popup
+        header="Error"
+        text="Invalid email or password. Check your data and try again."
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+        buttonLeft={() => (
+          <ShadowButton content="ok" event={() => setModalVisible(false)} />
+        )}
+      />
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>
