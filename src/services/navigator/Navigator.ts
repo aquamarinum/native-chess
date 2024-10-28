@@ -8,8 +8,8 @@ export function goBack() {
   }
 }
 
-export function navigate(screen: string) {
+export function navigate(screen: string, params?: any) {
   if (navigationRef.isReady()) {
-    navigationRef.navigate(screen);
+    navigationRef.navigate(screen, params);
   }
 }

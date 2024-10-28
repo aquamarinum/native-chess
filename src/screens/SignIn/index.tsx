@@ -40,8 +40,8 @@ const SignIn = () => {
           ? setStatus(SignStatuses.SUCCESS)
           : setStatus(res),
       )
-      .catch(err => setStatus(SignStatuses.FAILED));
-    setLoading(false);
+      .catch(err => setStatus(SignStatuses.FAILED))
+      .finally(() => setLoading(false));
   };
 
   if (loading) return <Splash />;

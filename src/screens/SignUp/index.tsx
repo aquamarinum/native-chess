@@ -39,25 +39,26 @@ const SignUp = () => {
       Password.fallback === SignStatuses.SUCCESS &&
       Password.value === RepPassword.value
     ) {
-      setLoading(true);
-      Auth.signUp(Email.value, Password.value).then(res => {
-        if (res === SignStatuses.SUCCESS) {
-          const user: User = {
-            uid: '',
-            country: '',
-            elo: 0,
-            email: '',
-            bio: '',
-            lastLogin: '',
-            registrated: '',
-            name: '',
-            username: '',
-          };
-          Firestore.createUser(user);
-        }
-        setError(res);
-      });
-      setLoading(false);
+      navigate('Introduction');
+      // setLoading(true);
+      // Auth.signUp(Email.value, Password.value).then(res => {
+      //   if (res === SignStatuses.SUCCESS) {
+      //     const user: User = {
+      //       uid: '',
+      //       country: '',
+      //       elo: 0,
+      //       email: '',
+      //       bio: '',
+      //       lastLogin: '',
+      //       registrated: '',
+      //       name: '',
+      //       username: '',
+      //     };
+      //     Firestore.createUser(user);
+      //   }
+      //   setError(res);
+      // });
+      // setLoading(false);
     }
   };
 
@@ -143,7 +144,7 @@ const SignUp = () => {
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>Or back to </Text>
-            <TouchableHighlight onPress={() => navigate('SignIn')}>
+            <TouchableHighlight onPress={() => navigate('Introduction')}>
               <Text style={[styles.text, styles.link]}>Sign In</Text>
             </TouchableHighlight>
           </View>
