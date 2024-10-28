@@ -1,17 +1,20 @@
 import React from 'react';
-import {ImageBackground, SafeAreaView} from 'react-native';
+import {ImageBackground, SafeAreaView, View} from 'react-native';
 import {indev_dark} from '../../assets/img';
-import Message from '../../components/Message';
 import {styles} from './styles';
+import Title from '../../components/Title';
+import Subtitle from '../../components/Subtitle';
 
 const InDev = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground source={indev_dark} style={styles.background}>
-        <Message
-          header="We are sorry"
-          content="This section will appear soon"
-        />
+        <View style={styles.content}>
+          <Title>Section in DEV</Title>
+          <Subtitle>
+            Section will be ready soon... I am currently working on it.
+          </Subtitle>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
