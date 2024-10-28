@@ -29,28 +29,32 @@ const SignIn = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
+  const [status, setStatus] = useState<SignStatuses>(SignStatuses.SUCCESS);
   const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = () => {
     setLoading(true);
-    Auth.signIn(login, password).then(res => {
-      setError(res);
-    });
+    Auth.signIn(login, password)
+      .then(res =>
+        res === SignStatuses.SUCCESS
+          ? setStatus(SignStatuses.SUCCESS)
+          : setStatus(res),
+      )
+      .catch(err => setStatus(SignStatuses.FAILED));
     setLoading(false);
   };
 
   if (loading) return <Splash />;
 
-  if (error !== SignStatuses.SUCCESS) {
-    setError(SignStatuses.SUCCESS);
+  if (status !== SignStatuses.SUCCESS) {
+    setStatus(SignStatuses.SUCCESS);
     setModalVisible(true);
   }
 
   return (
     <Wrapper>
       <Popup
-        header="Error"
+        header={status}
         text="Invalid email or password. Check your data and try again."
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}

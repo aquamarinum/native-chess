@@ -21,6 +21,8 @@ import {useAuthInput} from '../../hooks/useAuthInput';
 import Splash from '../Splash';
 import Popup from '../../components/Popup';
 import ShadowButton from '../../components/ShadowButton';
+import Firestore from '../../services/firebase/Firestore';
+import {User} from '../../types/User';
 
 const SignUp = () => {
   const {t} = useTranslation();
@@ -38,7 +40,23 @@ const SignUp = () => {
       Password.value === RepPassword.value
     ) {
       setLoading(true);
-      Auth.signUp(Email.value, Password.value).then(res => setError(res));
+      Auth.signUp(Email.value, Password.value).then(res => {
+        if (res === SignStatuses.SUCCESS) {
+          const user: User = {
+            uid: '',
+            country: '',
+            elo: 0,
+            email: '',
+            bio: '',
+            lastLogin: '',
+            registrated: '',
+            name: '',
+            username: '',
+          };
+          Firestore.createUser(user);
+        }
+        setError(res);
+      });
       setLoading(false);
     }
   };

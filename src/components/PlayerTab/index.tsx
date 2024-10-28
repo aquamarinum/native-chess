@@ -7,7 +7,7 @@ const PlayerTab = () => {
   return (
     <View style={styles.container}>
       <View style={styles.photo}>
-        <Image />
+        <Image source={undefined} />
       </View>
       <View style={styles.content}>
         <Text style={styles.content_header}>Username#123</Text>
