@@ -23,6 +23,8 @@ import Popup from '../../components/Popup';
 import ShadowButton from '../../components/ShadowButton';
 import Firestore from '../../services/firebase/Firestore';
 import {User} from '../../types/User';
+import {useAppSelector} from '../../redux/store';
+import {userSelector} from '../../redux/user/selectors';
 
 const SignUp = () => {
   const {t} = useTranslation();
@@ -34,6 +36,7 @@ const SignUp = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = () => {
+    const usr = useAppSelector(userSelector);
     if (
       Email.fallback === SignStatuses.SUCCESS &&
       Password.fallback === SignStatuses.SUCCESS &&

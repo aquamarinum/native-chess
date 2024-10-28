@@ -9,6 +9,9 @@ import {useTranslation} from 'react-i18next';
 import Firestore from '../../services/firebase/Firestore';
 import {FetchStatus} from '../../types/FetchStatus';
 import {navigate} from '../../services/navigator/Navigator';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
+import {userNameSelector, userSelector} from '../../redux/user/selectors';
+import {setUser, setUsername} from '../../redux/user/slice';
 
 const introSequence = [
   'Enter Your Name',
@@ -22,6 +25,8 @@ const Introduction = () => {
   const [error, setError] = useState(FetchStatus.SUCCESS);
   const [page, setPage] = useState(0);
   const {t} = useTranslation();
+  const usr = useAppSelector(userNameSelector);
+  const dispatch = useAppDispatch();
 
   const onSubmit = () => {
     //? OR DO SIGNUP->NAMESCREEN->LEVELSCREEN->BIO->COUNTRY->...->DO_SIGNUP()
@@ -31,6 +36,7 @@ const Introduction = () => {
       navigate('SignUp');
     }
     //push to redux
+    //dispatch(setUsername('Petya'));
     setInputValue('');
     setPage(prev => prev + 1);
   };
@@ -39,7 +45,7 @@ const Introduction = () => {
     <Wrapper>
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
-          <Header>{introSequence[page]}</Header>
+          <Header>{introSequence[page] + usr}</Header>
           <TextInput
             value={inputValue}
             onChangeText={setInputValue}

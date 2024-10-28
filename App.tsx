@@ -6,6 +6,8 @@ import AppStackNavigator from './src/navigation/AppStackNavigator';
 import {navigationRef} from './src/services/navigator/Navigator';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Auth from './src/services/firebase/Auth';
+import {Provider} from 'react-redux';
+import {store} from './src/redux/store';
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -24,9 +26,11 @@ const App = () => {
   if (loading) return <Splash />;
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      {!user ? <AuthStackNavigator /> : <AppStackNavigator />}
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer ref={navigationRef}>
+        {!user ? <AuthStackNavigator /> : <AppStackNavigator />}
+      </NavigationContainer>
+    </Provider>
   );
 };
 
