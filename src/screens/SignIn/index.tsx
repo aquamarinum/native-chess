@@ -20,6 +20,8 @@ import Splash from '../Splash';
 import {Colors} from '../../constants/Colors';
 import Popup from '../../components/Popup';
 import ShadowButton from '../../components/ShadowButton';
+import {useAppDispatch} from '../../redux/store';
+import {setUser} from '../../redux/user/slice';
 
 //'testuser@example.com', 'qwerty12345'
 //admin@admin.com qwerty12345
@@ -31,16 +33,19 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<SignStatuses>(SignStatuses.SUCCESS);
   const [modalVisible, setModalVisible] = useState(false);
+  const dispatch = useAppDispatch();
 
   const onSubmit = () => {
     setLoading(true);
     Auth.signIn(login, password)
-      .then(res =>
-        res === SignStatuses.SUCCESS
-          ? setStatus(SignStatuses.SUCCESS)
-          : setStatus(res),
-      )
-      .catch(err => setStatus(SignStatuses.FAILED))
+      .then(res => {
+        if (res) {
+          console.log(res);
+          //@ts-ignore
+          dispatch(setUser(res));
+          setStatus(SignStatuses.SUCCESS);
+        } else setStatus(SignStatuses.FAILED);
+      })
       .finally(() => setLoading(false));
   };
 

@@ -1,4 +1,4 @@
-import firestore, {firebase} from '@react-native-firebase/firestore';
+import firestore from '@react-native-firebase/firestore';
 import {FetchStatus} from '../../types/FetchStatus';
 import {User} from '../../types/User';
 import Auth from './Auth';

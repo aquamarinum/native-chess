@@ -9,33 +9,24 @@ import {navigate} from '../../services/navigator/Navigator';
 import Firestore from '../../services/firebase/Firestore';
 import Auth from '../../services/firebase/Auth';
 import {FetchStatus} from '../../types/FetchStatus';
-import {useAppDispatch} from '../../redux/store';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {setUser} from '../../redux/user/slice';
 import Splash from '../Splash';
+import {useAuth} from '../../hooks/useAuth';
+import {userSelector} from '../../redux/user/selectors';
 
 const Home = () => {
   const {t} = useTranslation();
-  const [error, setError] = useState(FetchStatus.SUCCESS);
-  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
+  const user = useAppSelector(userSelector);
 
-  useEffect(() => {
-    setLoading(true);
-    Firestore.getUser(Auth.getUserId())
-      .then(res => {
-        if (res !== FetchStatus.FAILED) {
-          console.log('RES DATA', res.data());
-          //@ts-ignore
-          //dispatch(setUser(res.data()));
-        }
-      })
-      .catch(err => setError(FetchStatus.FAILED))
-      .finally(() => setLoading(false));
-  }, []);
+  // useEffect(() => {
+  //   if (user) dispatch(setUser(user));
+  // }, []);
 
-  if (loading) return <Splash />;
+  //if (loading) return <Splash />;
 
-  if (error !== FetchStatus.SUCCESS) Alert.alert('Error in getting user');
+  if (!user) Alert.alert('FAIL', 'failde to load user');
 
   return (
     <Wrapper>

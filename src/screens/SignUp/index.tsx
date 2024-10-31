@@ -14,17 +14,10 @@ import Header from '../../components/Header';
 import Wrapper from '../../components/Wrapper';
 import {navigate} from '../../services/navigator/Navigator';
 import {Validator} from '../../services/validation/Validator';
-import Auth from '../../services/firebase/Auth';
 import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Colors} from '../../constants/Colors';
 import {useAuthInput} from '../../hooks/useAuthInput';
-import Splash from '../Splash';
-import Popup from '../../components/Popup';
-import ShadowButton from '../../components/ShadowButton';
-import Firestore from '../../services/firebase/Firestore';
-import {User} from '../../types/User';
-import {useAppDispatch, useAppSelector} from '../../redux/store';
-import {userSelector} from '../../redux/user/selectors';
+import {useAppDispatch} from '../../redux/store';
 import {setCredentials} from '../../redux/user/slice';
 
 const SignUp = () => {

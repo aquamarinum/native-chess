@@ -1,5 +1,7 @@
 import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import {SignStatuses} from '../validation/SignStatuses';
+import {User} from '../../types/User';
 
 class Auth {
   private errorHandler = (error: any) => {
@@ -15,9 +17,12 @@ class Auth {
     }
   };
 
-  signUp = async (email: string, password: string) => {
+  signUp = async (user: User) => {
     try {
-      await auth().createUserWithEmailAndPassword(email, password);
+      const userCredential: FirebaseAuthTypes.UserCredential =
+        await auth().createUserWithEmailAndPassword(user.email, user.password);
+      const uid = userCredential.user.uid;
+      await firestore().collection('users').doc(uid).set(user);
       return SignStatuses.SUCCESS;
     } catch (error) {
       return this.errorHandler(error);
@@ -26,10 +31,18 @@ class Auth {
 
   signIn = async (email: string, password: string) => {
     try {
-      await auth().signInWithEmailAndPassword(email, password);
-      return SignStatuses.SUCCESS;
-    } catch (error: any) {
-      return this.errorHandler(error);
+      const userCredential: FirebaseAuthTypes.UserCredential =
+        await auth().signInWithEmailAndPassword(email, password);
+      const uid = userCredential.user.uid;
+      const userDoc = await firestore().collection('users').doc(uid).get();
+
+      if (userDoc.exists) {
+        //return SignStatuses.SUCCESS;
+        return userDoc.data();
+      }
+      return null;
+    } catch (error) {
+      return null;
     }
   };
 

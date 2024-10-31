@@ -28,20 +28,10 @@ const IntroLevel = () => {
   const user = useAppSelector(userSelector);
 
   const onSubmit = () => {
-    dispatch(setElo(200 + activeItem * 400));
+    //dispatch(setElo(200 + activeItem * 400));
     setLoading(true);
-    Auth.signUp(user.email, user.password)
-      .then(res => {
-        if (res === SignStatuses.SUCCESS) {
-          Firestore.createUser(user);
-          console.log('CREATED');
-        }
-        setError(res);
-      })
-      .catch(err => {
-        setError(SignStatuses.FAILED);
-        console.log(err);
-      })
+    Auth.signUp({...user, elo: 200 + activeItem * 400})
+      .then(respStatus => setError(respStatus))
       .finally(() => setLoading(false));
   };
 

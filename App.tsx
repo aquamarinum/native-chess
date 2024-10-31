@@ -8,8 +8,10 @@ import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Auth from './src/services/firebase/Auth';
 import {Provider} from 'react-redux';
 import {store} from './src/redux/store';
+import {useAuth} from './src/hooks/useAuth';
 
 const App = () => {
+  //const {userData, loading} = useAuth();
   const [loading, setLoading] = useState<boolean>(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
 
