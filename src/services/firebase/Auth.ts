@@ -46,6 +46,12 @@ class Auth {
     return auth().currentUser;
   };
 
+  getUserId = () => {
+    const id = auth().currentUser?.uid;
+    if (id) return id;
+    return '00000000';
+  };
+
   subscribe = (stateChanger: (user: FirebaseAuthTypes.User | null) => void) => {
     return auth().onAuthStateChanged(stateChanger);
   };

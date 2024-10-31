@@ -10,13 +10,12 @@ class Firestore {
   }
   createUser = async (user: User) => {
     try {
-      const get = Auth.getUser();
-      user.uid = get ? get.uid : '00000000';
+      user.uid = Auth.getUserId();
       user.registrated =
         new Date().toLocaleDateString() + new Date().toLocaleTimeString();
-      (user.country = 'world'),
-        (user.username = 'beta-test-user'),
-        (user.bio = 'DEFAULT');
+      user.country = 'world';
+      user.username = 'beta-test-user';
+      user.bio = 'DEFAULT';
       await this.store.doc(user.uid).set(user);
       return FetchStatus.SUCCESS;
     } catch (error) {
