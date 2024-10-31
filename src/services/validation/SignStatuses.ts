@@ -11,4 +11,6 @@ export enum SignStatuses {
   BADPASSWORD = 'Use only A-Z and 0-9 5+ symbols',
   BADREPEAT = 'PASSWORDS NOT SAME',
   WRONGPASS = 'WRONG PASSWORD',
+  ONLYLATIN = 'NO LATIN SYMBOL',
+  ONLYNUMBER = 'NOT A NUMBER',
 }

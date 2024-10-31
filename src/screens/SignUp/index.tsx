@@ -23,66 +23,30 @@ import Popup from '../../components/Popup';
 import ShadowButton from '../../components/ShadowButton';
 import Firestore from '../../services/firebase/Firestore';
 import {User} from '../../types/User';
-import {useAppSelector} from '../../redux/store';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {userSelector} from '../../redux/user/selectors';
+import {setCredentials} from '../../redux/user/slice';
 
 const SignUp = () => {
   const {t} = useTranslation();
+  const dispatch = useAppDispatch();
   const Email = useAuthInput('email');
   const Password = useAuthInput('password');
   const RepPassword = useAuthInput('password');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<SignStatuses>(SignStatuses.SUCCESS);
-  const [modalVisible, setModalVisible] = useState(false);
 
   const onSubmit = () => {
-    const usr = useAppSelector(userSelector);
     if (
       Email.fallback === SignStatuses.SUCCESS &&
       Password.fallback === SignStatuses.SUCCESS &&
       Password.value === RepPassword.value
     ) {
+      dispatch(setCredentials({email: Email.value, password: Password.value}));
       navigate('Introduction');
-      // setLoading(true);
-      // Auth.signUp(Email.value, Password.value).then(res => {
-      //   if (res === SignStatuses.SUCCESS) {
-      //     const user: User = {
-      //       uid: '',
-      //       country: '',
-      //       elo: 0,
-      //       email: '',
-      //       bio: '',
-      //       lastLogin: '',
-      //       registrated: '',
-      //       name: '',
-      //       username: '',
-      //     };
-      //     Firestore.createUser(user);
-      //   }
-      //   setError(res);
-      // });
-      // setLoading(false);
     }
   };
 
-  if (loading) return <Splash />;
-
-  if (error !== SignStatuses.SUCCESS) {
-    setError(SignStatuses.SUCCESS);
-    setModalVisible(true);
-  }
-
   return (
     <Wrapper>
-      <Popup
-        header="Error"
-        text="Cannot create user. Maybe user with this credentials exists. Check your data and then try again"
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-        buttonLeft={() => (
-          <ShadowButton content="Ok" event={() => setModalVisible(false)} />
-        )}
-      />
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>
@@ -147,7 +111,7 @@ const SignUp = () => {
           />
           <View style={styles.link_container}>
             <Text style={styles.text}>Or back to </Text>
-            <TouchableHighlight onPress={() => navigate('Introduction')}>
+            <TouchableHighlight onPress={() => navigate('SignIn')}>
               <Text style={[styles.text, styles.link]}>Sign In</Text>
             </TouchableHighlight>
           </View>

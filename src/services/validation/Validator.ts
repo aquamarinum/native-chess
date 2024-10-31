@@ -40,6 +40,13 @@ export class Validator {
     }
     return this;
   }
+  matchLatin() {
+    if (this.status === SignStatuses.SUCCESS) {
+      if (!this.value.match(/[A-Za-z]{1,}/))
+        this.status = SignStatuses.ONLYLATIN;
+    }
+    return this;
+  }
   getStatus() {
     return this.status;
   }
