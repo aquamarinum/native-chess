@@ -28,9 +28,9 @@ const IntroLevel = () => {
   const user = useAppSelector(userSelector);
 
   const onSubmit = () => {
-    //dispatch(setElo(200 + activeItem * 400));
+    dispatch(setElo(200 + activeItem * 400));
     setLoading(true);
-    Auth.signUp({...user, elo: 200 + activeItem * 400})
+    Auth.signUp(user)
       .then(respStatus => setError(respStatus))
       .finally(() => setLoading(false));
   };

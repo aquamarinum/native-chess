@@ -22,6 +22,10 @@ class Auth {
       const userCredential: FirebaseAuthTypes.UserCredential =
         await auth().createUserWithEmailAndPassword(user.email, user.password);
       const uid = userCredential.user.uid;
+      user.country = 'World';
+      user.username = 'betatester';
+      user.registrated =
+        new Date().toDateString() + '-' + new Date().toLocaleTimeString();
       await firestore().collection('users').doc(uid).set(user);
       return SignStatuses.SUCCESS;
     } catch (error) {

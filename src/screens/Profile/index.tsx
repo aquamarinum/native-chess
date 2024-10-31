@@ -14,6 +14,7 @@ import {userSelector} from '../../redux/user/selectors';
 const Profile = () => {
   const {t} = useTranslation();
   const user = useAppSelector(userSelector);
+  console.log(user);
 
   return (
     <Wrapper>
