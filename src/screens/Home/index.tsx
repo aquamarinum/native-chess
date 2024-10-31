@@ -19,12 +19,6 @@ const Home = () => {
   const {t} = useTranslation();
   const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
-  console.log('Home', user);
-  // useEffect(() => {
-  //   if (user) dispatch(setUser(user));
-  // }, []);
-
-  //if (loading) return <Splash />;
 
   if (!user) Alert.alert('FAIL', 'failde to load user');
 
