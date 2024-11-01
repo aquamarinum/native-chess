@@ -24,11 +24,13 @@ import {Colors} from './models/Colors';
 export class Engine {
   private player: Colors;
   private board: Array<Array<Figure | null>>;
+  private highlighted: Set<string>;
   //private timeMode: string;
 
   constructor() {
     this.player = Colors.WHITE;
     this.board = new Array(8);
+    this.highlighted = new Set();
 
     for (let i = 0; i < 8; i++) {
       const row = new Array();
@@ -42,40 +44,44 @@ export class Engine {
   init() {
     //BLACK
     for (let i = 0; i < 8; i++) {
-      this.board[1][i] = new Pawn(Colors.BLACK, pawn_black_icon, '1' + i);
+      this.board[1][i] = new Pawn(Colors.BLACK, pawn_black_icon);
     }
 
-    this.board[0][0] = new Rook(Colors.BLACK, rook_black_icon, '00');
-    this.board[0][7] = new Rook(Colors.BLACK, rook_black_icon, '07');
+    this.board[0][0] = new Rook(Colors.BLACK, rook_black_icon);
+    this.board[0][7] = new Rook(Colors.BLACK, rook_black_icon);
 
-    this.board[0][1] = new Knight(Colors.BLACK, knight_black_icon, '01');
-    this.board[0][6] = new Knight(Colors.BLACK, knight_black_icon, '06');
+    this.board[0][1] = new Knight(Colors.BLACK, knight_black_icon);
+    this.board[0][6] = new Knight(Colors.BLACK, knight_black_icon);
 
-    this.board[0][2] = new Bishop(Colors.BLACK, bishop_black_icon, '02');
-    this.board[0][5] = new Bishop(Colors.BLACK, bishop_black_icon, '05');
+    this.board[0][2] = new Bishop(Colors.BLACK, bishop_black_icon);
+    this.board[0][5] = new Bishop(Colors.BLACK, bishop_black_icon);
 
-    this.board[0][3] = new Queen(Colors.BLACK, queen_black_icon, '03');
-    this.board[0][4] = new King(Colors.BLACK, king_black_icon, '04');
+    this.board[0][3] = new Queen(Colors.BLACK, queen_black_icon);
+    this.board[0][4] = new King(Colors.BLACK, king_black_icon);
 
     //WHITE
     for (let i = 0; i < 8; i++) {
-      this.board[6][i] = new Pawn(Colors.WHITE, pawn_white_icon, '6' + i);
+      this.board[6][i] = new Pawn(Colors.WHITE, pawn_white_icon);
     }
 
-    this.board[7][0] = new Rook(Colors.WHITE, rook_white_icon, '70');
-    this.board[7][7] = new Rook(Colors.WHITE, rook_white_icon, '77');
+    this.board[7][0] = new Rook(Colors.WHITE, rook_white_icon);
+    this.board[7][7] = new Rook(Colors.WHITE, rook_white_icon);
 
-    this.board[7][1] = new Knight(Colors.WHITE, knight_white_icon, '71');
-    this.board[7][6] = new Knight(Colors.WHITE, knight_white_icon, '76');
+    this.board[7][1] = new Knight(Colors.WHITE, knight_white_icon);
+    this.board[7][6] = new Knight(Colors.WHITE, knight_white_icon);
 
-    this.board[7][2] = new Bishop(Colors.WHITE, bishop_white_icon, '72');
-    this.board[7][5] = new Bishop(Colors.WHITE, bishop_white_icon, '75');
+    this.board[7][2] = new Bishop(Colors.WHITE, bishop_white_icon);
+    this.board[7][5] = new Bishop(Colors.WHITE, bishop_white_icon);
 
-    this.board[7][3] = new Queen(Colors.WHITE, queen_white_icon, '73');
-    this.board[7][4] = new King(Colors.WHITE, king_white_icon, '74');
+    this.board[7][3] = new Queen(Colors.WHITE, queen_white_icon);
+    this.board[7][4] = new King(Colors.WHITE, king_white_icon);
   }
 
   getBoard() {
     return this.board;
+  }
+
+  matchHighlighted(cell: string) {
+    return this.highlighted.has(cell);
   }
 }

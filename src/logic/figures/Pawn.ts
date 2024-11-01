@@ -6,13 +6,11 @@ export class Pawn implements Figure {
   type: Figures;
   color: Colors;
   image: string;
-  position: string;
 
-  constructor(_color: Colors, _image: string, _pos: string) {
+  constructor(_color: Colors, _image: string) {
     this.type = Figures.PAWN;
     this.color = _color;
     this.image = _image;
-    this.position = _pos;
   }
 
   canMove = () => {

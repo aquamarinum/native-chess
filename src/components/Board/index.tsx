@@ -1,5 +1,5 @@
 import React, {ReactElement} from 'react';
-import {ScrollView, View} from 'react-native';
+import {View} from 'react-native';
 import {styles} from './styles';
 
 const ARR: ReactElement<View>[] = [];

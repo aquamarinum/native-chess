@@ -5,12 +5,12 @@ import {Colors} from '../../logic/models/Colors';
 import {styles} from './styles';
 
 interface CellProps {
-  state: CellStates;
-  figure: ImageSourcePropType | undefined;
+  // state: CellStates;
+  // figure: ImageSourcePropType | undefined;
   color: Colors;
 }
 
-const Cell: React.FC<CellProps> = ({state, color, figure = undefined}) => {
+const Cell: React.FC<CellProps> = ({color}) => {
   return (
     <View
       style={
@@ -18,7 +18,7 @@ const Cell: React.FC<CellProps> = ({state, color, figure = undefined}) => {
           ? [styles.cell, styles.white]
           : [styles.cell, styles.black]
       }>
-      <Image source={figure} alt="cell-figure" />
+      <Image source={undefined} alt="cell-figure" />
     </View>
   );
 };
