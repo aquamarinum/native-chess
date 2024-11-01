@@ -3,4 +3,5 @@ export enum CellStates {
   SELECTED,
   OCCUPIED,
   BUSY,
+  DEFAULT,
 }

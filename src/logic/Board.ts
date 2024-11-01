@@ -1,12 +1,12 @@
-import { Cell } from "./Cell";
-import { Colors } from "./Colors";
-import { figures } from "./Figure";
-import { Bishop } from "./figures/Bishop";
-import { King } from "./figures/King";
-import { Knight } from "./figures/Knight";
-import { Pawn } from "./figures/Pawn";
-import { Queen } from "./figures/Queen";
-import { Rook } from "./figures/Rook";
+import {Cell} from './Cell';
+import {Colors} from './Colors';
+import {figures} from './figures/Figure';
+import {Bishop} from '../figures/Bishop';
+import {King} from '../figures/King';
+import {Knight} from '../figures/Knight';
+import {Pawn} from '../figures/Pawn';
+import {Queen} from '../figures/Queen';
+import {Rook} from './figures/Rook';
 
 export class Board {
   //check king if figure
