@@ -1,16 +1,16 @@
 import React from 'react';
-import {Image, ImageSourcePropType, View} from 'react-native';
-import {CellStates} from '../../logic/models/CellStates';
+import {Image, ImageSourcePropType, Text, View} from 'react-native';
 import {Colors} from '../../logic/models/Colors';
 import {styles} from './styles';
+import {Figure} from '../../logic/figures/Figure';
 
 interface CellProps {
-  // state: CellStates;
-  // figure: ImageSourcePropType | undefined;
+  position: string;
+  figure: Figure | null | undefined;
   color: Colors;
 }
 
-const Cell: React.FC<CellProps> = ({color}) => {
+const Cell: React.FC<CellProps> = ({color, position, figure}) => {
   return (
     <View
       style={
@@ -18,7 +18,7 @@ const Cell: React.FC<CellProps> = ({color}) => {
           ? [styles.cell, styles.white]
           : [styles.cell, styles.black]
       }>
-      <Image source={undefined} alt="cell-figure" />
+      {figure && <Image source={figure.getModel()} style={styles.image} />}
     </View>
   );
 };

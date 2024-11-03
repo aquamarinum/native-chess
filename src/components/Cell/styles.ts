@@ -8,6 +8,8 @@ export const styles = StyleSheet.create({
   cell: {
     width: cell_width,
     height: cell_width,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.black,
   },
@@ -16,5 +18,9 @@ export const styles = StyleSheet.create({
   },
   black: {
     backgroundColor: Colors.grey_dark,
+  },
+  image: {
+    width: 20,
+    height: 30,
   },
 });

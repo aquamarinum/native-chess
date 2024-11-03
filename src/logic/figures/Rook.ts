@@ -12,7 +12,7 @@ export class Rook implements Figure {
     this.color = _color;
   }
 
-  canMove = () => {
+  canMove = (position: string) => {
     const moves = new Set<string>();
     return moves;
   };

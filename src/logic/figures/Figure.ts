@@ -7,5 +7,5 @@ export interface Figure {
   readonly type: Figures;
   readonly color: Colors;
   getModel: () => Models;
-  canMove: () => Set<string>;
+  canMove: (pos: string) => Set<string>;
 }
