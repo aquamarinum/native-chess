@@ -1,23 +1,33 @@
+import {ChessBoard} from '../ChessBoard';
+import {ChessPiece} from '../ChessPiece';
 import {Colors} from '../models/Colors';
 import {Figures} from '../models/Figures';
 import {Models} from '../models/Models';
-import {Figure} from './Figure';
 
-export class Pawn implements Figure {
-  type: Figures;
-  color: Colors;
+export class Pawn extends ChessPiece {
+  public readonly type: Figures;
 
-  constructor(_color: Colors) {
+  constructor(_col: Colors) {
+    super(_col);
     this.type = Figures.PAWN;
-    this.color = _color;
   }
 
-  canMove = (position: string) => {
-    const moves = new Set<string>();
-    return moves;
-  };
+  isMoveValid(
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    board: ChessBoard,
+  ) {
+    return true;
+  }
 
-  getModel = () => {
-    return this.color === Colors.WHITE ? Models.PAWN_WHITE : Models.PAWN_BLACK;
-  };
+  getModel() {
+    return this.color === Colors.BLACK ? Models.PAWN_BLACK : Models.PAWN_WHITE;
+  }
+
+  getPossibleMoves(fromX: number, fromY: number, board: ChessBoard) {
+    const moves: {x: number; y: number}[] = [];
+    return moves;
+  }
 }

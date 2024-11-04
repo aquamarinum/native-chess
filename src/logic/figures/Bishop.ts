@@ -2,6 +2,7 @@ import {ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
 import {Colors} from '../models/Colors';
 import {Figures} from '../models/Figures';
+import {Models} from '../models/Models';
 
 export class Bishop extends ChessPiece {
   public readonly type: Figures;
@@ -17,15 +18,17 @@ export class Bishop extends ChessPiece {
     toX: number,
     toY: number,
     board: ChessBoard,
-  ): boolean {
+  ) {
     return true;
   }
 
-  getPossibleMoves(
-    fromX: number,
-    fromY: number,
-    board: ChessBoard,
-  ): {x: number; y: number}[] {
+  getModel() {
+    return this.color === Colors.BLACK
+      ? Models.BISHOP_BLACK
+      : Models.BISHOP_WHITE;
+  }
+
+  getPossibleMoves(fromX: number, fromY: number, board: ChessBoard) {
     const moves: {x: number; y: number}[] = [];
     return moves;
   }
