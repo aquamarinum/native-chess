@@ -12,47 +12,33 @@ import {styles} from './styles';
 import MovesHistoryBar from '../../components/MovesHistoryBar';
 import PlayerTab from '../../components/PlayerTab';
 import Cell from '../../components/Cell';
-import {Engine} from '../../logic/Game';
 import {Colors} from '../../logic/models/Colors';
-import {Figure} from '../../logic/figures/Figure';
-
-const cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-const rows = ['8', '7', '6', '5', '4', '3', '2', '1'];
-
-const GameEngine = new Engine();
+import {ChessBoard} from '../../logic/ChessBoard';
 
 const GameScreen = () => {
-  console.log('---RENDER---');
-  const [board, setBoard] = useState(GameEngine.getBoard());
+  const [board, setBoard] = useState(new ChessBoard());
 
-  useEffect(() => {
-    setBoard(GameEngine.getBoard());
-    console.log('I see');
-  }, [GameEngine.highlighted.size]);
-
-  const renderBoard = () => {
-    return rows.map((row, row_idx) => (
-      <View style={{flexDirection: 'row'}}>
-        {cols.map((col, col_idx) => (
-          <Cell
-            color={(row_idx + col_idx) % 2 === 0 ? Colors.WHITE : Colors.BLACK}
-            position={row + col}
-            figure={board.get(row + col)}
-            onClick={() => {
-              GameEngine.onSelectCell(row + col);
-            }}
-            isHighlighted={GameEngine.highlighted.has(row + col)}
-          />
-        ))}
-      </View>
-    ));
-  };
   return (
     <SafeAreaView style={styles.container}>
       <MovesHistoryBar />
       <ImageBackground source={background_dark} style={styles.wrapper}>
         <PlayerTab />
-        <ScrollView>{renderBoard()}</ScrollView>
+        <ScrollView>
+          {board.getBoard().map((row, r_idx) => (
+            <View style={{flexDirection: 'row'}}>
+              {row.map((col, c_idx) => (
+                <Cell
+                  color={
+                    (r_idx + c_idx) % 2 === 0 ? Colors.WHITE : Colors.BLACK
+                  }
+                  figure={col}
+                  isHighlighted={false}
+                  onClick={() => {}}
+                />
+              ))}
+            </View>
+          ))}
+        </ScrollView>
         {/* <Board /> */}
         <PlayerTab />
       </ImageBackground>

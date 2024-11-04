@@ -51,7 +51,7 @@ const GameMode = () => {
       <MainButton
         active
         content={t('buttonPlay')}
-        onClick={() => navigate('Game')}
+        onClick={() => navigate('GameScreen')}
       />
     </Wrapper>
   );

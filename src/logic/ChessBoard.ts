@@ -1,17 +1,59 @@
 import {ChessPiece} from './ChessPiece';
+import {Bishop} from './figures/Bishop';
+import {King} from './figures/King';
+import {Knight} from './figures/Knight';
+import {Pawn} from './figures/Pawn';
+import {Queen} from './figures/Queen';
+import {Rook} from './figures/Rook';
+import {Colors} from './models/Colors';
 
 export class ChessBoard {
   private board: (ChessPiece | null)[][];
 
   constructor() {
     this.board = new Array(8).fill(null).map(() => new Array(8).fill(null));
+    this.init();
   }
 
-  public getPieceAt(x: number, y: number): ChessPiece | null {
+  init() {
+    this.board[0][0] = new Rook(Colors.BLACK);
+    this.board[0][7] = new Rook(Colors.BLACK);
+    this.board[7][0] = new Rook(Colors.WHITE);
+    this.board[7][7] = new Rook(Colors.WHITE);
+
+    this.board[0][1] = new Knight(Colors.BLACK);
+    this.board[0][6] = new Knight(Colors.BLACK);
+    this.board[7][1] = new Knight(Colors.WHITE);
+    this.board[7][6] = new Knight(Colors.WHITE);
+
+    this.board[0][2] = new Bishop(Colors.BLACK);
+    this.board[0][5] = new Bishop(Colors.BLACK);
+    this.board[7][2] = new Bishop(Colors.WHITE);
+    this.board[7][5] = new Bishop(Colors.WHITE);
+
+    this.board[0][3] = new Queen(Colors.BLACK);
+    this.board[7][3] = new Queen(Colors.WHITE);
+
+    this.board[0][4] = new King(Colors.BLACK);
+    this.board[7][4] = new King(Colors.WHITE);
+
+    for (let i = 0; i < 8; i++) {
+      this.board[1][i] = new Pawn(Colors.BLACK);
+    }
+    for (let i = 0; i < 8; i++) {
+      this.board[6][i] = new Pawn(Colors.WHITE);
+    }
+  }
+
+  getBoard() {
+    return this.board;
+  }
+
+  getPieceAt(x: number, y: number): ChessPiece | null {
     return this.board[x][y];
   }
 
-  public movePiece(fromX: number, fromY: number, toX: number, toY: number) {
+  movePiece(fromX: number, fromY: number, toX: number, toY: number) {
     const piece = this.getPieceAt(fromX, fromY);
     if (piece && piece.isMoveValid(fromX, fromY, toX, toY, this)) {
       this.board[toX][toY] = piece;

@@ -32,7 +32,7 @@ const Home = () => {
             title="Game #1"
             subtitle="Bla bla blafghj asdad ad"
             league="silver"
-            onClick={() => navigate('Game')}
+            onClick={() => navigate('GameScreen')}
             image={undefined}
             league_icon={undefined}
           />

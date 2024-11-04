@@ -8,24 +8,16 @@ import {
 } from 'react-native';
 import {Colors} from '../../logic/models/Colors';
 import {styles} from './styles';
-import {Figure} from '../../logic/figures/Figure';
+import {ChessPiece} from '../../logic/ChessPiece';
 
 interface CellProps {
-  position: string;
-  figure: Figure | null | undefined;
+  figure: ChessPiece | null;
   color: Colors;
   isHighlighted: boolean;
   onClick: () => void;
 }
 
-const Cell: React.FC<CellProps> = ({
-  color,
-  position,
-  figure,
-  onClick,
-  isHighlighted,
-}) => {
-  if (isHighlighted) console.log('Highlighted ', position);
+const Cell: React.FC<CellProps> = ({color, figure, onClick, isHighlighted}) => {
   return (
     <TouchableWithoutFeedback onPress={onClick}>
       <View
@@ -35,7 +27,6 @@ const Cell: React.FC<CellProps> = ({
             : [styles.cell, styles.black]
         }>
         {isHighlighted && <View style={styles.highlighted}></View>}
-        {figure && <Image source={figure.getModel()} style={styles.image} />}
       </View>
     </TouchableWithoutFeedback>
   );
