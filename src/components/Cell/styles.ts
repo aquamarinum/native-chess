@@ -6,6 +6,7 @@ const cell_width = screen_width / 8;
 
 export const styles = StyleSheet.create({
   cell: {
+    position: 'relative',
     width: cell_width,
     height: cell_width,
     justifyContent: 'center',
@@ -22,5 +23,12 @@ export const styles = StyleSheet.create({
   image: {
     width: 20,
     height: 30,
+  },
+  highlighted: {
+    position: 'absolute',
+    width: 5,
+    height: 5,
+    backgroundColor: Colors.aquamarine,
+    borderRadius: 10,
   },
 });

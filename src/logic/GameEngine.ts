@@ -9,12 +9,15 @@ import {Colors} from './models/Colors';
 import {Figures} from './models/Figures';
 
 export class Engine {
-  private activePlayerColor: Colors;
-  private activeFigure: string | null;
+  public activePlayerColor: Colors;
+  public activeFigure: string | null;
   private board: Map<string, Figure | null>;
-  private highlighted: Set<string>;
+  public highlighted: Set<string>;
   private captured_black: Array<Figure>;
   private captured_white: Array<Figure>;
+  private cols: Map<string, number>;
+  private rows: Map<string, number>;
+  public moves: string;
   //private timeMode: string;
 
   constructor() {
@@ -24,13 +27,33 @@ export class Engine {
     this.highlighted = new Set();
     this.captured_white = new Array();
     this.captured_black = new Array();
+    this.moves = '';
 
-    const cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    for (let i = 8; i >= 1; i--) {
-      for (let j = 0; j < 8; j++) {
-        this.board.set(i + cols[j], null);
-      }
-    }
+    this.rows = new Map()
+      .set('8', 0)
+      .set('7', 1)
+      .set('6', 2)
+      .set('5', 3)
+      .set('4', 4)
+      .set('3', 5)
+      .set('2', 6)
+      .set('1', 7);
+
+    this.cols = new Map()
+      .set('a', 0)
+      .set('b', 1)
+      .set('c', 2)
+      .set('d', 3)
+      .set('e', 4)
+      .set('f', 5)
+      .set('g', 6)
+      .set('h', 7);
+
+    this.rows.forEach((row, row_key) =>
+      this.cols.forEach((col, col_key) =>
+        this.board.set(row_key + col_key, null),
+      ),
+    );
 
     this.init();
   }
@@ -83,6 +106,18 @@ export class Engine {
     return this.board;
   }
 
+  getRows() {
+    return this.rows;
+  }
+
+  getCols() {
+    return this.cols;
+  }
+
+  getHighlighted() {
+    return this.highlighted;
+  }
+
   changeActivePlayer() {
     this.highlighted.clear();
     this.activePlayerColor =
@@ -91,7 +126,7 @@ export class Engine {
 
   moveFigure(from: string, to: string) {
     const target = this.board.get(to);
-    // ************IF TO IS TAKEN BY RIVALS FIGURE************* //
+    // ------------IF CELL IS TAKEN BY RIVALS FIGURE----------- //
     if (target) {
       this.activePlayerColor === Colors.WHITE
         ? this.captured_black.push(target)
@@ -101,7 +136,14 @@ export class Engine {
     this.board.set(from, null);
   }
 
+  parsePosition(pos: string) {
+    const row = this.rows.get(pos[0]) as number;
+    const col = this.cols.get(pos[1]) as number;
+    return {row, col};
+  }
+
   onSelectCell(target: string) {
+    console.log('Target: ', target);
     const isTargetFigure = this.board.get(target);
     if (this.activeFigure) {
       if (this.highlighted.has(target)) {
@@ -123,13 +165,14 @@ export class Engine {
         this.highliteCells();
       }
     }
+    console.log(this.highlighted);
   }
 
   highliteCells() {
     const figureType = this.board.get(this.activeFigure as string) as Figure;
     switch (figureType.type) {
       case Figures.PAWN:
-        //INCLUDE INTERESTING PAWN CAPTURE
+        this.highlighted.add('7a').add('7b').add('7c');
         break;
 
       default:

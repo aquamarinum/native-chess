@@ -19,16 +19,29 @@ import {Figure} from '../../logic/figures/Figure';
 const cols = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const rows = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
+const GameEngine = new Engine();
+
 const Game = () => {
-  const game = new Engine();
-  const renderGame = () => {
+  console.log('---RENDER---');
+  const [board, setBoard] = useState(GameEngine.getBoard());
+
+  useEffect(() => {
+    setBoard(GameEngine.getBoard());
+    console.log('I see');
+  }, [GameEngine.highlighted.size]);
+
+  const renderBoard = () => {
     return rows.map((row, row_idx) => (
       <View style={{flexDirection: 'row'}}>
         {cols.map((col, col_idx) => (
           <Cell
             color={(row_idx + col_idx) % 2 === 0 ? Colors.WHITE : Colors.BLACK}
             position={row + col}
-            figure={game.getBoard().get(row + col)}
+            figure={board.get(row + col)}
+            onClick={() => {
+              GameEngine.onSelectCell(row + col);
+            }}
+            isHighlighted={GameEngine.highlighted.has(row + col)}
           />
         ))}
       </View>
@@ -39,7 +52,7 @@ const Game = () => {
       <MovesHistoryBar />
       <ImageBackground source={background_dark} style={styles.wrapper}>
         <PlayerTab />
-        <ScrollView>{renderGame()}</ScrollView>
+        <ScrollView>{renderBoard()}</ScrollView>
         {/* <Board /> */}
         <PlayerTab />
       </ImageBackground>
