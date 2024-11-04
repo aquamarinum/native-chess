@@ -13,7 +13,7 @@ import {
   rook_white_icon,
 } from '../../assets/img/chess';
 
-export enum Models {
+export enum ViewModels {
   PAWN_WHITE = pawn_white_icon,
   PAWN_BLACK = pawn_black_icon,
   ROOK_WHITE = rook_white_icon,

@@ -2,7 +2,7 @@ import {ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
 import {Colors} from '../models/Colors';
 import {Figures} from '../models/Figures';
-import {Models} from '../models/Models';
+import {ViewModels} from '../models/ViewModels';
 
 export class Bishop extends ChessPiece {
   public readonly type: Figures;
@@ -22,10 +22,10 @@ export class Bishop extends ChessPiece {
     return true;
   }
 
-  getModel() {
+  getViewModel() {
     return this.color === Colors.BLACK
-      ? Models.BISHOP_BLACK
-      : Models.BISHOP_WHITE;
+      ? ViewModels.BISHOP_BLACK
+      : ViewModels.BISHOP_WHITE;
   }
 
   getPossibleMoves(fromX: number, fromY: number, board: ChessBoard) {

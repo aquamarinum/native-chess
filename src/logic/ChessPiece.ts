@@ -1,5 +1,6 @@
 import {ChessBoard} from './ChessBoard';
 import {Colors} from './models/Colors';
+import {ViewModels} from './models/ViewModels';
 
 export abstract class ChessPiece {
   public readonly color: Colors;
@@ -18,4 +19,5 @@ export abstract class ChessPiece {
     fromY: number,
     board: ChessBoard,
   ): {x: number; y: number}[];
+  abstract getViewModel(): ViewModels;
 }
