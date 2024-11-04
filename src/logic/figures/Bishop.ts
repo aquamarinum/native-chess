@@ -1,25 +1,32 @@
+import {ChessBoard} from '../ChessBoard';
+import {ChessPiece} from '../ChessPiece';
 import {Colors} from '../models/Colors';
 import {Figures} from '../models/Figures';
-import {Models} from '../models/Models';
-import {Figure} from './Figure';
 
-export class Bishop implements Figure {
-  type: Figures;
-  color: Colors;
+export class Bishop extends ChessPiece {
+  public readonly type: Figures;
 
-  constructor(_color: Colors) {
+  constructor(_col: Colors) {
+    super(_col);
     this.type = Figures.BISHOP;
-    this.color = _color;
   }
 
-  canMove = (position: string) => {
-    const moves = new Set<string>();
-    return moves;
-  };
+  isMoveValid(
+    fromX: number,
+    fromY: number,
+    toX: number,
+    toY: number,
+    board: ChessBoard,
+  ): boolean {
+    return true;
+  }
 
-  getModel = () => {
-    return this.color === Colors.WHITE
-      ? Models.BISHOP_WHITE
-      : Models.BISHOP_BLACK;
-  };
+  getPossibleMoves(
+    fromX: number,
+    fromY: number,
+    board: ChessBoard,
+  ): {x: number; y: number}[] {
+    const moves: {x: number; y: number}[] = [];
+    return moves;
+  }
 }

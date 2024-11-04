@@ -1,7 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import HomeTabNavigator from './HomeTabNavigator';
-import Game from '../screens/Game';
 import GameMode from '../screens/GameMode';
 import TimeMode from '../screens/TimeMode';
 import Profile from '../screens/Profile';
@@ -10,11 +9,12 @@ import Settings from '../screens/Settings';
 import {stackStyles} from './stackStyles';
 import StepBack from './components/StepBack';
 import {goBack} from '../services/navigator/Navigator';
+import GameScreen from '../screens/GameScreen';
 
 export type AppStackParamList = {
   HomeTab: undefined;
   Profile: undefined;
-  Game: undefined;
+  GameScreen: undefined;
   GameMode: undefined;
   TimeMode: undefined;
   Settings: undefined;
@@ -36,7 +36,7 @@ const AppStackNavigator = () => {
         component={HomeTabNavigator}
         options={{headerShown: false}}
       />
-      <AppStack.Screen name="Game" component={Game} />
+      <AppStack.Screen name="GameScreen" component={GameScreen} />
       <AppStack.Screen name="GameMode" component={GameMode} />
       <AppStack.Screen name="TimeMode" component={TimeMode} />
       <AppStack.Screen name="Profile" component={Profile} />

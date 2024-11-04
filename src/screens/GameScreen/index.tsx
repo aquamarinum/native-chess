@@ -12,7 +12,7 @@ import {styles} from './styles';
 import MovesHistoryBar from '../../components/MovesHistoryBar';
 import PlayerTab from '../../components/PlayerTab';
 import Cell from '../../components/Cell';
-import {Engine} from '../../logic/GameEngine';
+import {Engine} from '../../logic/Game';
 import {Colors} from '../../logic/models/Colors';
 import {Figure} from '../../logic/figures/Figure';
 
@@ -21,7 +21,7 @@ const rows = ['8', '7', '6', '5', '4', '3', '2', '1'];
 
 const GameEngine = new Engine();
 
-const Game = () => {
+const GameScreen = () => {
   console.log('---RENDER---');
   const [board, setBoard] = useState(GameEngine.getBoard());
 
@@ -60,4 +60,4 @@ const Game = () => {
   );
 };
 
-export default Game;
+export default GameScreen;

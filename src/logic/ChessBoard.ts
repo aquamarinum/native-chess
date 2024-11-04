@@ -1,3 +1,26 @@
+import {ChessPiece} from './ChessPiece';
+
+export class ChessBoard {
+  private board: (ChessPiece | null)[][];
+
+  constructor() {
+    this.board = new Array(8).fill(null).map(() => new Array(8).fill(null));
+  }
+
+  public getPieceAt(x: number, y: number): ChessPiece | null {
+    return this.board[x][y];
+  }
+
+  public movePiece(fromX: number, fromY: number, toX: number, toY: number) {
+    const piece = this.getPieceAt(fromX, fromY);
+    if (piece && piece.isMoveValid(fromX, fromY, toX, toY, this)) {
+      this.board[toX][toY] = piece;
+      this.board[fromX][fromY] = null;
+      return true;
+    }
+    return false;
+  }
+}
 // import {Cell} from './Cell';
 // import {Colors} from './Colors';
 // import {figures} from './figures/Figure';
