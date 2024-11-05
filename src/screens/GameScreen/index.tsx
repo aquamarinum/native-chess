@@ -1,46 +1,35 @@
 import React, {useEffect, useState} from 'react';
-import {
-  Image,
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
-  Text,
-  View,
-} from 'react-native';
+import {ImageBackground, SafeAreaView} from 'react-native';
 import {background_dark, background_light} from '../../assets/img';
 import {styles} from './styles';
 import MovesHistoryBar from '../../components/MovesHistoryBar';
 import PlayerTab from '../../components/PlayerTab';
-import Cell from '../../components/Cell';
-import {Colors} from '../../logic/models/Colors';
-import {ChessBoard} from '../../logic/ChessBoard';
+import {ChessColors} from '../../logic/models/ChessColors';
+import BoardComponent from '../../components/BoardComponent';
+import {Game} from '../../logic/Game';
+import {Player} from '../../logic/Player';
+import {queen_black_icon, rook_white_icon} from '../../assets/img/chess';
 
 const GameScreen = () => {
-  const [board, setBoard] = useState(new ChessBoard());
+  const playerWhite = new Player('Player1', ChessColors.WHITE, 1600);
+  const playerBlack = new Player('Player2', ChessColors.BLACK, 1200);
+  const Chess = new Game(playerWhite, playerBlack);
 
   return (
     <SafeAreaView style={styles.container}>
       <MovesHistoryBar />
       <ImageBackground source={background_dark} style={styles.wrapper}>
-        <PlayerTab />
-        <ScrollView>
-          {board.getBoard().map((row, r_idx) => (
-            <View style={{flexDirection: 'row'}}>
-              {row.map((col, c_idx) => (
-                <Cell
-                  color={
-                    (r_idx + c_idx) % 2 === 0 ? Colors.WHITE : Colors.BLACK
-                  }
-                  figure={col}
-                  isHighlighted={false}
-                  onClick={() => {}}
-                />
-              ))}
-            </View>
-          ))}
-        </ScrollView>
-        {/* <Board /> */}
-        <PlayerTab />
+        <PlayerTab
+          username={playerWhite.getName()}
+          elo={playerWhite.getElo()}
+          image={rook_white_icon}
+        />
+        <BoardComponent board={Chess.getBoard()} />
+        <PlayerTab
+          username={playerBlack.getName()}
+          elo={playerBlack.getElo()}
+          image={queen_black_icon}
+        />
       </ImageBackground>
     </SafeAreaView>
   );

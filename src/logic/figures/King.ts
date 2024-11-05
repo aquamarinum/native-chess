@@ -1,13 +1,13 @@
 import {ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
-import {Colors} from '../models/Colors';
+import {ChessColors} from '../models/ChessColors';
 import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
 
 export class King extends ChessPiece {
   public readonly type: Figures;
 
-  constructor(_col: Colors) {
+  constructor(_col: ChessColors) {
     super(_col);
     this.type = Figures.KING;
   }
@@ -23,7 +23,7 @@ export class King extends ChessPiece {
   }
 
   getViewModel() {
-    return this.color === Colors.BLACK
+    return this.color === ChessColors.BLACK
       ? ViewModels.KING_BLACK
       : ViewModels.KING_WHITE;
   }

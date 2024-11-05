@@ -11,13 +11,16 @@ export const styles = StyleSheet.create({
     padding: '3%',
     backgroundColor: Colors.dark_black,
   },
-  photo: {
-    width: 60,
-    height: 60,
+  frame: {
+    padding: 10,
     borderWidth: 4,
     borderRadius: 10,
     borderColor: Colors.grey_dark,
     backgroundColor: Colors.grey_light,
+  },
+  photo: {
+    width: 40,
+    height: 40,
   },
   content: {
     marginHorizontal: '2%',

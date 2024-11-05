@@ -5,48 +5,48 @@ import {Knight} from './figures/Knight';
 import {Pawn} from './figures/Pawn';
 import {Queen} from './figures/Queen';
 import {Rook} from './figures/Rook';
-import {Colors} from './models/Colors';
+import {ChessColors} from './models/ChessColors';
+
+export type ChessBoardType = (ChessPiece | null)[][];
 
 export class ChessBoard {
-  private board: (ChessPiece | null)[][];
+  public board: ChessBoardType;
+  //private highlighted: Set<string>;
 
   constructor() {
     this.board = new Array(8).fill(null).map(() => new Array(8).fill(null));
+    //this.highlighted = new Set();
     this.init();
   }
 
   init() {
-    this.board[0][0] = new Rook(Colors.BLACK);
-    this.board[0][7] = new Rook(Colors.BLACK);
-    this.board[7][0] = new Rook(Colors.WHITE);
-    this.board[7][7] = new Rook(Colors.WHITE);
+    this.board[0][0] = new Rook(ChessColors.BLACK);
+    this.board[0][7] = new Rook(ChessColors.BLACK);
+    this.board[7][0] = new Rook(ChessColors.WHITE);
+    this.board[7][7] = new Rook(ChessColors.WHITE);
 
-    this.board[0][1] = new Knight(Colors.BLACK);
-    this.board[0][6] = new Knight(Colors.BLACK);
-    this.board[7][1] = new Knight(Colors.WHITE);
-    this.board[7][6] = new Knight(Colors.WHITE);
+    this.board[0][1] = new Knight(ChessColors.BLACK);
+    this.board[0][6] = new Knight(ChessColors.BLACK);
+    this.board[7][1] = new Knight(ChessColors.WHITE);
+    this.board[7][6] = new Knight(ChessColors.WHITE);
 
-    this.board[0][2] = new Bishop(Colors.BLACK);
-    this.board[0][5] = new Bishop(Colors.BLACK);
-    this.board[7][2] = new Bishop(Colors.WHITE);
-    this.board[7][5] = new Bishop(Colors.WHITE);
+    this.board[0][2] = new Bishop(ChessColors.BLACK);
+    this.board[0][5] = new Bishop(ChessColors.BLACK);
+    this.board[7][2] = new Bishop(ChessColors.WHITE);
+    this.board[7][5] = new Bishop(ChessColors.WHITE);
 
-    this.board[0][3] = new Queen(Colors.BLACK);
-    this.board[7][3] = new Queen(Colors.WHITE);
+    this.board[0][3] = new Queen(ChessColors.BLACK);
+    this.board[7][3] = new Queen(ChessColors.WHITE);
 
-    this.board[0][4] = new King(Colors.BLACK);
-    this.board[7][4] = new King(Colors.WHITE);
+    this.board[0][4] = new King(ChessColors.BLACK);
+    this.board[7][4] = new King(ChessColors.WHITE);
 
     for (let i = 0; i < 8; i++) {
-      this.board[1][i] = new Pawn(Colors.BLACK);
+      this.board[1][i] = new Pawn(ChessColors.BLACK);
     }
     for (let i = 0; i < 8; i++) {
-      this.board[6][i] = new Pawn(Colors.WHITE);
+      this.board[6][i] = new Pawn(ChessColors.WHITE);
     }
-  }
-
-  getBoard() {
-    return this.board;
   }
 
   getPieceAt(x: number, y: number): ChessPiece | null {

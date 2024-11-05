@@ -19,6 +19,10 @@ export class Game {
         : this.players[0];
   }
 
+  public getBoard() {
+    return this.board.board;
+  }
+
   public makeMove(fromX: number, fromY: number, toX: number, toY: number) {
     if (this.board.movePiece(fromX, fromY, toX, toY)) {
       this.switchPlayer();

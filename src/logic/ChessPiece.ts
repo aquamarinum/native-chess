@@ -1,5 +1,5 @@
 import {ChessBoard} from './ChessBoard';
-import {Colors} from './models/Colors';
+import {Colors} from './models/ChessColors';
 import {ViewModels} from './models/ViewModels';
 
 export abstract class ChessPiece {
