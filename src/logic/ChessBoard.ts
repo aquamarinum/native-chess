@@ -5,15 +5,25 @@ import {Knight} from './figures/Knight';
 import {Pawn} from './figures/Pawn';
 import {Queen} from './figures/Queen';
 import {Rook} from './figures/Rook';
+import {Game} from './Game';
 import {ChessColors} from './models/ChessColors';
 
 export type ChessBoardType = (ChessPiece | null)[][];
 
+export type CellCoordinatesType = {
+  x: number;
+  y: number;
+};
+
 export class ChessBoard {
   public board: ChessBoardType;
+  private gameRef: Game;
+  private activeFigure: CellCoordinatesType | null;
   //private highlighted: Set<string>;
 
-  constructor() {
+  constructor(ref: Game) {
+    this.gameRef = ref;
+    this.activeFigure = null;
     this.board = new Array(8).fill(null).map(() => new Array(8).fill(null));
     //this.highlighted = new Set();
     this.init();
@@ -49,15 +59,44 @@ export class ChessBoard {
     }
   }
 
-  getPieceAt(x: number, y: number): ChessPiece | null {
-    return this.board[x][y];
+  getPieceAt(y: number, x: number): ChessPiece | null {
+    return this.board[y][x];
   }
 
-  movePiece(fromX: number, fromY: number, toX: number, toY: number) {
-    const piece = this.getPieceAt(fromX, fromY);
+  onClickCell(targetY: number, targetX: number) {
+    if (this.activeFigure) {
+      const piece = this.board[this.activeFigure.y][this.activeFigure.x];
+      if (
+        piece &&
+        piece.isMoveValid(
+          this.activeFigure.y,
+          this.activeFigure.x,
+          targetY,
+          targetX,
+          this,
+        )
+      ) {
+        this.movePiece(
+          this.activeFigure.y,
+          this.activeFigure.x,
+          targetY,
+          targetX,
+        );
+        this.activeFigure = null;
+      }
+    } else {
+      this.activeFigure = {
+        y: targetY,
+        x: targetX,
+      };
+    }
+  }
+
+  movePiece(fromY: number, fromX: number, toY: number, toX: number) {
+    const piece = this.board[fromY][fromX];
     if (piece && piece.isMoveValid(fromX, fromY, toX, toY, this)) {
-      this.board[toX][toY] = piece;
-      this.board[fromX][fromY] = null;
+      this.board[toY][toX] = piece;
+      this.board[fromY][fromX] = null;
       return true;
     }
     return false;

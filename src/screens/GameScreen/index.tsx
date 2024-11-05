@@ -24,7 +24,7 @@ const GameScreen = () => {
           elo={playerWhite.getElo()}
           image={rook_white_icon}
         />
-        <BoardComponent board={Chess.getBoard()} />
+        <BoardComponent chessBoard={Chess.getBoard()} />
         <PlayerTab
           username={playerBlack.getName()}
           elo={playerBlack.getElo()}

@@ -1,18 +1,39 @@
-import React, {ReactElement} from 'react';
+import React, {ReactElement, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
-import {ChessBoardType} from '../../logic/ChessBoard';
+import {
+  CellCoordinatesType,
+  ChessBoard,
+  ChessBoardType,
+} from '../../logic/ChessBoard';
 import CellComponent from '../CellComponent';
 import {ChessColors} from '../../logic/models/ChessColors';
 
 type BoardComponentProps = {
-  board: ChessBoardType;
+  chessBoard: ChessBoard;
 };
 
-const BoardComponent: React.FC<BoardComponentProps> = ({board}) => {
+const BoardComponent: React.FC<BoardComponentProps> = ({chessBoard}) => {
+  const [board, updateBoard] = useState(chessBoard);
+  const [selected, setSelected] = useState<CellCoordinatesType | null>(null);
+
+  const onSelectCell = (row: number, column: number) => {
+    console.log(row, column);
+    const newBoard = board;
+    if (selected) {
+      newBoard.movePiece(selected.y, selected.x, row, column);
+      setSelected(null);
+    } else {
+      if (newBoard.getPieceAt(row, column)) {
+        setSelected({y: row, x: column});
+      }
+    }
+    updateBoard(newBoard);
+  };
+
   return (
     <ScrollView>
-      {board.map((row, row_idx) => (
+      {board.board.map((row, row_idx) => (
         <View style={styles.row}>
           {row.map((col, col_idx) => (
             <CellComponent
@@ -23,7 +44,7 @@ const BoardComponent: React.FC<BoardComponentProps> = ({board}) => {
                   : ChessColors.BLACK
               }
               isHighlighted={false}
-              onClick={() => console.log(row_idx + '' + col_idx)}
+              onClick={() => onSelectCell(row_idx, col_idx)}
             />
           ))}
         </View>
