@@ -14,7 +14,75 @@ export class Queen extends ChessPiece {
         : ViewModels.QUEEN_WHITE,
     );
   }
-  public highlight(currentPos: CellPositionType, matrix: ChessBoard): void {
-    //HIGHLIGHT LIKE QUEEN
+  public highlight(currentPos: CellPositionType, board: ChessBoard): void {
+    //MAIN DIAGONAL TO TOP
+    const newPosition: CellPositionType = {
+      y: currentPos.y - 1,
+      x: currentPos.x - 1,
+    };
+
+    while (newPosition.y >= 0 && newPosition.x >= 0) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y--;
+      newPosition.x--;
+    }
+    //MAIN DIAGONAL TO BOTTOM
+    newPosition.y = currentPos.y + 1;
+    newPosition.x = currentPos.x + 1;
+
+    while (newPosition.y < 8 && newPosition.x < 8) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y++;
+      newPosition.x++;
+    }
+    //SIDE DIAGONAL TO TOP
+    newPosition.y = currentPos.y - 1;
+    newPosition.x = currentPos.x + 1;
+
+    while (newPosition.y >= 0 && newPosition.x < 8) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y--;
+      newPosition.x++;
+    }
+    //SIDE DIAGONAL TO BOTTOM
+    newPosition.y = currentPos.y + 1;
+    newPosition.x = currentPos.x - 1;
+
+    while (newPosition.y < 8 && newPosition.x >= 0) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y++;
+      newPosition.x--;
+    }
+
+    //VERTICAL TO TOP
+    newPosition.y = currentPos.y - 1;
+    newPosition.x = currentPos.x;
+
+    while (newPosition.y >= 0) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y--;
+    }
+    //VERTICAL TO BOTTOM
+    newPosition.y = currentPos.y + 1;
+
+    while (newPosition.y < 8) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.y++;
+    }
+    //HORIZONTAL TO LEFT
+    newPosition.y = currentPos.y;
+    newPosition.x = currentPos.x - 1;
+
+    while (newPosition.x >= 0) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.x--;
+    }
+    //HORIZONTAL TO RIGHT
+    newPosition.x = currentPos.x + 1;
+
+    while (newPosition.x < 8) {
+      if (!board.checkPosition(newPosition)) break;
+      newPosition.x++;
+    }
   }
 }
