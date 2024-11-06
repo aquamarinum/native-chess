@@ -1,6 +1,5 @@
 import {CellPositionType, ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
-import {CellStates} from '../models/CellStates';
 import {ChessColors} from '../models/ChessColors';
 import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
@@ -16,38 +15,39 @@ export class Bishop extends ChessPiece {
     );
   }
   public highlight(currentPos: CellPositionType, board: ChessBoard): void {
+    //MAIN DIAGONAL TO TOP
     const newPosition: CellPositionType = {
       y: currentPos.y - 1,
       x: currentPos.x - 1,
     };
-    //MAIN DIAGONAL TO TOP
+
     while (newPosition.y >= 0 && newPosition.x >= 0) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y--;
       newPosition.x--;
     }
-
+    //MAIN DIAGONAL TO BOTTOM
     newPosition.y = currentPos.y + 1;
     newPosition.x = currentPos.x + 1;
-    //MAIN DIAGONAL TO BOTTOM
+
     while (newPosition.y < 8 && newPosition.x < 8) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y++;
       newPosition.x++;
     }
-
+    //SIDE DIAGONAL TO TOP
     newPosition.y = currentPos.y - 1;
     newPosition.x = currentPos.x + 1;
-    //SIDE DIAGONAL TO TOP
+
     while (newPosition.y >= 0 && newPosition.x < 8) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y--;
       newPosition.x++;
     }
-
+    //SIDE DIAGONAL TO BOTTOM
     newPosition.y = currentPos.y + 1;
     newPosition.x = currentPos.x - 1;
-    //SIDE DIAGONAL TO BOTTOM
+
     while (newPosition.y < 8 && newPosition.x >= 0) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y++;
