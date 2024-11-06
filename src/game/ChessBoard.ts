@@ -104,53 +104,6 @@ export class ChessBoard {
     }
   }
 
-  public rookMove(from: Cell) {
-    //vertical movement
-    for (let i = from.y - 1; i >= 0; i--) {
-      const el = this.cells[i][from.x];
-      el.available = true;
-      if (el.figure?.color === from.figure?.color) el.available = false;
-      if (el.figure) break;
-    }
-    for (let i = from.y + 1; i < 8; i++) {
-      const el = this.cells[i][from.x];
-      el.available = true;
-      if (el.figure?.color === from.figure?.color) el.available = false;
-      if (el.figure) break;
-    }
-    //horizontal movement
-    for (let i = from.x - 1; i >= 0; i--) {
-      this.cells[from.y][i].available = true;
-      if (this.cells[from.y][i].figure?.color === from.figure?.color)
-        this.cells[from.y][i].available = false;
-      if (this.cells[from.y][i].figure) break;
-    }
-    for (let i = from.x + 1; i < 8; i++) {
-      this.cells[from.y][i].available = true;
-      if (this.cells[from.y][i].figure?.color === from.figure?.color)
-        this.cells[from.y][i].available = false;
-      if (this.cells[from.y][i].figure) break;
-    }
-  }
-
-  public knightMove(from: Cell) {
-    if (from.y > 1) {
-      if (from.x > 0) this.cells[from.y - 2][from.x - 1].available = true;
-      if (from.x < 7) this.cells[from.y - 2][from.x + 1].available = true;
-    }
-    if (from.y > 0) {
-      if (from.x > 1) this.cells[from.y - 1][from.x - 2].available = true;
-      if (from.x < 6) this.cells[from.y - 1][from.x + 2].available = true;
-    }
-    if (from.y < 6) {
-      if (from.x > 0) this.cells[from.y + 2][from.x - 1].available = true;
-      if (from.x < 7) this.cells[from.y + 2][from.x + 1].available = true;
-    }
-    if (from.y < 7) {
-      if (from.x > 1) this.cells[from.y + 1][from.x - 2].available = true;
-      if (from.x < 6) this.cells[from.y + 1][from.x + 2].available = true;
-    }
-  }
   public pawnMove(from: Cell) {
     if (from.figure?.color === Colors.WHITE) {
       //movement white
