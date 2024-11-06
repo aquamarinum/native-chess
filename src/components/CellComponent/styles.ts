@@ -20,15 +20,17 @@ export const styles = StyleSheet.create({
   black: {
     backgroundColor: Colors.grey_dark,
   },
+  selected: {
+    backgroundColor: Colors.aquamarine,
+  },
+  occupied: {
+    backgroundColor: Colors.red,
+  },
+  highlighted: {
+    backgroundColor: Colors.aquamarine,
+  },
   image: {
     width: 20,
     height: 30,
-  },
-  highlighted: {
-    position: 'absolute',
-    width: 5,
-    height: 5,
-    backgroundColor: Colors.aquamarine,
-    borderRadius: 10,
   },
 });

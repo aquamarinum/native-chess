@@ -1,8 +1,8 @@
 import {ChessColors} from './models/ChessColors';
 
 export class Player {
-  private name: string;
-  private color: string;
+  readonly name: string;
+  readonly color: string;
   private elo: number;
   constructor(_name: string, _color: ChessColors, _elo: number) {
     this.name = _name;

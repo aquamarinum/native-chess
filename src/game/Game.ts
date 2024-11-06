@@ -22,4 +22,8 @@ export class Game {
   public getBoard() {
     return this.board;
   }
+
+  public getCurrentPlayerColor() {
+    return this.currentPlayer.color;
+  }
 }

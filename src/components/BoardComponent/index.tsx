@@ -1,50 +1,46 @@
-import React, {ReactElement, useState} from 'react';
+import React, {ReactElement, useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import {styles} from './styles';
-import {
-  CellCoordinatesType,
-  ChessBoard,
-  ChessBoardType,
-} from '../../logic/ChessBoard';
 import CellComponent from '../CellComponent';
-import {ChessColors} from '../../logic/models/ChessColors';
+import {Board} from '../../game/ChessBoard';
+import {Cell} from '../../game/ChessCell';
+import {Colors} from '../../game/Colors';
 
-type BoardComponentProps = {
-  chessBoard: ChessBoard;
-};
+const BoardComponent = () => {
+  console.log('RENDER BOARD');
+  const [board, setBoard] = useState(new Board());
+  const [selected, setSelected] = useState<Cell | null>(null);
 
-const BoardComponent: React.FC<BoardComponentProps> = ({chessBoard}) => {
-  const [board, updateBoard] = useState(chessBoard);
-  const [selected, setSelected] = useState<CellCoordinatesType | null>(null);
-
-  const onSelectCell = (row: number, column: number) => {
-    console.log(row, column);
+  const selectCell = (target: Cell) => {
     const newBoard = board;
     if (selected) {
-      newBoard.movePiece(selected.y, selected.x, row, column);
-      setSelected(null);
-    } else {
-      if (newBoard.getPieceAt(row, column)) {
-        setSelected({y: row, x: column});
+      if (
+        selected.figure?.color === target.figure?.color ||
+        selected.id === target.id
+      ) {
+        newBoard.highlightCells(target);
+        setSelected(target);
+      } else {
+        newBoard.moveFigure(selected, target);
+        newBoard.highlightCells(null);
+        setSelected(null);
       }
+    } else if (target.figure) {
+      newBoard.highlightCells(target);
+      setSelected(target);
     }
-    updateBoard(newBoard);
+    setBoard(newBoard);
   };
 
   return (
     <ScrollView>
-      {board.board.map((row, row_idx) => (
+      {board.cells.map((row, row_idx) => (
         <View style={styles.row}>
           {row.map((col, col_idx) => (
             <CellComponent
-              figure={col}
-              color={
-                (row_idx + col_idx) % 2 === 0
-                  ? ChessColors.WHITE
-                  : ChessColors.BLACK
-              }
-              isHighlighted={false}
-              onClick={() => onSelectCell(row_idx, col_idx)}
+              cell={col}
+              isSelected={col.id === selected?.id ? true : false}
+              setSelected={selectCell}
             />
           ))}
         </View>

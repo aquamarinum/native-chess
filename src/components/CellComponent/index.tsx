@@ -2,39 +2,55 @@ import React from 'react';
 import {
   Image,
   ImageSourcePropType,
+  StyleProp,
   Text,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from 'react-native';
-import {ChessColors} from '../../logic/models/ChessColors';
 import {styles} from './styles';
-import {ChessPiece} from '../../logic/ChessPiece';
+import {Cell} from '../../game/ChessCell';
+import {Colors} from '../../game/Colors';
 
-interface CellComponentProps {
-  figure: ChessPiece | null;
-  color: ChessColors;
-  isHighlighted: boolean;
-  onClick: () => void;
+interface ICell {
+  cell: Cell;
+  isSelected: boolean;
+  setSelected: (target: Cell) => void;
 }
 
-const CellComponent: React.FC<CellComponentProps> = ({
-  color,
-  figure,
-  onClick,
-  isHighlighted,
-}) => {
+const getStyle = (color: Colors, isSel: boolean) => {
+  const style: StyleProp<ViewStyle> = [styles.cell];
+  if (isSel) {
+    style.push(styles.selected);
+    return style;
+  }
+  if (color === Colors.WHITE) style.push(styles.white);
+  else style.push(styles.black);
+  // switch (state) {
+  //   case CellStates.DEFAULT:
+
+  //     break;
+  //   case CellStates.SELECTED:
+  //     style.push(styles.selected);
+  //     break;
+  //   default:
+  //     break;
+  // }
+  return style;
+};
+
+const CellComponent: React.FC<ICell> = ({cell, isSelected, setSelected}) => {
+  //1. default {black / white}
+  //2. selected
+  //-----HIGHLIGHTING------//
+  //3. occupied
+  //4. available
   return (
-    <TouchableWithoutFeedback onPress={onClick}>
-      <View
-        style={
-          color === ChessColors.WHITE
-            ? [styles.cell, styles.white]
-            : [styles.cell, styles.black]
-        }>
-        {figure && (
-          <Image source={figure.getViewModel()} style={styles.image} />
+    <TouchableWithoutFeedback onPress={() => setSelected(cell)}>
+      <View style={getStyle(cell.color, isSelected)}>
+        {cell.figure && (
+          <Image source={cell.figure.icon} style={styles.image} />
         )}
-        {isHighlighted && <View style={styles.highlighted}></View>}
       </View>
     </TouchableWithoutFeedback>
   );
