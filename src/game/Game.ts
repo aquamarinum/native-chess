@@ -26,4 +26,12 @@ export class Game {
   public getCurrentPlayerColor() {
     return this.currentPlayer.color;
   }
+
+  public getFirstPlayer() {
+    return this.players[0];
+  }
+
+  public getSecondPlayer() {
+    return this.players[1];
+  }
 }

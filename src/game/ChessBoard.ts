@@ -21,12 +21,14 @@ export class ChessBoard {
 
   constructor(ref: Game) {
     this.gameRef = ref;
-    this.cells = new Array(8);
-    this.cells.map((row, row_idx) =>
-      new Array(8).map(
-        (col, col_idx) => new ChessCell(this, {y: row_idx, x: col_idx}, null),
-      ),
-    );
+    this.cells = [];
+    for (let i = 0; i < 8; i++) {
+      const row = [];
+      for (let j = 0; j < 8; j++) {
+        row.push(new ChessCell(this, {y: i, x: j}, null));
+      }
+      this.cells.push(row);
+    }
     this.init();
   }
 
