@@ -45,26 +45,26 @@ export class ChessBoard {
   }
 
   public init() {
-    this.cells[0][0].piece = new Rook(ChessColors.BLACK);
-    this.cells[0][7].piece = new Rook(ChessColors.BLACK);
-    this.cells[7][0].piece = new Rook(ChessColors.WHITE);
-    this.cells[7][7].piece = new Rook(ChessColors.WHITE);
+    // this.cells[0][0].piece = new Rook(ChessColors.BLACK);
+    // this.cells[0][7].piece = new Rook(ChessColors.BLACK);
+    // this.cells[7][0].piece = new Rook(ChessColors.WHITE);
+    // this.cells[7][7].piece = new Rook(ChessColors.WHITE);
 
-    this.cells[0][1].piece = new Knight(ChessColors.BLACK);
-    this.cells[0][6].piece = new Knight(ChessColors.BLACK);
-    this.cells[7][1].piece = new Knight(ChessColors.WHITE);
-    this.cells[7][6].piece = new Knight(ChessColors.WHITE);
+    // this.cells[0][1].piece = new Knight(ChessColors.BLACK);
+    // this.cells[0][6].piece = new Knight(ChessColors.BLACK);
+    // this.cells[7][1].piece = new Knight(ChessColors.WHITE);
+    // this.cells[7][6].piece = new Knight(ChessColors.WHITE);
 
-    this.cells[0][2].piece = new Bishop(ChessColors.BLACK);
-    this.cells[0][5].piece = new Bishop(ChessColors.BLACK);
-    this.cells[7][2].piece = new Bishop(ChessColors.WHITE);
-    this.cells[7][5].piece = new Bishop(ChessColors.WHITE);
+    // this.cells[0][2].piece = new Bishop(ChessColors.BLACK);
+    // this.cells[0][5].piece = new Bishop(ChessColors.BLACK);
+    // this.cells[7][2].piece = new Bishop(ChessColors.WHITE);
+    // this.cells[7][5].piece = new Bishop(ChessColors.WHITE);
 
-    this.cells[0][3].piece = new Queen(ChessColors.BLACK);
-    this.cells[7][3].piece = new Queen(ChessColors.WHITE);
+    // this.cells[0][3].piece = new Queen(ChessColors.BLACK);
+    // this.cells[7][3].piece = new Queen(ChessColors.WHITE);
 
-    this.cells[0][4].piece = new King(ChessColors.BLACK);
-    this.cells[7][4].piece = new King(ChessColors.WHITE);
+    // this.cells[0][4].piece = new King(ChessColors.BLACK);
+    // this.cells[7][4].piece = new King(ChessColors.WHITE);
 
     // for (let i = 0; i < 8; i++) {
     //   this.cells[1][i].piece = new Pawn(ChessColors.BLACK);
@@ -72,6 +72,14 @@ export class ChessBoard {
     // for (let i = 0; i < 8; i++) {
     //   this.cells[6][i].piece = new Pawn(ChessColors.WHITE);
     // }
+    this.cells[1][1].piece = new Pawn(ChessColors.BLACK);
+    this.cells[1][2].piece = new Pawn(ChessColors.BLACK);
+    this.cells[1][3].piece = new Pawn(ChessColors.BLACK);
+    this.cells[3][0].piece = new Rook(ChessColors.BLACK);
+    this.cells[3][2].piece = new Rook(ChessColors.BLACK);
+    this.cells[6][1].piece = new Pawn(ChessColors.WHITE);
+    this.cells[6][2].piece = new Pawn(ChessColors.WHITE);
+    this.cells[6][3].piece = new Pawn(ChessColors.WHITE);
   }
 
   public moveFigure(from: ChessCell, to: ChessCell): boolean {
