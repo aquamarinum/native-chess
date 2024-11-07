@@ -66,12 +66,12 @@ export class ChessBoard {
     this.cells[0][4].piece = new King(ChessColors.BLACK);
     this.cells[7][4].piece = new King(ChessColors.WHITE);
 
-    for (let i = 0; i < 8; i++) {
-      this.cells[1][i].piece = new Pawn(ChessColors.BLACK);
-    }
-    for (let i = 0; i < 8; i++) {
-      this.cells[6][i].piece = new Pawn(ChessColors.WHITE);
-    }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[1][i].piece = new Pawn(ChessColors.BLACK);
+    // }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[6][i].piece = new Pawn(ChessColors.WHITE);
+    // }
   }
 
   public moveFigure(from: ChessCell, to: ChessCell): boolean {

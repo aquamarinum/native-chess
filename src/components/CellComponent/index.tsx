@@ -15,7 +15,7 @@ import {ChessColors} from '../../game/models/ChessColors';
 
 interface ICell {
   cell: ChessCell;
-  setSelected: (target: ChessCell) => void;
+  setSelected: () => void;
 }
 
 const getStyle = (color: ChessColors, state: CellStates) => {
@@ -48,7 +48,7 @@ const CellComponent: React.FC<ICell> = ({cell, setSelected}) => {
   //3. occupied
   //4. available
   return (
-    <TouchableWithoutFeedback onPress={() => setSelected(cell)}>
+    <TouchableWithoutFeedback onPress={setSelected}>
       <View style={getStyle(cell.color, cell.state)}>
         {cell.piece && <Image source={cell.piece.model} style={styles.image} />}
       </View>

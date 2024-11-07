@@ -4,6 +4,7 @@ import {styles} from './styles';
 import CellComponent from '../CellComponent';
 import {ChessBoard} from '../../game/ChessBoard';
 import {ChessCell} from '../../game/ChessCell';
+import {ChessColors} from '../../game/models/ChessColors';
 
 type BoardComponentProps = {
   board: ChessBoard;
@@ -13,32 +14,48 @@ type BoardComponentProps = {
 const BoardComponent: React.FC<BoardComponentProps> = ({board, setBoard}) => {
   console.log('RENDER BOARD');
 
-  const [selected, setSelected] = useState<ChessCell | null>(null);
+  const [activeCell, setActiveCell] = useState<ChessCell | null>(null);
 
-  const selectCell = (target: ChessCell) => {
+  const onSelectCell = (target: ChessCell) => {
     const newBoard = board;
-    if (selected) {
-      if (target.piece && selected.piece?.color === target.piece?.color) {
-        target.piece.highlight(target.position, newBoard);
-        setSelected(target);
-      } else {
-        newBoard.moveFigure(selected, target);
+    //? SANDBOX MOVES
+    if (target.piece) {
+      if (target.piece.color === ChessColors.WHITE)
+        newBoard.gameRef.setCurrentPlayer(0);
+      else newBoard.gameRef.setCurrentPlayer(1);
+    }
+
+    if (activeCell) {
+      if (
+        activeCell.position.y === target.position.y &&
+        activeCell.position.x === target.position.x
+      ) {
         newBoard.clearHighlighting();
-        setSelected(null);
+        setActiveCell(null);
+      } else {
+        if (target.piece && activeCell.piece?.color === target.piece.color) {
+          newBoard.clearHighlighting();
+          target.piece.highlight(target.position, newBoard);
+          setActiveCell(target);
+        } else {
+          newBoard.moveFigure(activeCell, target);
+          newBoard.clearHighlighting();
+          setActiveCell(null);
+        }
       }
     } else if (target.piece) {
       target.piece.highlight(target.position, newBoard);
-      setSelected(target);
+      setActiveCell(target);
     }
     setBoard(newBoard);
   };
 
   return (
     <ScrollView>
-      {board.cells.map((row, row_idx) => (
+      {board.cells.map(row => (
         <View style={styles.row}>
-          {row.map((col, col_idx) => (
-            <CellComponent cell={col} setSelected={selectCell} />
+          {row.map(cell => (
+            <CellComponent cell={cell} setSelected={() => onSelectCell(cell)} />
           ))}
         </View>
       ))}

@@ -19,6 +19,11 @@ export class Game {
         : this.players[0];
   }
 
+  //?TEMP
+  public setCurrentPlayer(idx: number) {
+    if (idx === 0 || idx === 1) this.currentPlayer = this.players[idx];
+  }
+
   public getBoard() {
     return this.board;
   }
