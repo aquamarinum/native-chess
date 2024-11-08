@@ -60,7 +60,6 @@ export class Pawn extends ChessPiece {
       }
 
       //EN PASSANT
-      //QUEEN TRANSFORMING
     } else {
       //LONG JUMP
       if (

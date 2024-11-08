@@ -18,7 +18,7 @@ export class ChessCell {
     this.board = base;
     this.position = pos;
     this.color =
-      (pos.y + pos.x) % 2 === 0 ? ChessColors.BLACK : ChessColors.WHITE;
+      (pos.y + pos.x) % 2 === 0 ? ChessColors.WHITE : ChessColors.BLACK;
     this.piece = figure;
     this.state = CellStates.DEFAULT;
   }
