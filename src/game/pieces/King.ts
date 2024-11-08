@@ -5,6 +5,8 @@ import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
 
 export class King extends ChessPiece {
+  public canKingCastleShort: boolean;
+  public canKingCastleLong: boolean;
   constructor(color: ChessColors) {
     super(
       Figures.KING,
@@ -13,7 +15,23 @@ export class King extends ChessPiece {
         ? ViewModels.KING_BLACK
         : ViewModels.KING_WHITE,
     );
+    this.canKingCastleShort = true;
+    this.canKingCastleLong = true;
   }
+
+  public abortShortCastle() {
+    this.canKingCastleShort = false;
+  }
+
+  public abortLongCastle() {
+    this.canKingCastleLong = false;
+  }
+
+  public abortCastling() {
+    this.canKingCastleShort = false;
+    this.canKingCastleLong = false;
+  }
+
   public highlight(currentPos: CellPositionType, board: ChessBoard): void {
     if (currentPos.y > 0) {
       board.checkPosition({y: currentPos.y - 1, x: currentPos.x});
@@ -35,5 +53,11 @@ export class King extends ChessPiece {
     if (currentPos.x < 7) {
       board.checkPosition({y: currentPos.y, x: currentPos.x + 1});
     }
+    //CASTLE
+    board.checkForCastling(
+      currentPos,
+      this.canKingCastleShort,
+      this.canKingCastleLong,
+    );
   }
 }

@@ -39,7 +39,6 @@ const BoardComponent: React.FC<BoardComponentProps> = ({board, setBoard}) => {
           setActiveCell(target);
         } else {
           newBoard.moveFigure(activeCell, target);
-          newBoard.clearHighlighting();
           setActiveCell(null);
         }
       }

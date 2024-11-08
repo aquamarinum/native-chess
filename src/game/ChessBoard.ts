@@ -19,6 +19,8 @@ export type CellPositionType = {
 export class ChessBoard {
   cells: Array<Array<ChessCell>>;
   gameRef: Game;
+  whiteKingPos: CellPositionType;
+  blackKingPos: CellPositionType;
 
   constructor(ref: Game) {
     this.gameRef = ref;
@@ -31,6 +33,8 @@ export class ChessBoard {
       this.cells.push(row);
     }
     this.init();
+    this.whiteKingPos = {y: 7, x: 4};
+    this.blackKingPos = {y: 0, x: 4};
   }
 
   getPositionAt(pos: CellPositionType) {
@@ -75,12 +79,22 @@ export class ChessBoard {
     }
   }
 
+  public doCastleShort(pos: CellPositionType) {
+    this.cells[pos.y][5].piece = this.cells[pos.y][7].piece;
+    this.cells[pos.y][7].piece = null;
+  }
+
+  public doCastleLong(pos: CellPositionType) {
+    this.cells[pos.y][3].piece = this.cells[pos.y][0].piece;
+    this.cells[pos.y][0].piece = null;
+  }
+
   public moveFigure(from: ChessCell, to: ChessCell): boolean {
     if (to.state === CellStates.AVAILABLE || to.state === CellStates.OCCUPIED) {
       to.piece = from.piece;
-      to.state = CellStates.DEFAULT;
       from.piece = null;
-      from.state = CellStates.DEFAULT;
+
+      // IF PAWN
       if (
         to.piece &&
         to.piece.title === Figures.PAWN &&
@@ -88,8 +102,56 @@ export class ChessBoard {
       ) {
         this.transformPawn(to.position, to.piece.color);
       }
-      //switch player
+
+      // IF KING
+      if (to.piece?.title === Figures.KING) {
+        if (from.position.x - to.position.x === -2) {
+          this.doCastleShort(to.position);
+        }
+        if (from.position.x - to.position.x === 2) {
+          this.doCastleLong(to.position);
+        }
+
+        (this.getPositionAt(to.position).piece as King).abortCastling();
+
+        if (
+          (this.getPositionAt(to.position).piece as ChessPiece).color ===
+          ChessColors.WHITE
+        )
+          this.whiteKingPos = to.position;
+        else this.blackKingPos = to.position;
+      }
+
+      //IF ROOK
+      if (to.piece?.title === Figures.ROOK) {
+        if (from.position.x === 0 && to.piece.color === ChessColors.BLACK) {
+          (
+            this.getPositionAt(this.blackKingPos).piece as King
+          ).abortLongCastle();
+        }
+
+        if (from.position.x === 7) {
+          (
+            this.getPositionAt(this.blackKingPos).piece as King
+          ).abortShortCastle();
+        }
+      }
+      if (to.piece?.title === Figures.ROOK) {
+        if (from.position.x === 0 && to.piece.color === ChessColors.WHITE) {
+          (
+            this.getPositionAt(this.whiteKingPos).piece as King
+          ).abortLongCastle();
+        }
+
+        if (from.position.x === 7) {
+          (
+            this.getPositionAt(this.whiteKingPos).piece as King
+          ).abortShortCastle();
+        }
+      }
+      //this.gameRef.switchPlayer();
     }
+    this.clearHighlighting();
     return true;
   }
 
@@ -111,6 +173,32 @@ export class ChessBoard {
         this.setCellState(pos, CellStates.OCCUPIED);
       }
       return false;
+    }
+  }
+
+  public checkForCastling(
+    pos: CellPositionType,
+    short: boolean,
+    long: boolean,
+  ) {
+    if (short) {
+      //TODO if(CHECK FOR CHECKMATE +1 & +2 TRUE ? ... : ...)
+      if (
+        !this.cells[pos.y][pos.x + 1].piece &&
+        !this.cells[pos.y][pos.x + 2].piece
+      ) {
+        this.setCellState({y: pos.y, x: pos.x + 2}, CellStates.AVAILABLE);
+      }
+    }
+    //TODO SAME AS UPPER
+    if (long) {
+      if (
+        !this.cells[pos.y][pos.x - 1].piece &&
+        !this.cells[pos.y][pos.x - 2].piece &&
+        !this.cells[pos.y][pos.x - 3].piece
+      ) {
+        this.setCellState({y: pos.y, x: pos.x - 2}, CellStates.AVAILABLE);
+      }
     }
   }
 
