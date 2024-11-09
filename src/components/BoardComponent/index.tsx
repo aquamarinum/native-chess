@@ -35,7 +35,7 @@ const BoardComponent: React.FC<BoardComponentProps> = ({board, setBoard}) => {
       } else {
         if (target.piece && activeCell.piece?.color === target.piece.color) {
           newBoard.clearHighlighting();
-          target.piece.highlight(target.position, newBoard);
+          target.piece.canMove(target.position, newBoard);
           setActiveCell(target);
         } else {
           newBoard.moveFigure(activeCell, target);
@@ -43,7 +43,7 @@ const BoardComponent: React.FC<BoardComponentProps> = ({board, setBoard}) => {
         }
       }
     } else if (target.piece) {
-      target.piece.highlight(target.position, newBoard);
+      target.piece.canMove(target.position, newBoard);
       setActiveCell(target);
     }
     setBoard(newBoard);

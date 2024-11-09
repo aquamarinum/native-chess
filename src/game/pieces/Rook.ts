@@ -14,21 +14,21 @@ export class Rook extends ChessPiece {
         : ViewModels.ROOK_WHITE,
     );
   }
-  public highlight(currentPos: CellPositionType, board: ChessBoard): void {
+  public canMove(currentPos: CellPositionType, board: ChessBoard): void {
     //VERTICAL TO TOP
     const newPosition: CellPositionType = {
       y: currentPos.y - 1,
       x: currentPos.x,
     };
 
-    while (newPosition.y >= 0) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y--;
     }
     //VERTICAL TO BOTTOM
     newPosition.y = currentPos.y + 1;
 
-    while (newPosition.y < 8) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y++;
     }
@@ -36,14 +36,14 @@ export class Rook extends ChessPiece {
     newPosition.y = currentPos.y;
     newPosition.x = currentPos.x - 1;
 
-    while (newPosition.x >= 0) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.x--;
     }
     //HORIZONTAL TO RIGHT
     newPosition.x = currentPos.x + 1;
 
-    while (newPosition.x < 8) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.x++;
     }

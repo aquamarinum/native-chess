@@ -14,14 +14,14 @@ export class Bishop extends ChessPiece {
         : ViewModels.BISHOP_WHITE,
     );
   }
-  public highlight(currentPos: CellPositionType, board: ChessBoard): void {
+  public canMove(currentPos: CellPositionType, board: ChessBoard): void {
     //MAIN DIAGONAL TO TOP
     const newPosition: CellPositionType = {
       y: currentPos.y - 1,
       x: currentPos.x - 1,
     };
 
-    while (newPosition.y >= 0 && newPosition.x >= 0) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y--;
       newPosition.x--;
@@ -30,7 +30,7 @@ export class Bishop extends ChessPiece {
     newPosition.y = currentPos.y + 1;
     newPosition.x = currentPos.x + 1;
 
-    while (newPosition.y < 8 && newPosition.x < 8) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y++;
       newPosition.x++;
@@ -39,7 +39,7 @@ export class Bishop extends ChessPiece {
     newPosition.y = currentPos.y - 1;
     newPosition.x = currentPos.x + 1;
 
-    while (newPosition.y >= 0 && newPosition.x < 8) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y--;
       newPosition.x++;
@@ -48,7 +48,7 @@ export class Bishop extends ChessPiece {
     newPosition.y = currentPos.y + 1;
     newPosition.x = currentPos.x - 1;
 
-    while (newPosition.y < 8 && newPosition.x >= 0) {
+    while (board.getPositionAt(newPosition)) {
       if (!board.checkPosition(newPosition)) break;
       newPosition.y++;
       newPosition.x--;

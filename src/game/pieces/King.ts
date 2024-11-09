@@ -1,5 +1,6 @@
 import {CellPositionType, ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
+import {CellStates} from '../models/CellStates';
 import {ChessColors} from '../models/ChessColors';
 import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
@@ -32,32 +33,55 @@ export class King extends ChessPiece {
     this.canKingCastleLong = false;
   }
 
-  public highlight(currentPos: CellPositionType, board: ChessBoard): void {
-    if (currentPos.y > 0) {
-      board.checkPosition({y: currentPos.y - 1, x: currentPos.x});
-      if (currentPos.x > 0)
-        board.checkPosition({y: currentPos.y - 1, x: currentPos.x - 1});
-      if (currentPos.x < 7)
-        board.checkPosition({y: currentPos.y - 1, x: currentPos.x + 1});
-    }
-    if (currentPos.y < 7) {
+  public canMove(currentPos: CellPositionType, board: ChessBoard): void {
+    // TOP ROW
+    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x - 1}))
+      board.checkPosition({y: currentPos.y + 1, x: currentPos.x - 1});
+
+    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x}))
       board.checkPosition({y: currentPos.y + 1, x: currentPos.x});
-      if (currentPos.x > 0)
-        board.checkPosition({y: currentPos.y + 1, x: currentPos.x - 1});
-      if (currentPos.x < 7)
-        board.checkPosition({y: currentPos.y + 1, x: currentPos.x + 1});
-    }
-    if (currentPos.x > 0) {
+
+    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x + 1}))
+      board.checkPosition({y: currentPos.y + 1, x: currentPos.x + 1});
+
+    // MID ROW
+    if (board.getPositionAt({y: currentPos.y, x: currentPos.x - 1}))
       board.checkPosition({y: currentPos.y, x: currentPos.x - 1});
-    }
-    if (currentPos.x < 7) {
+
+    if (board.getPositionAt({y: currentPos.y, x: currentPos.x + 1}))
       board.checkPosition({y: currentPos.y, x: currentPos.x + 1});
-    }
+
+    // BOTTOM ROW
+    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x - 1}))
+      board.checkPosition({y: currentPos.y - 1, x: currentPos.x - 1});
+
+    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x}))
+      board.checkPosition({y: currentPos.y - 1, x: currentPos.x});
+
+    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x + 1}))
+      board.checkPosition({y: currentPos.y - 1, x: currentPos.x + 1});
+
     //CASTLE
-    board.checkForCastling(
-      currentPos,
-      this.canKingCastleShort,
-      this.canKingCastleLong,
-    );
+    // O-O
+    if (
+      this.canKingCastleShort &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x + 1}) &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x + 2})
+    )
+      board.setCellState(
+        {y: currentPos.y, x: currentPos.x + 2},
+        CellStates.AVAILABLE,
+      );
+    // O-O-O
+    if (
+      this.canKingCastleShort &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x - 1}) &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x - 2}) &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x - 3})
+    )
+      board.setCellState(
+        {y: currentPos.y, x: currentPos.x - 2},
+        CellStates.AVAILABLE,
+      );
   }
 }

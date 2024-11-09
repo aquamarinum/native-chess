@@ -37,19 +37,7 @@ export class ChessBoard {
     this.blackKingPos = {y: 0, x: 4};
   }
 
-  getPositionAt(pos: CellPositionType) {
-    return this.cells[pos.y][pos.x];
-  }
-
-  setCellState(pos: CellPositionType, state: CellStates) {
-    this.cells[pos.y][pos.x].state = state;
-  }
-
-  setCellPiece(pos: CellPositionType, piece: ChessPiece) {
-    this.cells[pos.y][pos.x].piece = piece;
-  }
-
-  public init() {
+  private init() {
     this.cells[0][0].piece = new Rook(ChessColors.BLACK);
     this.cells[0][7].piece = new Rook(ChessColors.BLACK);
     this.cells[7][0].piece = new Rook(ChessColors.WHITE);
@@ -79,6 +67,28 @@ export class ChessBoard {
     }
   }
 
+  getPositionAt(pos: CellPositionType) {
+    if (pos.y < 8 && pos.y >= 0 && pos.x < 8 && pos.x >= 0) {
+      return this.cells[pos.y][pos.x];
+    }
+    return null;
+  }
+
+  getPieceAt(pos: CellPositionType) {
+    const cell = this.getPositionAt(pos);
+    if (cell) return cell.piece;
+    else throw new Error('Cell out of the board');
+  }
+
+  setCellState(pos: CellPositionType, state: CellStates) {
+    if (this.getPositionAt(pos)) this.cells[pos.y][pos.x].state = state;
+    else throw new Error('Cell out of the board');
+  }
+
+  setCellPiece(pos: CellPositionType, piece: ChessPiece) {
+    this.cells[pos.y][pos.x].piece = piece;
+  }
+
   public doCastleShort(pos: CellPositionType) {
     this.cells[pos.y][5].piece = this.cells[pos.y][7].piece;
     this.cells[pos.y][7].piece = null;
@@ -97,14 +107,14 @@ export class ChessBoard {
       // IF PAWN
       if (
         to.piece &&
-        to.piece.title === Figures.PAWN &&
+        to.piece.type === Figures.PAWN &&
         (to.position.y === 0 || to.position.y === 7)
       ) {
         this.transformPawn(to.position, to.piece.color);
       }
 
       // IF KING
-      if (to.piece?.title === Figures.KING) {
+      if (to.piece?.type === Figures.KING) {
         if (from.position.x - to.position.x === -2) {
           this.doCastleShort(to.position);
         }
@@ -112,41 +122,30 @@ export class ChessBoard {
           this.doCastleLong(to.position);
         }
 
-        (this.getPositionAt(to.position).piece as King).abortCastling();
+        (this.getPieceAt(to.position) as King).abortCastling();
 
-        if (
-          (this.getPositionAt(to.position).piece as ChessPiece).color ===
-          ChessColors.WHITE
-        )
+        if (this.getPieceAt(to.position)?.color === ChessColors.WHITE)
           this.whiteKingPos = to.position;
         else this.blackKingPos = to.position;
       }
 
       //IF ROOK
-      if (to.piece?.title === Figures.ROOK) {
+      if (to.piece?.type === Figures.ROOK) {
         if (from.position.x === 0 && to.piece.color === ChessColors.BLACK) {
-          (
-            this.getPositionAt(this.blackKingPos).piece as King
-          ).abortLongCastle();
+          (this.getPieceAt(this.blackKingPos) as King).abortLongCastle();
         }
 
         if (from.position.x === 7) {
-          (
-            this.getPositionAt(this.blackKingPos).piece as King
-          ).abortShortCastle();
+          (this.getPieceAt(this.blackKingPos) as King).abortShortCastle();
         }
       }
-      if (to.piece?.title === Figures.ROOK) {
+      if (to.piece?.type === Figures.ROOK) {
         if (from.position.x === 0 && to.piece.color === ChessColors.WHITE) {
-          (
-            this.getPositionAt(this.whiteKingPos).piece as King
-          ).abortLongCastle();
+          (this.getPieceAt(this.whiteKingPos) as King).abortLongCastle();
         }
 
         if (from.position.x === 7) {
-          (
-            this.getPositionAt(this.whiteKingPos).piece as King
-          ).abortShortCastle();
+          (this.getPieceAt(this.whiteKingPos) as King).abortShortCastle();
         }
       }
       //this.gameRef.switchPlayer();
@@ -162,12 +161,12 @@ export class ChessBoard {
   }
 
   public checkPosition(pos: CellPositionType) {
-    if (!this.getPositionAt(pos).piece) {
+    if (!this.getPieceAt(pos)) {
       this.setCellState(pos, CellStates.AVAILABLE);
       return true;
     } else {
       if (
-        (this.getPositionAt(pos).piece as ChessPiece).color !==
+        (this.getPieceAt(pos) as ChessPiece).color !==
         this.gameRef.getCurrentPlayerColor()
       ) {
         this.setCellState(pos, CellStates.OCCUPIED);
@@ -176,33 +175,279 @@ export class ChessBoard {
     }
   }
 
-  public checkForCastling(
-    pos: CellPositionType,
-    short: boolean,
-    long: boolean,
-  ) {
-    if (short) {
-      //TODO if(CHECK FOR CHECKMATE +1 & +2 TRUE ? ... : ...)
-      if (
-        !this.cells[pos.y][pos.x + 1].piece &&
-        !this.cells[pos.y][pos.x + 2].piece
-      ) {
-        this.setCellState({y: pos.y, x: pos.x + 2}, CellStates.AVAILABLE);
-      }
-    }
-    //TODO SAME AS UPPER
-    if (long) {
-      if (
-        !this.cells[pos.y][pos.x - 1].piece &&
-        !this.cells[pos.y][pos.x - 2].piece &&
-        !this.cells[pos.y][pos.x - 3].piece
-      ) {
-        this.setCellState({y: pos.y, x: pos.x - 2}, CellStates.AVAILABLE);
-      }
-    }
-  }
-
   public transformPawn(pos: CellPositionType, color: ChessColors) {
     this.cells[pos.y][pos.x].piece = new Queen(color);
+  }
+
+  public isPieceThreatens(pos: CellPositionType, pieceType: Figures) {
+    return (
+      this.getPieceAt(pos)?.type === pieceType &&
+      this.getPieceAt(pos)?.color !== this.gameRef.getCurrentPlayerColor()
+    );
+  }
+
+  public checkForThreat(target: CellPositionType) {
+    //! KING AND PAWN
+    if (target.y - 1 >= 0) {
+      const top: CellPositionType = {
+        y: target.y - 1,
+        x: target.x,
+      };
+
+      //TOP
+      if (this.isPieceThreatens(top, Figures.KING)) return false;
+
+      if (target.x - 1 >= 0) {
+        const left: CellPositionType = {
+          y: target.y,
+          x: target.x - 1,
+        };
+
+        //LEFT
+        if (this.isPieceThreatens(left, Figures.KING)) return false;
+
+        //TOP-LEFT
+        if (
+          this.isPieceThreatens({y: top.y, x: left.x}, Figures.PAWN) ||
+          this.isPieceThreatens({y: top.y, x: left.x}, Figures.KING)
+        )
+          return false;
+      }
+      if (target.x + 1 < 8) {
+        const right: CellPositionType = {
+          y: target.y,
+          x: target.x + 1,
+        };
+
+        //RIGHT
+        if (this.isPieceThreatens(right, Figures.KING)) return false;
+
+        //TOP-RIGHT
+        if (
+          this.isPieceThreatens({y: top.y, x: right.x}, Figures.PAWN) ||
+          this.isPieceThreatens({y: top.y, x: right.x}, Figures.KING)
+        )
+          return false;
+      }
+    }
+    if (target.y + 1 < 8) {
+      const bottom: CellPositionType = {
+        y: target.y + 1,
+        x: target.x,
+      };
+
+      //BOTTOM
+      if (this.isPieceThreatens(bottom, Figures.KING)) return false;
+
+      if (target.x - 1 >= 0) {
+        const left: CellPositionType = {
+          y: target.y,
+          x: target.x - 1,
+        };
+
+        //BOTTOM-LEFT
+        if (
+          this.isPieceThreatens({y: bottom.y, x: left.x}, Figures.PAWN) ||
+          this.isPieceThreatens({y: bottom.y, x: left.x}, Figures.KING)
+        )
+          return false;
+      }
+      if (target.x + 1 < 8) {
+        const right: CellPositionType = {
+          y: target.y,
+          x: target.x + 1,
+        };
+
+        //BOTTOM-RIGHT
+        if (
+          this.isPieceThreatens({y: bottom.y, x: right.x}, Figures.PAWN) ||
+          this.isPieceThreatens({y: bottom.y, x: right.x}, Figures.KING)
+        )
+          return false;
+      }
+    }
+
+    //! KNIGHT
+    if (target.y > 1) {
+      if (
+        target.x > 0 &&
+        this.isPieceThreatens(
+          {y: target.y - 2, x: target.x - 1},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+      if (
+        target.x < 7 &&
+        this.isPieceThreatens(
+          {y: target.y - 2, x: target.x + 1},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+    }
+    if (target.y > 0) {
+      if (
+        target.x > 1 &&
+        this.isPieceThreatens(
+          {y: target.y - 1, x: target.x - 2},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+
+      if (
+        target.x < 6 &&
+        this.isPieceThreatens(
+          {y: target.y - 1, x: target.x + 2},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+    }
+    if (target.y < 6) {
+      if (
+        target.x > 0 &&
+        this.isPieceThreatens(
+          {y: target.y + 2, x: target.x - 1},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+
+      if (
+        target.x < 7 &&
+        this.isPieceThreatens(
+          {y: target.y + 2, x: target.x + 1},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+    }
+    if (target.y < 7) {
+      if (
+        target.x > 1 &&
+        this.isPieceThreatens(
+          {y: target.y + 1, x: target.x - 2},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+
+      if (
+        target.x < 6 &&
+        this.isPieceThreatens(
+          {y: target.y + 1, x: target.x + 2},
+          Figures.KNIGHT,
+        )
+      )
+        return false;
+    }
+
+    //! BISHOP AND QUEEN
+    //MAIN DIAGONAL TO TOP
+    const newPosition: CellPositionType = {
+      y: target.y - 1,
+      x: target.x - 1,
+    };
+
+    while (newPosition.y >= 0 && newPosition.x >= 0) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.BISHOP) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y--;
+      newPosition.x--;
+    }
+    //MAIN DIAGONAL TO BOTTOM
+    newPosition.y = target.y + 1;
+    newPosition.x = target.x + 1;
+
+    while (newPosition.y < 8 && newPosition.x < 8) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.BISHOP) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y++;
+      newPosition.x++;
+    }
+    //SIDE DIAGONAL TO TOP
+    newPosition.y = target.y - 1;
+    newPosition.x = target.x + 1;
+
+    while (newPosition.y >= 0 && newPosition.x < 8) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.BISHOP) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y--;
+      newPosition.x++;
+    }
+    //SIDE DIAGONAL TO BOTTOM
+    newPosition.y = target.y + 1;
+    newPosition.x = target.x - 1;
+
+    while (newPosition.y < 8 && newPosition.x >= 0) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.BISHOP) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y++;
+      newPosition.x--;
+    }
+
+    //! ROOK AND QUEEN
+    //VERTICAL TO TOP
+    newPosition.y = target.y - 1;
+    newPosition.x = target.x;
+
+    while (newPosition.y >= 0) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.ROOK) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y--;
+    }
+    //VERTICAL TO BOTTOM
+    newPosition.y = target.y + 1;
+
+    while (newPosition.y < 8) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.ROOK) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.y++;
+    }
+    //HORIZONTAL TO LEFT
+    newPosition.y = target.y;
+    newPosition.x = target.x - 1;
+
+    while (newPosition.x >= 0) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.ROOK) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.x--;
+    }
+    //HORIZONTAL TO RIGHT
+    newPosition.x = target.x + 1;
+
+    while (newPosition.x < 8) {
+      if (
+        this.isPieceThreatens(newPosition, Figures.ROOK) ||
+        this.isPieceThreatens(newPosition, Figures.QUEEN)
+      )
+        return false;
+      newPosition.x++;
+    }
+
+    return true;
   }
 }

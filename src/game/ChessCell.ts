@@ -24,6 +24,6 @@ export class ChessCell {
   }
 
   onSelectCell() {
-    if (this.piece) this.piece.highlight(this.position, this.board);
+    if (this.piece) this.piece.canMove(this.position, this.board);
   }
 }

@@ -14,20 +14,20 @@ export class Pawn extends ChessPiece {
         : ViewModels.PAWN_WHITE,
     );
   }
-  public highlight(currentPos: CellPositionType, board: ChessBoard): void {
+  public canMove(currentPos: CellPositionType, board: ChessBoard): void {
     if (this.color === ChessColors.WHITE) {
       //LONG JUMP
       if (
         currentPos.y === 6 &&
-        !board.getPositionAt({y: currentPos.y - 1, x: currentPos.x}).piece &&
-        !board.getPositionAt({y: currentPos.y - 2, x: currentPos.x}).piece
+        !board.getPieceAt({y: currentPos.y - 1, x: currentPos.x}) &&
+        !board.getPieceAt({y: currentPos.y - 2, x: currentPos.x})
       ) {
         board.checkPosition({y: currentPos.y - 2, x: currentPos.x});
       }
       //DEFAULT JUMP
       if (
-        currentPos.y - 1 >= 0 &&
-        !board.getPositionAt({y: currentPos.y - 1, x: currentPos.x}).piece
+        board.getPositionAt({y: currentPos.y - 1, x: currentPos.x}) &&
+        !board.getPieceAt({y: currentPos.y - 1, x: currentPos.x})
       ) {
         board.checkPosition({y: currentPos.y - 1, x: currentPos.x});
       }
@@ -37,42 +37,41 @@ export class Pawn extends ChessPiece {
         y: currentPos.y - 1,
         x: currentPos.x - 1,
       };
-      if (captureLeft.y >= 0 && captureLeft.x >= 0) {
-        if (
-          board.getPositionAt(captureLeft).piece &&
-          this.color !==
-            (board.getPositionAt(captureLeft).piece as ChessPiece).color
-        )
-          board.checkPosition(captureLeft);
+      if (
+        board.getPositionAt(captureLeft) &&
+        board.getPieceAt(captureLeft) &&
+        this.color !== (board.getPieceAt(captureLeft) as ChessPiece).color
+      ) {
+        board.checkPosition(captureLeft);
       }
       //CAPTURE RIGHT
       const captureRight: CellPositionType = {
         y: currentPos.y - 1,
         x: currentPos.x + 1,
       };
-      if (captureRight.y >= 0 && captureRight.x < 8) {
-        if (
-          board.getPositionAt(captureRight).piece &&
-          this.color !==
-            (board.getPositionAt(captureRight).piece as ChessPiece).color
-        )
-          board.checkPosition(captureRight);
+      if (
+        board.getPositionAt(captureRight) &&
+        board.getPieceAt(captureRight) &&
+        this.color !== (board.getPieceAt(captureRight) as ChessPiece).color
+      ) {
+        board.checkPosition(captureRight);
       }
 
       //EN PASSANT
+      //TODO
     } else {
       //LONG JUMP
       if (
         currentPos.y === 1 &&
-        !board.getPositionAt({y: currentPos.y + 1, x: currentPos.x}).piece &&
-        !board.getPositionAt({y: currentPos.y + 2, x: currentPos.x}).piece
+        !board.getPieceAt({y: currentPos.y + 1, x: currentPos.x}) &&
+        !board.getPieceAt({y: currentPos.y + 2, x: currentPos.x})
       ) {
         board.checkPosition({y: currentPos.y + 2, x: currentPos.x});
       }
       //DEFAULT JUMP
       if (
-        currentPos.y + 1 < 8 &&
-        !board.getPositionAt({y: currentPos.y + 1, x: currentPos.x}).piece
+        board.getPositionAt({y: currentPos.y + 1, x: currentPos.x}) &&
+        !board.getPieceAt({y: currentPos.y + 1, x: currentPos.x})
       ) {
         board.checkPosition({y: currentPos.y + 1, x: currentPos.x});
       }
@@ -82,26 +81,24 @@ export class Pawn extends ChessPiece {
         y: currentPos.y + 1,
         x: currentPos.x - 1,
       };
-      if (captureLeft.y < 8 && captureLeft.x >= 0) {
-        if (
-          board.getPositionAt(captureLeft).piece &&
-          this.color !==
-            (board.getPositionAt(captureLeft).piece as ChessPiece).color
-        )
-          board.checkPosition(captureLeft);
+      if (
+        board.getPositionAt(captureLeft) &&
+        board.getPieceAt(captureLeft) &&
+        this.color !== (board.getPieceAt(captureLeft) as ChessPiece).color
+      ) {
+        board.checkPosition(captureLeft);
       }
       //CAPTURE RIGHT
       const captureRight: CellPositionType = {
         y: currentPos.y + 1,
         x: currentPos.x + 1,
       };
-      if (captureRight.y < 8 && captureRight.x < 8) {
-        if (
-          board.getPositionAt(captureRight).piece &&
-          this.color !==
-            (board.getPositionAt(captureRight).piece as ChessPiece).color
-        )
-          board.checkPosition(captureRight);
+      if (
+        board.getPositionAt(captureRight) &&
+        board.getPieceAt(captureRight) &&
+        this.color !== (board.getPieceAt(captureRight) as ChessPiece).color
+      ) {
+        board.checkPosition(captureRight);
       }
     }
   }
