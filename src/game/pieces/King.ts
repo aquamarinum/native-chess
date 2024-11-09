@@ -1,4 +1,5 @@
 import {CellPositionType, ChessBoard} from '../ChessBoard';
+import {ChessCell} from '../ChessCell';
 import {ChessPiece} from '../ChessPiece';
 import {CellStates} from '../models/CellStates';
 import {ChessColors} from '../models/ChessColors';
@@ -34,39 +35,25 @@ export class King extends ChessPiece {
   }
 
   public canMove(currentPos: CellPositionType, board: ChessBoard): void {
-    // TOP ROW
-    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x - 1}))
-      board.checkPosition({y: currentPos.y + 1, x: currentPos.x - 1});
+    board.isCellSafe({y: currentPos.y + 1, x: currentPos.x - 1});
+    board.isCellSafe({y: currentPos.y + 1, x: currentPos.x});
+    board.isCellSafe({y: currentPos.y + 1, x: currentPos.x + 1});
 
-    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x}))
-      board.checkPosition({y: currentPos.y + 1, x: currentPos.x});
+    board.isCellSafe({y: currentPos.y, x: currentPos.x - 1});
+    board.isCellSafe({y: currentPos.y, x: currentPos.x + 1});
 
-    if (board.getPositionAt({y: currentPos.y + 1, x: currentPos.x + 1}))
-      board.checkPosition({y: currentPos.y + 1, x: currentPos.x + 1});
-
-    // MID ROW
-    if (board.getPositionAt({y: currentPos.y, x: currentPos.x - 1}))
-      board.checkPosition({y: currentPos.y, x: currentPos.x - 1});
-
-    if (board.getPositionAt({y: currentPos.y, x: currentPos.x + 1}))
-      board.checkPosition({y: currentPos.y, x: currentPos.x + 1});
-
-    // BOTTOM ROW
-    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x - 1}))
-      board.checkPosition({y: currentPos.y - 1, x: currentPos.x - 1});
-
-    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x}))
-      board.checkPosition({y: currentPos.y - 1, x: currentPos.x});
-
-    if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x + 1}))
-      board.checkPosition({y: currentPos.y - 1, x: currentPos.x + 1});
+    board.isCellSafe({y: currentPos.y - 1, x: currentPos.x - 1});
+    board.isCellSafe({y: currentPos.y - 1, x: currentPos.x});
+    board.isCellSafe({y: currentPos.y - 1, x: currentPos.x + 1});
 
     //CASTLE
     // O-O
     if (
       this.canKingCastleShort &&
       !board.getPieceAt({y: currentPos.y, x: currentPos.x + 1}) &&
-      !board.getPieceAt({y: currentPos.y, x: currentPos.x + 2})
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x + 1}) &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x + 2}) &&
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x + 2})
     )
       board.setCellState(
         {y: currentPos.y, x: currentPos.x + 2},
@@ -74,10 +61,13 @@ export class King extends ChessPiece {
       );
     // O-O-O
     if (
-      this.canKingCastleShort &&
+      this.canKingCastleLong &&
       !board.getPieceAt({y: currentPos.y, x: currentPos.x - 1}) &&
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x - 1}) &&
       !board.getPieceAt({y: currentPos.y, x: currentPos.x - 2}) &&
-      !board.getPieceAt({y: currentPos.y, x: currentPos.x - 3})
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x - 2}) &&
+      !board.getPieceAt({y: currentPos.y, x: currentPos.x - 3}) &&
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x - 3})
     )
       board.setCellState(
         {y: currentPos.y, x: currentPos.x - 2},
