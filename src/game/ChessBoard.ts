@@ -361,29 +361,11 @@ export class ChessBoard {
     }
 
     // BY ROOK & QUEEN
-    target.y = pos.y + 1;
-    target.x = pos.x;
-    while (this.getPositionAt(target)) {
-      if (
-        this.isPieceThreatens(target, Figures.BISHOP) ||
-        this.isPieceThreatens(target, Figures.QUEEN)
-      )
-        return true;
-      if (
-        this.getPieceAt(target) &&
-        (this.getPieceAt(target)?.type !== Figures.ROOK ||
-          this.getPieceAt(target)?.type !== Figures.QUEEN ||
-          this.getPieceAt(target)?.type !== Figures.KING)
-      )
-        break;
-      target.y++;
-    }
-
     target.y = pos.y - 1;
     target.x = pos.x;
     while (this.getPositionAt(target)) {
       if (
-        this.isPieceThreatens(target, Figures.BISHOP) ||
+        this.isPieceThreatens(target, Figures.ROOK) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
@@ -397,11 +379,29 @@ export class ChessBoard {
       target.y--;
     }
 
+    target.y = pos.y + 1;
+    target.x = pos.x;
+    while (this.getPositionAt(target)) {
+      if (
+        this.isPieceThreatens(target, Figures.ROOK) ||
+        this.isPieceThreatens(target, Figures.QUEEN)
+      )
+        return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.ROOK ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
+      target.y++;
+    }
+
     target.y = pos.y;
     target.x = pos.x + 1;
     while (this.getPositionAt(target)) {
       if (
-        this.isPieceThreatens(target, Figures.BISHOP) ||
+        this.isPieceThreatens(target, Figures.ROOK) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
@@ -419,7 +419,7 @@ export class ChessBoard {
     target.x = pos.x - 1;
     while (this.getPositionAt(target)) {
       if (
-        this.isPieceThreatens(target, Figures.BISHOP) ||
+        this.isPieceThreatens(target, Figures.ROOK) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
