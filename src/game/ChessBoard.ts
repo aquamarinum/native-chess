@@ -59,9 +59,9 @@ export class ChessBoard {
     this.cells[0][4].piece = new King(ChessColors.BLACK);
     this.cells[7][4].piece = new King(ChessColors.WHITE);
 
-    // for (let i = 0; i < 8; i++) {
-    //   this.cells[1][i].piece = new Pawn(ChessColors.BLACK);
-    // }
+    for (let i = 0; i < 8; i++) {
+      this.cells[1][i].piece = new Pawn(ChessColors.BLACK);
+    }
     for (let i = 0; i < 8; i++) {
       this.cells[6][i].piece = new Pawn(ChessColors.WHITE);
     }
@@ -286,48 +286,76 @@ export class ChessBoard {
       y: pos.y - 1,
       x: pos.x - 1,
     };
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.BISHOP ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y--;
       target.x--;
     }
 
     target.y = pos.y + 1;
     target.x = pos.x + 1;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.BISHOP ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y++;
       target.x++;
     }
 
     target.y = pos.y - 1;
     target.x = pos.x + 1;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.BISHOP ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y--;
       target.x++;
     }
 
     target.y = pos.y + 1;
     target.x = pos.x - 1;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.BISHOP ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y++;
       target.x--;
     }
@@ -335,45 +363,73 @@ export class ChessBoard {
     // BY ROOK & QUEEN
     target.y = pos.y + 1;
     target.x = pos.x;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.ROOK ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y++;
     }
 
     target.y = pos.y - 1;
     target.x = pos.x;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.ROOK ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.y--;
     }
 
     target.y = pos.y;
     target.x = pos.x + 1;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.ROOK ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.x++;
     }
 
     target.y = pos.y;
     target.x = pos.x - 1;
-    while (this.getPositionAt(target) && !this.getPieceAt(target)) {
+    while (this.getPositionAt(target)) {
       if (
         this.isPieceThreatens(target, Figures.BISHOP) ||
         this.isPieceThreatens(target, Figures.QUEEN)
       )
         return true;
+      if (
+        this.getPieceAt(target) &&
+        (this.getPieceAt(target)?.type !== Figures.ROOK ||
+          this.getPieceAt(target)?.type !== Figures.QUEEN ||
+          this.getPieceAt(target)?.type !== Figures.KING)
+      )
+        break;
       target.x--;
     }
 
