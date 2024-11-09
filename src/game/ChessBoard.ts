@@ -224,9 +224,25 @@ export class ChessBoard {
 
   public isCellDefended(pos: CellPositionType) {
     // BY PAWN
-    if (this.isPieceThreatens({y: pos.y, x: pos.x - 1}, Figures.PAWN))
+    if (
+      this.isPieceThreatens({y: pos.y + 1, x: pos.x - 1}, Figures.PAWN) &&
+      this.getPieceAt({y: pos.y + 1, x: pos.x - 1})?.color === ChessColors.WHITE
+    )
       return true;
-    if (this.isPieceThreatens({y: pos.y, x: pos.x + 1}, Figures.PAWN))
+    if (
+      this.isPieceThreatens({y: pos.y + 1, x: pos.x + 1}, Figures.PAWN) &&
+      this.getPieceAt({y: pos.y + 1, x: pos.x + 1})?.color === ChessColors.WHITE
+    )
+      return true;
+    if (
+      this.isPieceThreatens({y: pos.y - 1, x: pos.x - 1}, Figures.PAWN) &&
+      this.getPieceAt({y: pos.y - 1, x: pos.x - 1})?.color === ChessColors.BLACK
+    )
+      return true;
+    if (
+      this.isPieceThreatens({y: pos.y - 1, x: pos.x + 1}, Figures.PAWN) &&
+      this.getPieceAt({y: pos.y - 1, x: pos.x + 1})?.color === ChessColors.BLACK
+    )
       return true;
 
     // BY KNIGHT
