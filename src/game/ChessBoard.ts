@@ -89,14 +89,57 @@ export class ChessBoard {
     this.cells[pos.y][pos.x].piece = piece;
   }
 
-  public doCastleShort(pos: CellPositionType) {
+  private doCastleShort(pos: CellPositionType) {
     this.cells[pos.y][5].piece = this.cells[pos.y][7].piece;
     this.cells[pos.y][7].piece = null;
   }
 
-  public doCastleLong(pos: CellPositionType) {
+  private doCastleLong(pos: CellPositionType) {
     this.cells[pos.y][3].piece = this.cells[pos.y][0].piece;
     this.cells[pos.y][0].piece = null;
+  }
+
+  // TODO REWRITE FUNCTION
+  private onPawnMoved(cell: ChessCell) {
+    if (cell.position.y === 0 || cell.position.y === 7) {
+      this.setCellPiece(
+        cell.position,
+        new Queen((cell.piece as ChessPiece).color),
+      );
+    }
+  }
+
+  private onRookMoved(cell: ChessCell) {
+    if (cell.position.x === 0) {
+      if ((cell.piece as ChessPiece).color === ChessColors.WHITE) {
+        (this.getPieceAt(this.whiteKingPos) as King).abortLongCastle();
+      } else {
+        (this.getPieceAt(this.blackKingPos) as King).abortLongCastle();
+      }
+    }
+    if (cell.position.x === 7) {
+      if ((cell.piece as ChessPiece).color === ChessColors.WHITE) {
+        (this.getPieceAt(this.whiteKingPos) as King).abortShortCastle();
+      } else {
+        (this.getPieceAt(this.blackKingPos) as King).abortShortCastle();
+      }
+    }
+  }
+
+  private onKingMoved(posFrom: CellPositionType, posTo: CellPositionType) {
+    if (posFrom.x - posTo.x === -2) {
+      this.doCastleShort(posTo);
+    }
+    if (posFrom.x - posTo.x === 2) {
+      this.doCastleLong(posTo);
+    }
+
+    const king = this.getPieceAt(posTo) as King;
+
+    king.abortCastling();
+
+    if (king.color === ChessColors.WHITE) this.whiteKingPos = posTo;
+    else this.blackKingPos = posTo;
   }
 
   public moveFigure(from: ChessCell, to: ChessCell): boolean {
@@ -104,51 +147,22 @@ export class ChessBoard {
       to.piece = from.piece;
       from.piece = null;
 
-      // IF PAWN
-      if (
-        to.piece &&
-        to.piece.type === Figures.PAWN &&
-        (to.position.y === 0 || to.position.y === 7)
-      ) {
-        this.transformPawn(to.position, to.piece.color);
+      // AFTERMOVE
+      switch ((to.piece as ChessPiece).type) {
+        case Figures.PAWN:
+          this.onPawnMoved(to);
+          break;
+        case Figures.ROOK:
+          this.onRookMoved(from);
+          break;
+        case Figures.KING:
+          this.onKingMoved(from.position, to.position);
+          break;
+        default:
+          break;
       }
 
-      // IF KING
-      if (to.piece?.type === Figures.KING) {
-        if (from.position.x - to.position.x === -2) {
-          this.doCastleShort(to.position);
-        }
-        if (from.position.x - to.position.x === 2) {
-          this.doCastleLong(to.position);
-        }
-
-        (this.getPieceAt(to.position) as King).abortCastling();
-
-        if (this.getPieceAt(to.position)?.color === ChessColors.WHITE)
-          this.whiteKingPos = to.position;
-        else this.blackKingPos = to.position;
-      }
-
-      //IF ROOK
-      if (to.piece?.type === Figures.ROOK) {
-        if (from.position.x === 0 && to.piece.color === ChessColors.BLACK) {
-          (this.getPieceAt(this.blackKingPos) as King).abortLongCastle();
-        }
-
-        if (from.position.x === 7) {
-          (this.getPieceAt(this.blackKingPos) as King).abortShortCastle();
-        }
-      }
-      if (to.piece?.type === Figures.ROOK) {
-        if (from.position.x === 0 && to.piece.color === ChessColors.WHITE) {
-          (this.getPieceAt(this.whiteKingPos) as King).abortLongCastle();
-        }
-
-        if (from.position.x === 7) {
-          (this.getPieceAt(this.whiteKingPos) as King).abortShortCastle();
-        }
-      }
-      //this.gameRef.switchPlayer();
+      //? this.gameRef.switchPlayer();
     }
     this.clearHighlighting();
     return true;
@@ -175,18 +189,14 @@ export class ChessBoard {
     }
   }
 
-  public transformPawn(pos: CellPositionType, color: ChessColors) {
-    this.cells[pos.y][pos.x].piece = new Queen(color);
-  }
-
-  public isPieceThreatens(pos: CellPositionType, pieceType: Figures) {
+  private isPieceThreatens(pos: CellPositionType, pieceType: Figures) {
     return (
       this.getPieceAt(pos)?.type === pieceType &&
       this.getPieceAt(pos)?.color !== this.gameRef.getCurrentPlayerColor()
     );
   }
 
-  public checkForThreat(target: CellPositionType) {
+  private checkForThreat(target: CellPositionType) {
     //! KING AND PAWN
     if (target.y - 1 >= 0) {
       const top: CellPositionType = {
