@@ -21,6 +21,7 @@ export class ChessBoard {
   gameRef: Game;
   whiteKingPos: CellPositionType;
   blackKingPos: CellPositionType;
+  enpassant: CellPositionType | null;
 
   constructor(ref: Game) {
     this.gameRef = ref;
@@ -35,6 +36,7 @@ export class ChessBoard {
     this.init();
     this.whiteKingPos = {y: 7, x: 4};
     this.blackKingPos = {y: 0, x: 4};
+    this.enpassant = null;
   }
 
   private init() {
@@ -85,7 +87,7 @@ export class ChessBoard {
     else throw new Error('Cell out of the board');
   }
 
-  setCellPiece(pos: CellPositionType, piece: ChessPiece) {
+  setCellPiece(pos: CellPositionType, piece: ChessPiece | null) {
     this.cells[pos.y][pos.x].piece = piece;
   }
 
@@ -99,13 +101,43 @@ export class ChessBoard {
     this.cells[pos.y][0].piece = null;
   }
 
-  // TODO REWRITE FUNCTION
-  private onPawnMoved(cell: ChessCell) {
-    if (cell.position.y === 0 || cell.position.y === 7) {
-      this.setCellPiece(
-        cell.position,
-        new Queen((cell.piece as ChessPiece).color),
-      );
+  private doEnpassant(pos: CellPositionType) {
+    const pawn = this.getPieceAt(pos) as ChessPiece;
+
+    if (this.enpassant?.y === 2) {
+      this.setCellPiece({y: 3, x: this.enpassant.x}, null);
+    }
+    if (this.enpassant?.y === 5) {
+      this.setCellPiece({y: 4, x: this.enpassant.x}, null);
+    }
+  }
+
+  private onPawnMoved(fromPos: CellPositionType, toPos: CellPositionType) {
+    if (
+      toPos.y - fromPos.y === 2 &&
+      (this.isPieceThreatens({y: toPos.y, x: toPos.x - 1}, Figures.PAWN) ||
+        this.isPieceThreatens({y: toPos.y, x: toPos.x + 1}, Figures.PAWN))
+    ) {
+      this.enpassant = {
+        y: toPos.y - 1,
+        x: toPos.x,
+      };
+    }
+    if (
+      toPos.y - fromPos.y === -2 &&
+      (this.isPieceThreatens({y: toPos.y, x: toPos.x - 1}, Figures.PAWN) ||
+        this.isPieceThreatens({y: toPos.y, x: toPos.x + 1}, Figures.PAWN))
+    ) {
+      this.enpassant = {
+        y: toPos.y + 1,
+        x: toPos.x,
+      };
+    }
+    if (toPos.y === 0) {
+      this.setCellPiece(toPos, new Queen(ChessColors.WHITE));
+    }
+    if (toPos.y === 7) {
+      this.setCellPiece(toPos, new Queen(ChessColors.BLACK));
     }
   }
 
@@ -148,13 +180,23 @@ export class ChessBoard {
 
   public moveFigure(from: ChessCell, to: ChessCell): boolean {
     if (to.state === CellStates.AVAILABLE || to.state === CellStates.OCCUPIED) {
+      // PREMOVE
+      if (
+        from.piece?.type === Figures.PAWN &&
+        to.position.y === this.enpassant?.y &&
+        to.position.x === this.enpassant.x
+      ) {
+        this.doEnpassant(from.position);
+      }
+
       to.piece = from.piece;
       from.piece = null;
+      this.enpassant = null;
 
       // AFTERMOVE
       switch ((to.piece as ChessPiece).type) {
         case Figures.PAWN:
-          this.onPawnMoved(to);
+          this.onPawnMoved(from.position, to.position);
           break;
         case Figures.ROOK:
           this.onRookMoved(from.position, (to.piece as ChessPiece).color);

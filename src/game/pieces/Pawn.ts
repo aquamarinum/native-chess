@@ -1,5 +1,6 @@
 import {CellPositionType, ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
+import {CellStates} from '../models/CellStates';
 import {ChessColors} from '../models/ChessColors';
 import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
@@ -44,6 +45,7 @@ export class Pawn extends ChessPiece {
       ) {
         board.checkPosition(captureLeft);
       }
+
       //CAPTURE RIGHT
       const captureRight: CellPositionType = {
         y: currentPos.y - 1,
@@ -58,7 +60,18 @@ export class Pawn extends ChessPiece {
       }
 
       //EN PASSANT
-      //TODO
+      if (
+        captureLeft.y === board.enpassant?.y &&
+        captureLeft.x === board.enpassant.x
+      ) {
+        board.setCellState(captureLeft, CellStates.OCCUPIED);
+      }
+      if (
+        captureRight.y === board.enpassant?.y &&
+        captureRight.x === board.enpassant.x
+      ) {
+        board.setCellState(captureRight, CellStates.OCCUPIED);
+      }
     } else {
       //LONG JUMP
       if (
@@ -99,6 +112,19 @@ export class Pawn extends ChessPiece {
         this.color !== (board.getPieceAt(captureRight) as ChessPiece).color
       ) {
         board.checkPosition(captureRight);
+      }
+      //EN PASSANT
+      if (
+        captureLeft.y === board.enpassant?.y &&
+        captureLeft.x === board.enpassant.x
+      ) {
+        board.setCellState(captureLeft, CellStates.OCCUPIED);
+      }
+      if (
+        captureRight.y === board.enpassant?.y &&
+        captureRight.x === board.enpassant.x
+      ) {
+        board.setCellState(captureRight, CellStates.OCCUPIED);
       }
     }
   }
