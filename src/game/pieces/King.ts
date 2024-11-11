@@ -21,15 +21,15 @@ export class King extends ChessPiece {
     this.canKingCastleLong = true;
   }
 
-  public abortShortCastle() {
+  public banShortCastle() {
     this.canKingCastleShort = false;
   }
 
-  public abortLongCastle() {
+  public banLongCastle() {
     this.canKingCastleLong = false;
   }
 
-  public abortCastling() {
+  public banAllCastling() {
     this.canKingCastleShort = false;
     this.canKingCastleLong = false;
   }
@@ -53,11 +53,15 @@ export class King extends ChessPiece {
       !board.getPieceAt({y: currentPos.y, x: currentPos.x + 1}) &&
       !board.isCellDefended({y: currentPos.y, x: currentPos.x + 1}) &&
       !board.getPieceAt({y: currentPos.y, x: currentPos.x + 2}) &&
-      !board.isCellDefended({y: currentPos.y, x: currentPos.x + 2})
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x + 2}) &&
+      board.getPieceAt({y: currentPos.y, x: currentPos.x + 3})?.type ===
+        Figures.ROOK &&
+      board.getPieceAt({y: currentPos.y, x: currentPos.x + 3})?.color ===
+        this.color
     )
       board.setCellState(
         {y: currentPos.y, x: currentPos.x + 2},
-        CellStates.AVAILABLE,
+        CellStates.SPECIAL,
       );
     // O-O-O
     if (
@@ -67,11 +71,40 @@ export class King extends ChessPiece {
       !board.getPieceAt({y: currentPos.y, x: currentPos.x - 2}) &&
       !board.isCellDefended({y: currentPos.y, x: currentPos.x - 2}) &&
       !board.getPieceAt({y: currentPos.y, x: currentPos.x - 3}) &&
-      !board.isCellDefended({y: currentPos.y, x: currentPos.x - 3})
+      !board.isCellDefended({y: currentPos.y, x: currentPos.x - 3}) &&
+      board.getPieceAt({y: currentPos.y, x: currentPos.x - 4})?.type ===
+        Figures.ROOK &&
+      board.getPieceAt({y: currentPos.y, x: currentPos.x - 4})?.color ===
+        this.color
     )
       board.setCellState(
         {y: currentPos.y, x: currentPos.x - 2},
-        CellStates.AVAILABLE,
+        CellStates.SPECIAL,
       );
+  }
+
+  move(board: ChessBoard, target: CellPositionType): void {
+    const from = board.activePosition as CellPositionType;
+
+    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
+      board.capturePiece(target);
+    }
+
+    board.movePiece(board.activePosition as CellPositionType, target);
+    // NEW POSITION AFTER MOVE
+    if (this.color === ChessColors.WHITE) {
+      board.whiteKingPos = target;
+    } else {
+      board.blackKingPos = target;
+    }
+    // CASTLE
+    if (from.x - target.x === -2) {
+      board.movePiece({y: target.y, x: 7}, {y: target.y, x: 5});
+    }
+    if (from.x - target.x === 2) {
+      board.movePiece({y: target.y, x: 0}, {y: target.y, x: 3});
+    }
+    // BAN ALL CASTLE AFTER MOVE
+    this.banAllCastling();
   }
 }

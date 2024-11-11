@@ -22,8 +22,4 @@ export class ChessCell {
     this.piece = figure;
     this.state = CellStates.DEFAULT;
   }
-
-  onSelectCell() {
-    if (this.piece) this.piece.canMove(this.position, this.board);
-  }
 }

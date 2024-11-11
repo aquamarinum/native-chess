@@ -1,5 +1,6 @@
 import {CellPositionType, ChessBoard} from '../ChessBoard';
 import {ChessPiece} from '../ChessPiece';
+import {CellStates} from '../models/CellStates';
 import {ChessColors} from '../models/ChessColors';
 import {Figures} from '../models/Figures';
 import {ViewModels} from '../models/ViewModels';
@@ -22,7 +23,7 @@ export class Queen extends ChessPiece {
     };
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y--;
       newPosition.x--;
     }
@@ -31,7 +32,7 @@ export class Queen extends ChessPiece {
     newPosition.x = currentPos.x + 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y++;
       newPosition.x++;
     }
@@ -40,7 +41,7 @@ export class Queen extends ChessPiece {
     newPosition.x = currentPos.x + 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y--;
       newPosition.x++;
     }
@@ -49,7 +50,7 @@ export class Queen extends ChessPiece {
     newPosition.x = currentPos.x - 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y++;
       newPosition.x--;
     }
@@ -59,14 +60,14 @@ export class Queen extends ChessPiece {
     newPosition.x = currentPos.x;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y--;
     }
     //VERTICAL TO BOTTOM
     newPosition.y = currentPos.y + 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.y++;
     }
     //HORIZONTAL TO LEFT
@@ -74,15 +75,22 @@ export class Queen extends ChessPiece {
     newPosition.x = currentPos.x - 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.x--;
     }
     //HORIZONTAL TO RIGHT
     newPosition.x = currentPos.x + 1;
 
     while (board.getPositionAt(newPosition)) {
-      if (!board.checkPosition(newPosition)) break;
+      if (!board.highlight(newPosition)) break;
       newPosition.x++;
     }
+  }
+
+  move(board: ChessBoard, target: CellPositionType): void {
+    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
+      board.capturePiece(target);
+    }
+    board.movePiece(board.activePosition as CellPositionType, target);
   }
 }
