@@ -60,5 +60,11 @@ export class Bishop extends ChessPiece {
       board.capturePiece(target);
     }
     board.movePiece(board.activePosition as CellPositionType, target);
+
+    if (this.color === ChessColors.WHITE) {
+      board.moves.recordMove('B', target);
+    } else {
+      board.moves.recordMove('B', target).next();
+    }
   }
 }

@@ -86,25 +86,39 @@ export class King extends ChessPiece {
   move(board: ChessBoard, target: CellPositionType): void {
     const from = board.activePosition as CellPositionType;
 
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-    }
-
-    board.movePiece(board.activePosition as CellPositionType, target);
     // NEW POSITION AFTER MOVE
     if (this.color === ChessColors.WHITE) {
       board.whiteKingPos = target;
     } else {
       board.blackKingPos = target;
     }
+    this.banAllCastling();
+
     // CASTLE
     if (from.x - target.x === -2) {
       board.movePiece({y: target.y, x: 7}, {y: target.y, x: 5});
+      board.moves.recordMoveSpecial('O-O');
+      return;
     }
     if (from.x - target.x === 2) {
       board.movePiece({y: target.y, x: 0}, {y: target.y, x: 3});
+      board.moves.recordMoveSpecial('O-O-O');
+      return;
     }
+
+    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
+      board.capturePiece(target);
+    } else {
+    }
+
+    board.movePiece(board.activePosition as CellPositionType, target);
+
     // BAN ALL CASTLE AFTER MOVE
-    this.banAllCastling();
+
+    if (this.color === ChessColors.WHITE) {
+      board.moves.recordMove('K', target);
+    } else {
+      board.moves.recordMove('K', target).next();
+    }
   }
 }

@@ -7,9 +7,17 @@ type PlayerTabProps = {
   username: string;
   elo: number;
   image: ImageSourcePropType | undefined;
+  timeLimit: number;
+  timerStatus: boolean;
 };
 
-const PlayerTab: React.FC<PlayerTabProps> = ({username, elo, image}) => {
+const PlayerTab: React.FC<PlayerTabProps> = ({
+  username,
+  elo,
+  image,
+  timeLimit,
+  timerStatus,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.frame}>
@@ -19,7 +27,7 @@ const PlayerTab: React.FC<PlayerTabProps> = ({username, elo, image}) => {
         <Text style={styles.content_header}>{username}</Text>
         <Text style={styles.content_text}>{elo}</Text>
       </View>
-      <Timer />
+      <Timer limit={timeLimit} isActive={timerStatus} />
     </View>
   );
 };

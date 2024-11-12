@@ -191,5 +191,11 @@ export class Pawn extends ChessPiece {
       console.log('queen black');
       board.setPieceAt(target, new Queen(ChessColors.BLACK));
     }
+
+    if (this.color === ChessColors.WHITE) {
+      board.moves.recordMove('', target);
+    } else {
+      board.moves.recordMove('', target).next();
+    }
   }
 }

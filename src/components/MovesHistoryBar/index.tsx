@@ -2,21 +2,25 @@ import React from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {styles} from './styles';
 
-const MovesHistoryBar = () => {
+type MovesHistoryBarProps = {
+  moves: Array<string>;
+};
+
+const MovesHistoryBar: React.FC<MovesHistoryBarProps> = ({moves}) => {
   return (
     <View style={{width: '100%'}}>
       <FlatList
         horizontal={true}
         style={styles.list}
-        data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]}
+        data={moves}
         renderItem={({item}) => (
           <View style={styles.container}>
             <Text
               style={[
                 styles.text,
-                item % 2 === 0 ? styles.white : styles.black,
+                Number(item[0]) % 2 === 0 ? styles.white : styles.black,
               ]}>
-              {item + '. Rg6'}
+              {item}
             </Text>
           </View>
         )}

@@ -17,23 +17,36 @@ const GameScreen = () => {
       new Player('play#22', ChessColors.BLACK, 1200),
     ),
   );
+
   const [board, setBoard] = useState(game.getBoard());
+  const [moves, setMoves] = useState(game.getBoard().moves.getMoves());
   const [firstPlayer, setFirstPlayer] = useState(game.getFirstPlayer());
   const [secondPlayer, setSecondPlayer] = useState(game.getSecondPlayer());
+
+  const [activeTimer, setActiveTimer] = useState(ChessColors.WHITE);
+
   return (
     <SafeAreaView style={styles.container}>
-      <MovesHistoryBar />
+      <MovesHistoryBar moves={moves} />
       <ImageBackground source={background_dark} style={styles.wrapper}>
-        <PlayerTab
-          username={firstPlayer.name}
-          elo={firstPlayer.getElo()}
-          image={rook_white_icon}
-        />
-        <BoardComponent board={board} setBoard={setBoard} />
         <PlayerTab
           username={secondPlayer.name}
           elo={secondPlayer.getElo()}
+          image={rook_white_icon}
+          timeLimit={10}
+          timerStatus={activeTimer === secondPlayer.color}
+        />
+        <BoardComponent
+          board={board}
+          setBoard={setBoard}
+          setTimer={setActiveTimer}
+        />
+        <PlayerTab
+          username={firstPlayer.name}
+          elo={firstPlayer.getElo()}
           image={queen_black_icon}
+          timeLimit={10}
+          timerStatus={activeTimer === firstPlayer.color}
         />
       </ImageBackground>
     </SafeAreaView>

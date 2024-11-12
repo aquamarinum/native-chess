@@ -1,9 +1,8 @@
 import {ChessBoard} from './ChessBoard';
-import {ChessColors} from './models/ChessColors';
 import {Player} from './Player';
 
 export class Game {
-  private board: ChessBoard;
+  board: ChessBoard;
   private players: Player[];
 
   constructor(playerWhite: Player, playerBlack: Player) {

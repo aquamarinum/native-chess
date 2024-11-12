@@ -9,6 +9,7 @@ import {ChessColors} from './models/ChessColors';
 import {ChessCell} from './ChessCell';
 import {CellStates} from './models/CellStates';
 import {Figures} from './models/Figures';
+import {MovesAggregator} from './MovesAggregator';
 
 export type CellPositionType = {
   y: number;
@@ -16,6 +17,7 @@ export type CellPositionType = {
 };
 
 export class ChessBoard {
+  moves: MovesAggregator;
   cells: Array<Array<ChessCell>>;
   activePlayerColor: ChessColors;
   activePosition: CellPositionType | null;
@@ -30,6 +32,7 @@ export class ChessBoard {
   capturedBlack: Array<ChessPiece>;
 
   constructor() {
+    this.moves = new MovesAggregator();
     this.cells = [];
     this.activePlayerColor = ChessColors.WHITE;
     this.activePosition = null;
