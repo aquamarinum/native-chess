@@ -44,13 +44,10 @@ export class Knight extends ChessPiece {
   move(board: ChessBoard, target: CellPositionType): void {
     if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
       board.capturePiece(target);
+      board.moves.recordMove('Nx', target);
+    } else {
+      board.moves.recordMove('N', target);
     }
     board.movePiece(board.activePosition as CellPositionType, target);
-
-    if (this.color === ChessColors.WHITE) {
-      board.moves.recordMove('N', target);
-    } else {
-      board.moves.recordMove('N', target).next();
-    }
   }
 }

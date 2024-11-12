@@ -20,8 +20,12 @@ export class MovesAggregator {
 
   recordMove(pieceSymbol: string, pos: CellPositionType) {
     const newPos = this.columns[pos.x] + (8 - pos.y);
-    this.currentMove += pieceSymbol + newPos + ' ';
-    return this;
+    if (this.currentMove.length > 0) {
+      this.currentMove += pieceSymbol + newPos + ' ';
+      this.next();
+    } else {
+      this.currentMove += pieceSymbol + newPos + ' ';
+    }
   }
 
   recordMoveSpecial(content: string) {
@@ -42,5 +46,9 @@ export class MovesAggregator {
 
   getMoves() {
     return this.moves;
+  }
+
+  getSymbolPos(col: number) {
+    return this.columns[col];
   }
 }

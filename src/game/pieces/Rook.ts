@@ -63,14 +63,11 @@ export class Rook extends ChessPiece {
 
     if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
       board.capturePiece(target);
+      board.moves.recordMove('Rx', target);
+    } else {
+      board.moves.recordMove('R', target);
     }
 
     board.movePiece(board.activePosition as CellPositionType, target);
-
-    if (this.color === ChessColors.WHITE) {
-      board.moves.recordMove('R', target);
-    } else {
-      board.moves.recordMove('R', target).next();
-    }
   }
 }

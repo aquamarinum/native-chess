@@ -172,15 +172,15 @@ export class ChessBoard {
         } else {
           if (cell.state === CellStates.OCCUPIED) {
             targetPiece.move(this, target);
-            this.setActivePosition(null);
             this.clearHighlighting();
             this.switchPlayer();
+            this.setActivePosition(null);
 
             //? ADD MOVES TO PGN
           } else {
             this.clearHighlighting();
-            this.setActivePosition(null);
             this.setCellState(target, CellStates.DEFAULT);
+            this.setActivePosition(null);
           }
         }
       } else {
@@ -193,15 +193,15 @@ export class ChessBoard {
           ) as ChessPiece;
 
           activePiece.move(this, target);
-          this.setActivePosition(null);
           this.clearHighlighting();
           this.switchPlayer();
+          this.setActivePosition(null);
 
           //? ADD MOVES TO PGN
         } else {
           this.clearHighlighting();
-          this.setActivePosition(null);
           this.setCellState(target, CellStates.DEFAULT);
+          this.setActivePosition(null);
         }
       }
     } else {

@@ -152,6 +152,7 @@ export class Pawn extends ChessPiece {
         board.capturePiece({y: 4, x: target.x});
       }
       board.movePiece(board.activePosition as CellPositionType, target);
+      board.moves.recordMove(board.moves.getSymbolPos(from.x) + 'x', target);
       return;
     }
 
@@ -177,25 +178,54 @@ export class Pawn extends ChessPiece {
       });
     }
 
+    // TRANSFORMATION
+    if (target.y === 0 && this.color === ChessColors.WHITE) {
+      if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
+        board.capturePiece(target);
+        board.moves.recordMoveSpecial(
+          board.moves.getSymbolPos(from.x) +
+            'x' +
+            board.moves.getSymbolPos(target.x) +
+            target.y +
+            '=Q',
+        );
+      } else {
+        board.moves.recordMoveSpecial(
+          board.moves.getSymbolPos(target.x) + target.y + '=Q',
+        );
+      }
+      board.movePiece(board.activePosition as CellPositionType, target);
+      board.setPieceAt(target, new Queen(ChessColors.WHITE));
+      return;
+    }
+    if (target.y === 7 && this.color === ChessColors.BLACK) {
+      if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
+        board.capturePiece(target);
+        board.moves.recordMoveSpecial(
+          board.moves.getSymbolPos(from.x) +
+            'x' +
+            board.moves.getSymbolPos(target.x) +
+            target.y +
+            '=Q',
+        );
+      } else {
+        board.moves.recordMoveSpecial(
+          board.moves.getSymbolPos(target.x) + target.y + '=Q',
+        );
+      }
+      board.movePiece(board.activePosition as CellPositionType, target);
+      board.setPieceAt(target, new Queen(ChessColors.BLACK));
+      return;
+    }
+
+    // DEFAULT MOVEMENT
     if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
       board.capturePiece(target);
+      board.moves.recordMove(board.moves.getSymbolPos(from.x) + 'x', target);
+    } else {
+      board.moves.recordMove('', target);
     }
 
     board.movePiece(board.activePosition as CellPositionType, target);
-
-    if (target.y === 0) {
-      console.log('queen white');
-      board.setPieceAt(target, new Queen(ChessColors.WHITE));
-    }
-    if (target.y === 7) {
-      console.log('queen black');
-      board.setPieceAt(target, new Queen(ChessColors.BLACK));
-    }
-
-    if (this.color === ChessColors.WHITE) {
-      board.moves.recordMove('', target);
-    } else {
-      board.moves.recordMove('', target).next();
-    }
   }
 }
