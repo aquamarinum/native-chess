@@ -21,7 +21,10 @@ export class ChessBoard {
   activePosition: CellPositionType | null;
 
   whiteKingPos: CellPositionType;
+  isWhiteKingCheched: boolean;
   blackKingPos: CellPositionType;
+  isBlackKingChecked: boolean;
+
   enpassant: CellPositionType | null;
   capturedWhite: Array<ChessPiece>;
   capturedBlack: Array<ChessPiece>;
@@ -32,7 +35,10 @@ export class ChessBoard {
     this.activePosition = null;
 
     this.whiteKingPos = {y: 7, x: 4};
+    this.isWhiteKingCheched = false;
     this.blackKingPos = {y: 0, x: 4};
+    this.isBlackKingChecked = false;
+
     this.enpassant = null;
     this.capturedWhite = [];
     this.capturedBlack = [];
@@ -135,6 +141,7 @@ export class ChessBoard {
   }
 
   switchPlayer() {
+    this.checkKingPosition();
     if (this.activePlayerColor === ChessColors.WHITE) {
       this.activePlayerColor = ChessColors.BLACK;
     } else {
@@ -230,6 +237,7 @@ export class ChessBoard {
 
   public capturePiece(target: CellPositionType) {
     const piece = this.getPieceAt(target) as ChessPiece;
+    console.log('[!] CAPTURE PIECE {' + piece.type + '} AT ', target);
     if (piece.color === ChessColors.WHITE) {
       this.capturedWhite.push(piece);
     } else {
@@ -255,6 +263,10 @@ export class ChessBoard {
     this.cells.forEach(row =>
       row.forEach(cell => (cell.state = CellStates.DEFAULT)),
     );
+    if (this.isWhiteKingCheched)
+      this.setCellState(this.whiteKingPos, CellStates.THREATENED);
+    if (this.isBlackKingChecked)
+      this.setCellState(this.blackKingPos, CellStates.THREATENED);
   }
 
   // BEFORE EVERY MOVE CHECK KING DEFENSE
@@ -263,14 +275,18 @@ export class ChessBoard {
     if (this.activePlayerColor === ChessColors.WHITE) {
       if (this.isCellDefended(this.whiteKingPos)) {
         this.setCellState(this.whiteKingPos, CellStates.THREATENED);
+        this.isWhiteKingCheched = true;
       } else {
         this.setCellState(this.whiteKingPos, CellStates.DEFAULT);
+        this.isWhiteKingCheched = false;
       }
     } else {
       if (this.isCellDefended(this.blackKingPos)) {
         this.setCellState(this.blackKingPos, CellStates.THREATENED);
+        this.isBlackKingChecked = true;
       } else {
         this.setCellState(this.blackKingPos, CellStates.DEFAULT);
+        this.isBlackKingChecked = false;
       }
     }
   }

@@ -143,6 +143,7 @@ export class Pawn extends ChessPiece {
   move(board: ChessBoard, target: CellPositionType): void {
     const from = board.activePosition as CellPositionType;
 
+    // TAKE EN PASSANT PAWN
     if (target.y === board.enpassant?.y && target.x === board.enpassant.x) {
       if (target.y === 2) {
         board.capturePiece({y: 3, x: target.x});
@@ -150,9 +151,11 @@ export class Pawn extends ChessPiece {
       if (target.y === 5) {
         board.capturePiece({y: 4, x: target.x});
       }
+      board.movePiece(board.activePosition as CellPositionType, target);
+      return;
     }
 
-    // EN PASSANT BLACK
+    // SET EN PASSANT PAWN
     if (
       target.y - from.y === 2 &&
       (board.isPieceThreatens({y: target.y, x: target.x - 1}, Figures.PAWN) ||
@@ -163,7 +166,6 @@ export class Pawn extends ChessPiece {
         x: target.x,
       });
     }
-    // EN PASSANT WHITE
     if (
       target.y - from.y === -2 &&
       (board.isPieceThreatens({y: target.y, x: target.x - 1}, Figures.PAWN) ||
@@ -181,10 +183,12 @@ export class Pawn extends ChessPiece {
 
     board.movePiece(board.activePosition as CellPositionType, target);
 
-    if (target.y === 0 && this.color === ChessColors.WHITE) {
+    if (target.y === 0) {
+      console.log('queen white');
       board.setPieceAt(target, new Queen(ChessColors.WHITE));
     }
-    if (target.y === 7 && this.color === ChessColors.BLACK) {
+    if (target.y === 7) {
+      console.log('queen black');
       board.setPieceAt(target, new Queen(ChessColors.BLACK));
     }
   }
