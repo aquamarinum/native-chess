@@ -6,19 +6,13 @@ import {Alert, FlatList} from 'react-native';
 import {styles} from './styles';
 import GameCard from '../../components/GameCard';
 import {navigate} from '../../services/navigator/Navigator';
-import Firestore from '../../services/firebase/Firestore';
-import Auth from '../../services/firebase/Auth';
-import {FetchStatus} from '../../types/FetchStatus';
-import {useAppDispatch, useAppSelector} from '../../redux/store';
-import {setUser} from '../../redux/user/slice';
-import Splash from '../Splash';
-import {useAuth} from '../../hooks/useAuth';
+import {useAppSelector} from '../../redux/store';
 import {userSelector} from '../../redux/user/selectors';
 
 const Home = () => {
   const {t} = useTranslation();
-  const dispatch = useAppDispatch();
   const user = useAppSelector(userSelector);
+  console.log('[!!!] HOME ', user);
 
   if (!user) Alert.alert('FAIL', 'failde to load user');
 

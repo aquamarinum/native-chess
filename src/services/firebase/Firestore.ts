@@ -30,6 +30,14 @@ class Firestore {
       return FetchStatus.FAILED;
     }
   };
+  getAllUsers = async () => {
+    try {
+      const users = await this.store.get();
+      return users.docs;
+    } catch (error) {
+      return FetchStatus.FAILED;
+    }
+  };
   updateUser = async (user: User) => {
     try {
       await this.store.doc(user.uid).set(user);

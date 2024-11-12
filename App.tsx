@@ -7,17 +7,31 @@ import {navigationRef} from './src/services/navigator/Navigator';
 import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import Auth from './src/services/firebase/Auth';
 import {Provider} from 'react-redux';
-import {store} from './src/redux/store';
-import {useAuth} from './src/hooks/useAuth';
+import {store, useAppDispatch} from './src/redux/store';
+import Firestore from './src/services/firebase/Firestore';
+import {FetchStatus} from './src/types/FetchStatus';
+import {setUser} from './src/redux/user/slice';
 
-const App = () => {
-  //const {userData, loading} = useAuth();
+const AppProvider = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const [_user, _setUser] = useState<FirebaseAuthTypes.User | null>(null);
+  const dispatch = useAppDispatch();
 
-  function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
-    setUser(user);
-    if (loading) setLoading(false);
+  function onAuthStateChanged(usr: FirebaseAuthTypes.User | null) {
+    if (usr) {
+      setLoading(true);
+      Firestore.getUser(usr.uid)
+        .then(res => {
+          if (res !== FetchStatus.FAILED) {
+            //@ts-ignore
+            dispatch(setUser(res._data));
+          }
+        })
+        .finally(() => {
+          _setUser(usr);
+          setLoading(false);
+        });
+    }
   }
 
   useEffect(() => {
@@ -28,10 +42,16 @@ const App = () => {
   if (loading) return <Splash />;
 
   return (
+    <NavigationContainer ref={navigationRef}>
+      {!_user ? <AuthStackNavigator /> : <AppStackNavigator />}
+    </NavigationContainer>
+  );
+};
+
+const App = () => {
+  return (
     <Provider store={store}>
-      <NavigationContainer ref={navigationRef}>
-        {!user ? <AuthStackNavigator /> : <AppStackNavigator />}
-      </NavigationContainer>
+      <AppProvider />
     </Provider>
   );
 };
