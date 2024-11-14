@@ -17,9 +17,13 @@ import {styles} from './styles';
 import {navigate} from '../../services/navigator/Navigator';
 import Auth from '../../services/firebase/Auth';
 import {useTranslation} from 'react-i18next';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
+import {toggleTheme} from '../../redux/theme/slice';
 
 const Options = () => {
   const {t, i18n} = useTranslation();
+  const dispatch = useAppDispatch();
 
   const changeLanguage = () => {
     if (i18n.language === 'en') {
@@ -35,10 +39,10 @@ const Options = () => {
       <MenuItem image={user_icon} onPress={() => navigate('Profile')}>
         {t('Profile')}
       </MenuItem>
-      <MenuItem image={eye_icon} onPress={() => changeLanguage()}>
+      <MenuItem image={eye_icon} onPress={changeLanguage}>
         {t('Language')}
       </MenuItem>
-      <MenuItem image={board_icon} onPress={() => {}}>
+      <MenuItem image={board_icon} onPress={() => dispatch(toggleTheme())}>
         {t('Theme')}
       </MenuItem>
       <MenuItem image={bronze_league_icon} onPress={() => {}}>

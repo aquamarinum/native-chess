@@ -1,12 +1,15 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
+import {darkTheme, lightTheme} from '../../constants/Themes';
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: '3%',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: Colors.black_black,
-  },
-});
+export const createStyles = (isDarkMode: boolean) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: '3%',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: isDarkMode
+        ? darkTheme.background_dark
+        : lightTheme.background_light,
+    },
+  });
