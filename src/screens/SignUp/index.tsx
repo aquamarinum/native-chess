@@ -42,7 +42,7 @@ const SignUp = () => {
     <Wrapper>
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
-          <Header>{t('welcome')}</Header>
+          <Header>{t('Welcome')}</Header>
           <View style={styles.inputContainer}>
             {Email.fallback !== SignStatuses.SUCCESS && (
               <Text style={styles.label}>{Email.fallback}</Text>
@@ -87,12 +87,12 @@ const SignUp = () => {
                   ? [styles.input, styles.inputOutlined]
                   : styles.input
               }
-              placeholder={t('login')}
+              placeholder={t('repeat password')}
               placeholderTextColor={Colors.grey_dark}
             />
           </View>
           <MainButton
-            content={t('buttonSignUp')}
+            content={t('Sign Up')}
             active={
               new Validator(Email.value).notEmpty().getStatus() ===
                 SignStatuses.SUCCESS &&
@@ -103,9 +103,9 @@ const SignUp = () => {
             onClick={() => onSubmit()}
           />
           <View style={styles.link_container}>
-            <Text style={styles.text}>Or back to </Text>
+            <Text style={styles.text}>{t('Or back to') + ' '}</Text>
             <TouchableHighlight onPress={() => navigate('SignIn')}>
-              <Text style={[styles.text, styles.link]}>Sign In</Text>
+              <Text style={[styles.text, styles.link]}>{t('Sign In')}</Text>
             </TouchableHighlight>
           </View>
         </KeyboardAvoidingView>

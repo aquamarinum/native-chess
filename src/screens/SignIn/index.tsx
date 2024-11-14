@@ -60,7 +60,7 @@ const SignIn = () => {
     <Wrapper>
       <Popup
         header={status}
-        text="Invalid email or password. Check your data and try again."
+        text={t('Invalid email')}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
         buttonLeft={() => (
@@ -85,7 +85,7 @@ const SignIn = () => {
             placeholderTextColor={Colors.grey_dark}
           />
           <MainButton
-            content={t('buttonSignIn')}
+            content={t('Sign In')}
             active={
               new Validator(login).notEmpty().getStatus() ===
                 SignStatuses.SUCCESS &&
@@ -95,9 +95,9 @@ const SignIn = () => {
             onClick={() => onSubmit()}
           />
           <View style={styles.link_container}>
-            <Text style={styles.text}>New to native chess? Click to </Text>
+            <Text style={styles.text}>{t('New to chess') + ' '}</Text>
             <TouchableHighlight onPress={() => navigate('SignUp')}>
-              <Text style={[styles.text, styles.link]}>Sign Up</Text>
+              <Text style={[styles.text, styles.link]}>{t('Sign Up')}</Text>
             </TouchableHighlight>
           </View>
         </KeyboardAvoidingView>

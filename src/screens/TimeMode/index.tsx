@@ -31,7 +31,7 @@ const TimeMode = () => {
     <Wrapper>
       <ScrollView style={styles.content}>
         <View style={styles.list_item}>
-          <Title>{t('gameModeBullet')}</Title>
+          <Title>{t('Bullet')}</Title>
           <RadioList>
             {bulletModes.map(mode => (
               <RadioListItem
@@ -43,7 +43,7 @@ const TimeMode = () => {
           </RadioList>
         </View>
         <View style={styles.list_item}>
-          <Title>{t('gameModeBlitz')}</Title>
+          <Title>{t('Blitz')}</Title>
           <RadioList>
             {blitzModes.map(mode => (
               <RadioListItem
@@ -55,7 +55,7 @@ const TimeMode = () => {
           </RadioList>
         </View>
         <View style={styles.list_item}>
-          <Title>{t('gameModeRapid')}</Title>
+          <Title>{t('Rapid')}</Title>
           <RadioList>
             {rapidModes.map(mode => (
               <RadioListItem
@@ -67,7 +67,7 @@ const TimeMode = () => {
           </RadioList>
         </View>
         <View style={styles.list_item}>
-          <Title>{t('gameModeCorrespondence')}</Title>
+          <Title>{t('Correspond')}</Title>
           <RadioList>
             {correspondModes.map(mode => (
               <RadioListItem
@@ -79,7 +79,7 @@ const TimeMode = () => {
           </RadioList>
         </View>
       </ScrollView>
-      <MainButton content={t('buttonNext')} active onClick={() => goBack()} />
+      <MainButton content={t('Next')} active onClick={() => goBack()} />
     </Wrapper>
   );
 };

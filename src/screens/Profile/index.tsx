@@ -28,11 +28,11 @@ const Profile = () => {
           <Subtitle>{user.email}</Subtitle>
         </View>
         <View>
-          <Title>{t('lastGames')}</Title>
+          <Title>{t('Last games')}</Title>
           <GameCardMini />
           <GameCardMini />
           <GameCardMini />
-          <ShadowButton content={t('showmore')} event={() => {}} />
+          <ShadowButton content={t('Show more')} event={() => {}} />
         </View>
       </ScrollView>
     </Wrapper>

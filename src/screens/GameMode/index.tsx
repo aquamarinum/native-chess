@@ -41,7 +41,7 @@ const GameMode = () => {
         <View style={styles.preview}>
           <Image source={board_icon} style={styles.image} />
         </View>
-        <Header>{t('gameTitle')}</Header>
+        <Header>{t('Options')}</Header>
         <View>
           <View style={styles.setting}>
             <ShadowButton
@@ -50,7 +50,7 @@ const GameMode = () => {
             />
           </View>
           <View style={styles.setting}>
-            <Title>{t('pieces')}</Title>
+            <Title>{t('color')}</Title>
             <RadioList>
               <RadioListItem
                 isActive={gameMode.pieceColor === 'white'}
@@ -76,9 +76,9 @@ const GameMode = () => {
             </RadioList>
           </View>
           <View style={styles.setting}>
-            <Title>{t('rating')}</Title>
+            <Title>{t('Rating')}</Title>
             <ShadowButton
-              content={gameMode.isRating ? 'Yes' : 'No'}
+              content={gameMode.isRating ? t('Yes') : t('No')}
               event={() => dispatch(setIsRating(!gameMode.isRating))}
             />
           </View>
@@ -101,11 +101,7 @@ const GameMode = () => {
           </View>
         </View>
       </ScrollView>
-      <MainButton
-        active
-        content={t('buttonPlay')}
-        onClick={() => navigate('Game')}
-      />
+      <MainButton active content={t('Play')} onClick={() => navigate('Game')} />
     </Wrapper>
   );
 };

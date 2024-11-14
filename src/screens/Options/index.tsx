@@ -16,21 +16,30 @@ import {
 import {styles} from './styles';
 import {navigate} from '../../services/navigator/Navigator';
 import Auth from '../../services/firebase/Auth';
+import {useTranslation} from 'react-i18next';
 
 const Options = () => {
+  const {t, i18n} = useTranslation();
+
+  const changeLanguage = () => {
+    if (i18n.language === 'en') {
+      i18n.changeLanguage('ru');
+    } else i18n.changeLanguage('en');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <MenuItem image={gold_league_icon} onPress={() => navigate('Rating')}>
-        Rating
+        {t('Rating')}
       </MenuItem>
       <MenuItem image={user_icon} onPress={() => navigate('Profile')}>
-        Profile
+        {t('Profile')}
       </MenuItem>
-      <MenuItem image={eye_icon} onPress={() => {}}>
-        Watch Game
+      <MenuItem image={eye_icon} onPress={() => changeLanguage()}>
+        {t('Language')}
       </MenuItem>
       <MenuItem image={board_icon} onPress={() => {}}>
-        Themes
+        {t('Theme')}
       </MenuItem>
       <MenuItem image={bronze_league_icon} onPress={() => {}}>
         Menu #1
@@ -51,7 +60,7 @@ const Options = () => {
         Menu #6
       </MenuItem>
       <MenuItem image={emerald_league_icon} onPress={() => Auth.signOut()}>
-        Logout
+        {t('Logout')}
       </MenuItem>
     </ScrollView>
   );

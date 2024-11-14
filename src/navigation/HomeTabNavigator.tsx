@@ -53,7 +53,7 @@ const HomeTabNavigator = () => {
         component={Puzzles}
         options={{
           tabBarLabel: ({focused}) => (
-            <TabText content={t('bottombarPuzzle')} focused={focused} />
+            <TabText content={t('Puzzles')} focused={focused} />
           ),
           tabBarIcon: ({focused}) => (
             <TabIcon
@@ -69,7 +69,7 @@ const HomeTabNavigator = () => {
         component={Lessons}
         options={{
           tabBarLabel: ({focused}) => (
-            <TabText content={t('bottombarStudy')} focused={focused} />
+            <TabText content={t('Study')} focused={focused} />
           ),
           tabBarIcon: ({focused}) => (
             <TabIcon

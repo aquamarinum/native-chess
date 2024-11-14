@@ -24,7 +24,6 @@ import {
   setUser,
   setUsername,
 } from '../../redux/user/slice';
-import {User} from '../../types/User';
 
 const Home = () => {
   const {t} = useTranslation();
@@ -59,8 +58,8 @@ const Home = () => {
   return (
     <Wrapper>
       <Popup
-        header={'En error occured'}
-        text="Invalid email or password. Check your data and try again."
+        header={t('En error occured')}
+        text={t('Invalid email')}
         visible={error}
         onRequestClose={() => setError(false)}
         buttonLeft={() => (
@@ -72,7 +71,7 @@ const Home = () => {
         contentContainerStyle={styles.list}
         renderItem={({item}) => (
           <GameCard
-            title="Game #1"
+            title={t('Game') + item}
             subtitle="Bla bla blafghj asdad ad"
             league="silver"
             onClick={() => navigate('Game')}
@@ -83,7 +82,7 @@ const Home = () => {
         keyExtractor={num => num.toString()}
       />
       <MainButton
-        content={t('buttonPlay')}
+        content={t('Play')}
         active={true}
         onClick={() => navigate('GameMode')}
       />
