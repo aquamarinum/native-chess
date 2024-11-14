@@ -2,6 +2,7 @@ import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import {SignStatuses} from '../validation/SignStatuses';
 import {User} from '../../types/User';
+import Firestore from './Firestore';
 
 class Auth {
   private errorHandler = (error: any) => {
@@ -59,6 +60,10 @@ class Auth {
     }
   };
 
+  getAuthUser = () => {
+    return auth().currentUser;
+  };
+
   getUser = () => {
     return auth().currentUser;
   };
@@ -66,7 +71,7 @@ class Auth {
   getUserId = () => {
     const id = auth().currentUser?.uid;
     if (id) return id;
-    return '00000000';
+    return null;
   };
 
   subscribe = (stateChanger: (user: FirebaseAuthTypes.User | null) => void) => {

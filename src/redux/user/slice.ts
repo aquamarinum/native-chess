@@ -22,9 +22,32 @@ export const userSlice = createSlice({
       console.log('[4] SETTING TO REDUX ', action.payload);
       state = action.payload;
     },
-    setUsername(state, action: PayloadAction<string>) {
+    setName(state, action: PayloadAction<string>) {
       state.name = action.payload;
     },
+    //? BCAUSE SOME STRING IN DB NOT WORKING
+    setBio(state, action: PayloadAction<string>) {
+      state.bio = action.payload;
+    },
+    setCountry(state, action: PayloadAction<string>) {
+      state.country = action.payload;
+    },
+    setEmail(state, action: PayloadAction<string>) {
+      state.email = action.payload;
+    },
+    setLastLogin(state, action: PayloadAction<string>) {
+      state.lastLogin = action.payload;
+    },
+    setUsername(state, action: PayloadAction<string>) {
+      state.username = action.payload;
+    },
+    setUID(state, action: PayloadAction<string>) {
+      state.uid = action.payload;
+    },
+    setRegistrated(state, action: PayloadAction<string>) {
+      state.registrated = action.payload;
+    },
+    //? ----------------
     setElo(state, action: PayloadAction<number>) {
       state.elo = action.payload;
     },
@@ -38,6 +61,18 @@ export const userSlice = createSlice({
   },
 });
 
-export const {setUser, setUsername, setElo, setCredentials} = userSlice.actions;
+export const {
+  setUser,
+  setName,
+  setElo,
+  setCredentials,
+  setUsername,
+  setUID,
+  setCountry,
+  setBio,
+  setEmail,
+  setLastLogin,
+  setRegistrated,
+} = userSlice.actions;
 
 export default userSlice.reducer;

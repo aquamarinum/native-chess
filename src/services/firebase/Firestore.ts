@@ -10,19 +10,23 @@ class Firestore {
   }
   createUser = async (user: User) => {
     try {
-      user.uid = Auth.getUserId();
-      user.registrated =
-        new Date().toLocaleDateString() + new Date().toLocaleTimeString();
-      user.country = 'world';
-      user.username = 'beta-test-user';
-      user.bio = 'DEFAULT';
-      await this.store.doc(user.uid).set(user);
-      return FetchStatus.SUCCESS;
+      const uid = Auth.getUserId();
+      if (uid) {
+        user.uid = uid;
+        user.registrated =
+          new Date().toLocaleDateString() + new Date().toLocaleTimeString();
+        user.country = 'world';
+        user.username = 'beta-test-user';
+        user.bio = 'DEFAULT';
+        await this.store.doc(user.uid).set(user);
+        return FetchStatus.SUCCESS;
+      }
+      return FetchStatus.FAILED;
     } catch (error) {
       return FetchStatus.FAILED;
     }
   };
-  getUser = async (id: string) => {
+  getUserById = async (id: string) => {
     try {
       const user = await this.store.doc(id).get();
       return user;
