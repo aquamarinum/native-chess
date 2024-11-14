@@ -1,21 +1,26 @@
 import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
-import {TextSize} from '../../constants/TextSizes';
 
 export const styles = StyleSheet.create({
-  button: {
+  list: {
+    width: '100%',
+  },
+  listItem: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: '2%',
-    paddingHorizontal: '8%',
     borderWidth: 4,
+    borderRadius: 5,
     borderColor: Colors.grey_dark,
     backgroundColor: Colors.dark_black,
   },
-  text: {
-    color: Colors.grey_light,
-    fontSize: TextSize.small,
-    fontFamily: 'Ubuntu-Medium',
+  imageContainer: {
+    padding: 5,
+  },
+  image: {
+    width: 30,
+    height: 30,
   },
 });
