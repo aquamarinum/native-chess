@@ -15,6 +15,7 @@ import AsyncStorageService from './src/services/asyncStorage';
 import {setConfig} from './src/redux/theme/slice';
 import {Appearance} from 'react-native';
 import {configSelector} from './src/redux/theme/selectors';
+import {useTranslation} from 'react-i18next';
 
 const AppContent = () => {
   const [authStatus, setAuthStatus] = useState<FirebaseAuthTypes.User | null>(
@@ -24,6 +25,7 @@ const AppContent = () => {
   const [error, setError] = useState(false);
   const dispatch = useAppDispatch();
   const {isDarkMode, language} = useAppSelector(configSelector);
+  const {i18n} = useTranslation();
 
   const onAuthStateChanged = (status: FirebaseAuthTypes.User | null) => {
     if (status) {
@@ -43,6 +45,7 @@ const AppContent = () => {
               language: res.language,
             }),
           );
+          i18n.changeLanguage(res.language);
         } else {
           const colorScheme = Appearance.getColorScheme();
           if (colorScheme === 'dark') {
@@ -76,7 +79,7 @@ const AppContent = () => {
     setLoading(true);
     AsyncStorageService.storeData({
       theme: isDarkMode ? 'dark' : 'light',
-      language: language,
+      language: language === 'ru' ? 'ru' : 'en',
     })
       .then(res => !res && setError(res))
       .catch(err => setError(true))

@@ -21,6 +21,7 @@ class AsyncStorageService {
   getData: () => Promise<AsyncStorageDataType | null> = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem(key);
+      console.log(jsonValue);
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       // error reading value
