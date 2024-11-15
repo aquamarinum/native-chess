@@ -1,5 +1,4 @@
 import React from 'react';
-import {useTranslation} from 'react-i18next';
 import {
   Image,
   ImageSourcePropType,
@@ -7,9 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {styles} from './styles';
+import {createStyles} from './styles';
 import Title from '../Title';
 import Subtitle from '../Subtitle';
+import {king_black_icon} from '../../assets/img/chess';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 type GameCardProps = {
   title: string;
@@ -28,14 +30,14 @@ const GameCard: React.FC<GameCardProps> = ({
   league_icon = undefined,
   onClick,
 }) => {
-  const {t} = useTranslation();
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <TouchableOpacity
       style={styles.container}
       activeOpacity={0.7}
       onPress={onClick}>
       <View style={styles.preview}>
-        <Image source={image} />
+        <Image source={king_black_icon} style={styles.image} />
       </View>
       <View style={styles.content}>
         <Title>{title}</Title>

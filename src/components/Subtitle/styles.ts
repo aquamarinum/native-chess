@@ -1,12 +1,13 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
 import {TextSize} from '../../constants/TextSizes';
+import {darkTheme, lightTheme} from '../../constants/Themes';
 
-export const styles = StyleSheet.create({
-  subtitle: {
-    margin: '1%',
-    color: Colors.grey_light,
-    fontFamily: 'Ubuntu-Regular',
-    fontSize: TextSize.mini,
-  },
-});
+export const createStyles = (isDarkMode: boolean) =>
+  StyleSheet.create({
+    subtitle: {
+      margin: '1%',
+      color: isDarkMode ? darkTheme.text : lightTheme.text,
+      fontFamily: 'Ubuntu-Regular',
+      fontSize: TextSize.mini,
+    },
+  });

@@ -1,17 +1,20 @@
 import React, {useEffect, useState} from 'react';
-import InDev from '../InDev';
 import {FlatList, Image, ScrollView, Text, View} from 'react-native';
 import Firestore from '../../services/firebase/Firestore';
 import {FetchStatus} from '../../types/FetchStatus';
 import Wrapper from '../../components/Wrapper';
 import {queen_white_icon} from '../../assets/img/chess';
 import Subtitle from '../../components/Subtitle';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const Rating = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const styles = createStyles(useAppSelector(themeSelector));
 
   useEffect(() => {
     setLoading(true);

@@ -1,10 +1,10 @@
 import React, {ReactNode} from 'react';
 import {Text, View, Modal} from 'react-native';
 import Subtitle from '../Subtitle';
-import ShadowButton from '../ShadowButton';
-import {useTranslation} from 'react-i18next';
-import {styles} from './styles';
+import {createStyles} from './styles';
 import Title from '../Title';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 type PopupProps = {
   header: string;
@@ -23,7 +23,7 @@ const Popup: React.FC<PopupProps> = ({
   buttonLeft = undefined,
   buttonRight = undefined,
 }) => {
-  const {t} = useTranslation();
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <Modal
       animationType="slide"

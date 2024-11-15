@@ -1,6 +1,8 @@
 import React, {ReactNode} from 'react';
 import {TouchableWithoutFeedback, View} from 'react-native';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 type RadioListItemProps = {
   children: ReactNode;
@@ -13,6 +15,7 @@ const RadioListItem: React.FC<RadioListItemProps> = ({
   isActive,
   onSelect,
 }) => {
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <TouchableWithoutFeedback onPress={onSelect}>
       <View style={isActive ? [styles.item, styles.itemActive] : [styles.item]}>

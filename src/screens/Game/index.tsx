@@ -13,13 +13,18 @@ import PlayerTab from '../../components/PlayerTab';
 import {Board} from '../../logic/models/Board';
 import Cell from '../../components/Cell';
 import {CellStates} from '../../logic/models/CellStates';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const Game = () => {
   const [board, setBoard] = useState(new Board());
+  const isDarkMode = useAppSelector(themeSelector);
   return (
     <SafeAreaView style={styles.container}>
       <MovesHistoryBar />
-      <ImageBackground source={background_dark} style={styles.wrapper}>
+      <ImageBackground
+        source={isDarkMode ? background_dark : background_light}
+        style={styles.wrapper}>
         <PlayerTab />
         <ScrollView>
           {board.cells.map(row => (

@@ -4,7 +4,8 @@ const indev_dark = require('./indev.png');
 
 const splash_icon_dark = require('./splash_dark.png');
 const splash_icon_light = require('./splash_light.png');
-const user_icon = require('./user_light.png');
+const user_icon_light = require('./user_light.png');
+const user_icon_dark = require('./user_dark.png');
 const arrow_icon_light = require('./arrow_light.png');
 const arrow_icon_dark = require('./arrow_dark.png');
 
@@ -65,7 +66,8 @@ export {
   splash_icon_light,
   arrow_icon_light,
   arrow_icon_dark,
-  user_icon,
+  user_icon_dark,
+  user_icon_light,
   emerald_league_icon,
   amethist_league_icon,
   ruby_league_icon,

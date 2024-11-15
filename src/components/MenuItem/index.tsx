@@ -6,7 +6,9 @@ import {
   View,
 } from 'react-native';
 import Title from '../Title';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 type MenuItemProps = {
   children: string;
@@ -15,6 +17,7 @@ type MenuItemProps = {
 };
 
 const MenuItem: React.FC<MenuItemProps> = ({children, image, onPress}) => {
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <TouchableHighlight onPress={onPress}>
       <View style={styles.container}>

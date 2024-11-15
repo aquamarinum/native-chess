@@ -1,8 +1,10 @@
 import React, {ReactNode} from 'react';
 import {Image, TouchableHighlight, View} from 'react-native';
 import Subtitle from '../Subtitle';
-import {styles} from './styles';
+import {createStyles} from './styles';
 import {Colors} from '../../constants/Colors';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 type TableItem = {
   column_id: number;
@@ -11,6 +13,7 @@ type TableItem = {
 };
 
 const GameCardMini = () => {
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <TouchableHighlight onPress={() => {}}>
       <View style={styles.container}>

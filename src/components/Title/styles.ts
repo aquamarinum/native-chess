@@ -1,12 +1,14 @@
 import {StyleSheet} from 'react-native';
 import {Colors} from '../../constants/Colors';
 import {TextSize} from '../../constants/TextSizes';
+import {darkTheme, lightTheme} from '../../constants/Themes';
 
-export const styles = StyleSheet.create({
-  title: {
-    margin: '2%',
-    color: Colors.grey_light,
-    fontFamily: 'Ubuntu-Bold',
-    fontSize: TextSize.small,
-  },
-});
+export const createStyles = (isDarkMode: boolean) =>
+  StyleSheet.create({
+    title: {
+      margin: '2%',
+      color: isDarkMode ? darkTheme.text : lightTheme.text,
+      fontFamily: 'Ubuntu-Bold',
+      fontSize: TextSize.small,
+    },
+  });
