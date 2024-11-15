@@ -1,9 +1,12 @@
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 import Timer from '../Timer';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const PlayerTab = () => {
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <View style={styles.container}>
       <View style={styles.photo}>

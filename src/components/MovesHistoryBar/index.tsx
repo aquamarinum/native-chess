@@ -1,8 +1,11 @@
 import React from 'react';
 import {FlatList, Text, View} from 'react-native';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const MovesHistoryBar = () => {
+  const styles = createStyles(useAppSelector(themeSelector));
   return (
     <View style={{width: '100%'}}>
       <FlatList
