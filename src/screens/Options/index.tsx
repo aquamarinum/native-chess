@@ -18,8 +18,7 @@ import {navigate} from '../../services/navigator/Navigator';
 import Auth from '../../services/firebase/Auth';
 import {useTranslation} from 'react-i18next';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
-import {themeSelector} from '../../redux/theme/selectors';
-import {toggleTheme} from '../../redux/theme/slice';
+import {setLanguage, toggleTheme} from '../../redux/theme/slice';
 
 const Options = () => {
   const {t, i18n} = useTranslation();
@@ -28,7 +27,11 @@ const Options = () => {
   const changeLanguage = () => {
     if (i18n.language === 'en') {
       i18n.changeLanguage('ru');
-    } else i18n.changeLanguage('en');
+      dispatch(setLanguage('ru'));
+    } else {
+      i18n.changeLanguage('en');
+      dispatch(setLanguage('en'));
+    }
   };
 
   return (

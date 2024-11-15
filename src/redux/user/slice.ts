@@ -20,7 +20,17 @@ export const userSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<User>) {
       console.log('[4] SETTING TO REDUX ', action.payload);
-      state = action.payload;
+      state.name = action.payload.name;
+      state.username = action.payload.username;
+      state.email = action.payload.email;
+      state.elo = action.payload.elo;
+      state.bio = action.payload.bio;
+      state.country = action.payload.country;
+
+      state.lastLogin = action.payload.lastLogin;
+      state.password = action.payload.password;
+      state.registrated = action.payload.registrated;
+      state.uid = action.payload.uid;
     },
     setName(state, action: PayloadAction<string>) {
       state.name = action.payload;
