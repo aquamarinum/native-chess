@@ -8,7 +8,7 @@ export const lightTheme: ThemeType = {
   text: '#5f5f5f',
   border: '#d9d9d9',
   background_light: '#ffffff',
-  background_dark: '#aeaeae',
+  background_dark: '#eaeaea',
 };
 
 export const darkTheme: ThemeType = {
