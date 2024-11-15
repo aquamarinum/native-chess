@@ -7,9 +7,11 @@ import TimeMode from '../screens/TimeMode';
 import Profile from '../screens/Profile';
 import Rating from '../screens/Rating';
 import Settings from '../screens/Settings';
-import {stackStyles} from './stackStyles';
+import {createStackStyles} from './stackStyles';
 import StepBack from './components/StepBack';
 import {goBack} from '../services/navigator/Navigator';
+import {useAppSelector} from '../redux/store';
+import {themeSelector} from '../redux/theme/selectors';
 
 export type AppStackParamList = {
   HomeTab: undefined;
@@ -24,6 +26,7 @@ export type AppStackParamList = {
 const AppStack = createStackNavigator<AppStackParamList>();
 
 const AppStackNavigator = () => {
+  const stackStyles = createStackStyles(useAppSelector(themeSelector));
   return (
     <AppStack.Navigator
       initialRouteName="HomeTab"
