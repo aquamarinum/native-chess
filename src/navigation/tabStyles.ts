@@ -1,20 +1,30 @@
 import {BottomTabNavigationOptions} from '@react-navigation/bottom-tabs';
-import {Colors} from '../constants/Colors';
+import {darkTheme, lightTheme} from '../constants/Themes';
 
-export const tabStyles: BottomTabNavigationOptions = {
-  tabBarStyle: {
-    backgroundColor: Colors.black_black,
-  },
-  tabBarLabelStyle: {
-    color: Colors.grey_light,
-  },
-  headerStyle: {
-    backgroundColor: Colors.black_black,
-  },
-  headerTitleStyle: {
-    color: Colors.white,
-    fontFamily: 'Ubuntu-Bold',
-    fontSize: 22,
-  },
-  headerTitleAlign: 'center',
+export const createTabStyles: (a: boolean) => BottomTabNavigationOptions = (
+  isDarkMode: boolean,
+) => {
+  return {
+    tabBarStyle: {
+      backgroundColor: isDarkMode
+        ? darkTheme.background_dark
+        : lightTheme.background_light,
+    },
+    tabBarLabelStyle: {
+      color: isDarkMode ? darkTheme.text : lightTheme.text,
+    },
+    headerStyle: {
+      backgroundColor: isDarkMode
+        ? darkTheme.background_dark
+        : lightTheme.background_light,
+    },
+    headerTitleStyle: {
+      color: isDarkMode
+        ? lightTheme.background_light
+        : darkTheme.background_dark,
+      fontFamily: 'Ubuntu-Bold',
+      fontSize: 22,
+    },
+    headerTitleAlign: 'center',
+  };
 };

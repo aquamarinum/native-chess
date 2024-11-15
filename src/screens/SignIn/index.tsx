@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {
-  Alert,
   KeyboardAvoidingView,
   Text,
   TextInput,
@@ -8,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import MainButton from '../../components/MainButton';
-import {styles} from './styles';
+import {createStyles} from './styles';
 import {useTranslation} from 'react-i18next';
 import Header from '../../components/Header';
 import Wrapper from '../../components/Wrapper';
@@ -20,8 +19,9 @@ import Splash from '../Splash';
 import {Colors} from '../../constants/Colors';
 import Popup from '../../components/Popup';
 import ShadowButton from '../../components/ShadowButton';
-import {useAppDispatch} from '../../redux/store';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {setUser} from '../../redux/user/slice';
+import {themeSelector} from '../../redux/theme/selectors';
 
 //'testuser@example.com', 'qwerty12345'
 //admin@admin.com qwerty12345
@@ -34,6 +34,8 @@ const SignIn = () => {
   const [status, setStatus] = useState<SignStatuses>(SignStatuses.SUCCESS);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector(themeSelector);
+  const styles = createStyles(isDarkMode);
 
   const onSubmit = () => {
     setLoading(true);
@@ -59,7 +61,7 @@ const SignIn = () => {
   return (
     <Wrapper>
       <Popup
-        header={status}
+        header={t('En error occured')}
         text={t('Invalid email')}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}

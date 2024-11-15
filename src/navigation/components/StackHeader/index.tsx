@@ -1,6 +1,8 @@
 import React from 'react';
 import {Image, ImageSourcePropType, Text, View} from 'react-native';
-import {styles} from './styles';
+import {createStyles} from './styles';
+import {useAppSelector} from '../../../redux/store';
+import {themeSelector} from '../../../redux/theme/selectors';
 
 type StackHeaderProps = {
   content: string;
@@ -11,6 +13,8 @@ const StackHeader: React.FC<StackHeaderProps> = ({
   content,
   icon_url = undefined,
 }) => {
+  const isDarkMode = useAppSelector(themeSelector);
+  const styles = createStyles(isDarkMode);
   return (
     <View style={styles.container}>
       <Image style={styles.icon} source={icon_url} />

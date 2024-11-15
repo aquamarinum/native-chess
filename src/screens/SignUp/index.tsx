@@ -8,7 +8,7 @@ import {
   View,
 } from 'react-native';
 import MainButton from '../../components/MainButton';
-import {styles} from './styles';
+import {createStyles} from './styles';
 import {useTranslation} from 'react-i18next';
 import Header from '../../components/Header';
 import Wrapper from '../../components/Wrapper';
@@ -17,8 +17,9 @@ import {Validator} from '../../services/validation/Validator';
 import {SignStatuses} from '../../services/validation/SignStatuses';
 import {Colors} from '../../constants/Colors';
 import {useAuthInput} from '../../hooks/useAuthInput';
-import {useAppDispatch} from '../../redux/store';
+import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {setCredentials} from '../../redux/user/slice';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const SignUp = () => {
   const {t} = useTranslation();
@@ -26,6 +27,8 @@ const SignUp = () => {
   const Email = useAuthInput('email');
   const Password = useAuthInput('password');
   const RepPassword = useAuthInput('password');
+  const isDarkMode = useAppSelector(themeSelector);
+  const styles = createStyles(isDarkMode);
 
   const onSubmit = () => {
     if (
