@@ -1,5 +1,5 @@
 import React, {ReactNode} from 'react';
-import {Image, TouchableHighlight, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import Subtitle from '../Subtitle';
 import {createStyles} from './styles';
 import {Colors} from '../../constants/Colors';
@@ -15,7 +15,7 @@ type TableItem = {
 const GameCardMini = () => {
   const styles = createStyles(useAppSelector(themeSelector));
   return (
-    <TouchableHighlight onPress={() => {}}>
+    <TouchableOpacity onPress={() => {}}>
       <View style={styles.container}>
         <View style={styles.column}>
           <View style={styles.photo}>{/* <Image /> */}</View>
@@ -34,7 +34,7 @@ const GameCardMini = () => {
             ]}></View>
         </View>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 
