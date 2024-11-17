@@ -16,7 +16,7 @@ import {themeSelector} from '../../redux/theme/selectors';
 type GameCardProps = {
   title: string;
   subtitle: string;
-  league: string;
+  rating: string;
   image: ImageSourcePropType | undefined;
   league_icon: ImageSourcePropType | undefined;
   onClick: () => void;
@@ -25,28 +25,27 @@ type GameCardProps = {
 const GameCard: React.FC<GameCardProps> = ({
   title,
   subtitle,
-  league,
+  rating,
   image = undefined,
   league_icon = undefined,
   onClick,
 }) => {
   const styles = createStyles(useAppSelector(themeSelector));
   return (
-    <TouchableOpacity
-      style={styles.container}
-      activeOpacity={0.7}
-      onPress={onClick}>
-      <View style={styles.preview}>
-        <Image source={king_black_icon} style={styles.image} />
-      </View>
-      <View style={styles.content}>
-        <Title>{title}</Title>
-        <Subtitle>{subtitle}</Subtitle>
-        <View style={styles.rating}>
-          <View style={styles.rating_icon}>
-            <Image source={league_icon} />
+    <TouchableOpacity activeOpacity={0.7} onPress={onClick}>
+      <View style={styles.container}>
+        <View style={styles.preview}>
+          <Image source={image} style={styles.image} />
+        </View>
+        <View style={styles.content}>
+          <Title>{title}</Title>
+          <Subtitle>{subtitle}</Subtitle>
+          <View style={styles.rating}>
+            <View>
+              <Image source={league_icon} style={styles.rating_icon} />
+            </View>
+            <Text style={styles.rating_content}>{rating}</Text>
           </View>
-          <Text style={styles.rating_content}>{league}</Text>
         </View>
       </View>
     </TouchableOpacity>

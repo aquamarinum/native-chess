@@ -1,15 +1,18 @@
 import {StyleSheet} from 'react-native';
 import {TextSize} from '../../constants/TextSizes';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {darkTheme, lightTheme} from '../../constants/Themes';
 
-export const styles = StyleSheet.create({
-  header: {
-    marginBottom: '4%',
-    padding: '1%',
-    fontSize: TextSize.large,
-    color: Colors.white,
-    fontFamily: 'Ubuntu-Bold',
-    textAlign: 'center',
-    textTransform: 'capitalize',
-  },
-});
+export const createStyles = (isDarkMode: boolean) =>
+  StyleSheet.create({
+    header: {
+      marginBottom: '4%',
+      padding: '1%',
+      fontSize: TextSize.large,
+      color: isDarkMode
+        ? lightTheme.background_light
+        : darkTheme.background_dark,
+      fontFamily: 'Ubuntu-Bold',
+      textAlign: 'center',
+      textTransform: 'capitalize',
+    },
+  });

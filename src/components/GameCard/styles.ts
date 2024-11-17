@@ -7,10 +7,9 @@ export const createStyles = (isDarkMode: boolean) =>
   StyleSheet.create({
     container: {
       width: '100%',
-      marginVertical: 6,
+      marginVertical: 3,
       padding: '5%',
       flexDirection: 'row',
-      justifyContent: 'space-between',
       borderRadius: 10,
       borderWidth: 4,
       borderColor: isDarkMode ? darkTheme.border : lightTheme.border,
@@ -41,7 +40,6 @@ export const createStyles = (isDarkMode: boolean) =>
     rating_icon: {
       width: 30,
       height: 30,
-      backgroundColor: Colors.grey_light,
     },
     rating_content: {
       marginLeft: 10,

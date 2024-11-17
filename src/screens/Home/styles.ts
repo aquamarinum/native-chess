@@ -1,16 +1,13 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants/Colors';
 
 export const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: Colors.black_black,
+    width: '100%',
   },
   background: {
     padding: '3%',
   },
   list: {
-    alignItems: 'center',
-    flexGrow: 0,
+    width: '100%',
   },
 });
