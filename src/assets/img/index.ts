@@ -1,4 +1,4 @@
-const background_dark = require('./wallpaper.png');
+const background_dark = require('./wallpaper_dark.png');
 const background_light = require('./wallpaper_light.png');
 const indev_dark = require('./indev.png');
 

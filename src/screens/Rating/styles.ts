@@ -6,24 +6,17 @@ export const createStyles = (isDarkMode: boolean) =>
     list: {
       width: '100%',
     },
-    listItem: {
-      flex: 1,
-      padding: 10,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
+    preview: {
       alignItems: 'center',
-      borderWidth: 4,
-      borderRadius: 5,
-      borderColor: isDarkMode ? darkTheme.border : lightTheme.border,
-      backgroundColor: isDarkMode
-        ? darkTheme.background_dark
-        : lightTheme.background_dark,
     },
-    imageContainer: {
-      padding: 5,
+    leagues: {
+      marginVertical: 20,
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'space-evenly',
     },
-    image: {
-      width: 30,
-      height: 30,
+    leagueImage: {
+      width: 48,
+      height: 48,
     },
   });

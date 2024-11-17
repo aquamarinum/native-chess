@@ -3,16 +3,27 @@ import {FlatList, Image, ScrollView, Text, View} from 'react-native';
 import Firestore from '../../services/firebase/Firestore';
 import {FetchStatus} from '../../types/FetchStatus';
 import Wrapper from '../../components/Wrapper';
-import {queen_white_icon} from '../../assets/img/chess';
-import Subtitle from '../../components/Subtitle';
 import {createStyles} from './styles';
 import {useAppSelector} from '../../redux/store';
 import {themeSelector} from '../../redux/theme/selectors';
+import RatingPlayer from './RatingPlayer';
+import Title from '../../components/Title';
+import {useTranslation} from 'react-i18next';
+import {
+  bronze_league_icon,
+  emerald_league_icon,
+  gold_league_icon,
+  ruby_league_icon,
+  silver_league_icon,
+} from '../../assets/img';
+import RatingPlayerSkeleton from './RatingPlayer/skeleton';
+import ColorTransition from './RatingPlayer/Anim';
 
 const Rating = () => {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const {t} = useTranslation();
 
   const styles = createStyles(useAppSelector(themeSelector));
 
@@ -31,21 +42,40 @@ const Rating = () => {
       })
       .finally(() => setLoading(false));
   }, []);
+
   return (
     <Wrapper>
-      <FlatList
-        style={styles.list}
-        data={users}
-        renderItem={({item}) => (
-          <View style={styles.listItem}>
-            <View style={styles.imageContainer}>
-              <Image source={queen_white_icon} style={styles.image} />
-            </View>
-            <Subtitle>{item._data.name}</Subtitle>
-            <Subtitle>{item._data.elo}</Subtitle>
-          </View>
-        )}
-      />
+      <View style={styles.preview}>
+        <Title>{t('Leagues')}</Title>
+        <View style={styles.leagues}>
+          <Image source={bronze_league_icon} style={styles.leagueImage} />
+          <Image source={silver_league_icon} style={styles.leagueImage} />
+          <Image source={gold_league_icon} style={styles.leagueImage} />
+          <Image source={ruby_league_icon} style={styles.leagueImage} />
+          <Image source={emerald_league_icon} style={styles.leagueImage} />
+        </View>
+        <Title>{t('Top players')}</Title>
+      </View>
+      {loading ? (
+        <FlatList
+          style={styles.list}
+          data={[...new Array(5)]}
+          renderItem={({item}) => <RatingPlayerSkeleton />}
+        />
+      ) : (
+        <FlatList
+          style={styles.list}
+          data={users}
+          renderItem={({item}) => (
+            <RatingPlayer
+              name={item._data.name}
+              elo={item._data.elo}
+              image={undefined}
+              onClick={() => {}}
+            />
+          )}
+        />
+      )}
     </Wrapper>
   );
 };
