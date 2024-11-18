@@ -139,93 +139,71 @@ export class Pawn extends ChessPiece {
       }
     }
   }
-
-  move(board: ChessBoard, target: CellPositionType): void {
-    const from = board.activePosition as CellPositionType;
-
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
     // TAKE EN PASSANT PAWN
-    if (target.y === board.enpassant?.y && target.x === board.enpassant.x) {
-      if (target.y === 2) {
-        board.capturePiece({y: 3, x: target.x});
+    if (to.y === board.enpassant?.y && to.x === board.enpassant.x) {
+      if (to.y === 2) {
+        console.log('Going to kill ', to);
+        board.capturePiece({y: 3, x: to.x});
       }
-      if (target.y === 5) {
-        board.capturePiece({y: 4, x: target.x});
+      if (to.y === 5) {
+        board.capturePiece({y: 4, x: to.x});
       }
-      board.movePiece(board.activePosition as CellPositionType, target);
-      board.moves.recordMove(board.moves.getSymbolPos(from.x) + 'x', target);
+      //! RECORD TO PGN
       return;
     }
 
     // SET EN PASSANT PAWN
     if (
-      target.y - from.y === 2 &&
-      (board.isPieceThreatens({y: target.y, x: target.x - 1}, Figures.PAWN) ||
-        board.isPieceThreatens({y: target.y, x: target.x + 1}, Figures.PAWN))
+      to.y - from.y === 2 &&
+      (board.isPieceThreatens({y: to.y, x: to.x - 1}, Figures.PAWN) ||
+        board.isPieceThreatens({y: to.y, x: to.x + 1}, Figures.PAWN))
     ) {
       board.setEnPassant({
         y: 2,
-        x: target.x,
+        x: to.x,
       });
     }
     if (
-      target.y - from.y === -2 &&
-      (board.isPieceThreatens({y: target.y, x: target.x - 1}, Figures.PAWN) ||
-        board.isPieceThreatens({y: target.y, x: target.x + 1}, Figures.PAWN))
+      to.y - from.y === -2 &&
+      (board.isPieceThreatens({y: to.y, x: to.x - 1}, Figures.PAWN) ||
+        board.isPieceThreatens({y: to.y, x: to.x + 1}, Figures.PAWN))
     ) {
       board.setEnPassant({
         y: 5,
-        x: target.x,
+        x: to.x,
       });
     }
 
     // TRANSFORMATION
-    if (target.y === 0 && this.color === ChessColors.WHITE) {
-      if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-        board.capturePiece(target);
-        board.moves.recordMoveSpecial(
-          board.moves.getSymbolPos(from.x) +
-            'x' +
-            board.moves.getSymbolPos(target.x) +
-            target.y +
-            '=Q',
-        );
+    if (to.y === 0 && this.color === ChessColors.WHITE) {
+      if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+        //! WRITE TO PGN
       } else {
-        board.moves.recordMoveSpecial(
-          board.moves.getSymbolPos(target.x) + target.y + '=Q',
-        );
+        //! WRITE TO PGN
       }
-      board.movePiece(board.activePosition as CellPositionType, target);
-      board.setPieceAt(target, new Queen(ChessColors.WHITE));
+      board.setPieceAt(to, new Queen(ChessColors.WHITE));
       return;
     }
-    if (target.y === 7 && this.color === ChessColors.BLACK) {
-      if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-        board.capturePiece(target);
-        board.moves.recordMoveSpecial(
-          board.moves.getSymbolPos(from.x) +
-            'x' +
-            board.moves.getSymbolPos(target.x) +
-            target.y +
-            '=Q',
-        );
+    if (to.y === 7 && this.color === ChessColors.BLACK) {
+      if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+        //! WRITE TO PGN
       } else {
-        board.moves.recordMoveSpecial(
-          board.moves.getSymbolPos(target.x) + target.y + '=Q',
-        );
+        //! WRITE TO PGN
       }
-      board.movePiece(board.activePosition as CellPositionType, target);
-      board.setPieceAt(target, new Queen(ChessColors.BLACK));
+      board.setPieceAt(to, new Queen(ChessColors.BLACK));
       return;
     }
 
     // DEFAULT MOVEMENT
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove(board.moves.getSymbolPos(from.x) + 'x', target);
+    if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+      //! WRITE TO PGN
     } else {
-      board.moves.recordMove('', target);
+      //! WRITE TO PGN
     }
-
-    board.movePiece(board.activePosition as CellPositionType, target);
   }
 }

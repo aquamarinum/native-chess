@@ -13,5 +13,9 @@ export abstract class ChessPiece {
     this.model = icon;
   }
   abstract canMove(currentPos: CellPositionType, board: ChessBoard): void;
-  abstract move(board: ChessBoard, target: CellPositionType): void;
+  abstract onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void;
 }

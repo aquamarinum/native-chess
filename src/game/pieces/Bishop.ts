@@ -55,13 +55,16 @@ export class Bishop extends ChessPiece {
       newPosition.x--;
     }
   }
-  move(board: ChessBoard, target: CellPositionType): void {
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove('Bx', target);
+
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
+    if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+      //! WRITE TO PGN
     } else {
-      board.moves.recordMove('B', target);
+      //! WRITE TO PGN
     }
-    board.movePiece(board.activePosition as CellPositionType, target);
   }
 }

@@ -83,38 +83,35 @@ export class King extends ChessPiece {
       );
   }
 
-  move(board: ChessBoard, target: CellPositionType): void {
-    const from = board.activePosition as CellPositionType;
-
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
     // NEW POSITION AFTER MOVE
     if (this.color === ChessColors.WHITE) {
-      board.whiteKingPos = target;
+      board.whiteKingPos = to;
     } else {
-      board.blackKingPos = target;
+      board.blackKingPos = to;
     }
     this.banAllCastling();
 
     // CASTLE
-    if (from.x - target.x === -2) {
-      board.movePiece(board.activePosition as CellPositionType, target);
-      board.movePiece({y: target.y, x: 7}, {y: target.y, x: 5});
-      board.moves.recordMoveSpecial('O-O');
+    if (from.x - to.x === -2) {
+      board.movePiece({y: to.y, x: 7}, {y: to.y, x: 5});
+      //! WRITE TO PGN
       return;
     }
-    if (from.x - target.x === 2) {
-      board.movePiece(board.activePosition as CellPositionType, target);
-      board.movePiece({y: target.y, x: 0}, {y: target.y, x: 3});
-      board.moves.recordMoveSpecial('O-O-O');
+    if (from.x - to.x === 2) {
+      board.movePiece({y: to.y, x: 0}, {y: to.y, x: 3});
+      //! WRITE TO PGN
       return;
     }
 
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove('Kx', target);
+    if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+      //! WRITE TO PGN
     } else {
-      board.moves.recordMove('K', target);
+      //! WRITE TO PGN
     }
-
-    board.movePiece(board.activePosition as CellPositionType, target);
   }
 }

@@ -40,14 +40,15 @@ export class Knight extends ChessPiece {
     if (board.getPositionAt({y: currentPos.y - 1, x: currentPos.x + 2}))
       board.highlight({y: currentPos.y - 1, x: currentPos.x + 2});
   }
-
-  move(board: ChessBoard, target: CellPositionType): void {
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove('Nx', target);
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
+    if (board.getPositionAt(to)?.state === CellStates.OCCUPIED) {
+      //! WRITE TO PGN
     } else {
-      board.moves.recordMove('N', target);
+      //! WRITE TO PGN
     }
-    board.movePiece(board.activePosition as CellPositionType, target);
   }
 }

@@ -153,67 +153,6 @@ export class ChessBoard {
     this.checkKingPosition();
   }
 
-  // MAIN ON_CLICK_CELL LISTENER
-
-  public onClickCell(target: CellPositionType) {
-    const cell = this.getPositionAt(target);
-
-    if (!cell) return false;
-
-    const targetPiece = this.getPieceAt(target);
-
-    if (this.activePosition) {
-      if (targetPiece) {
-        if (targetPiece.color === this.activePlayerColor) {
-          this.clearHighlighting();
-          this.setActivePosition(target);
-          targetPiece.canMove(target, this);
-          this.setCellState(target, CellStates.SELECTED);
-        } else {
-          if (cell.state === CellStates.OCCUPIED) {
-            targetPiece.move(this, target);
-            this.clearHighlighting();
-            this.switchPlayer();
-            this.setActivePosition(null);
-
-            //? ADD MOVES TO PGN
-          } else {
-            this.clearHighlighting();
-            this.setCellState(target, CellStates.DEFAULT);
-            this.setActivePosition(null);
-          }
-        }
-      } else {
-        if (
-          cell.state === CellStates.AVAILABLE ||
-          cell.state === CellStates.SPECIAL
-        ) {
-          const activePiece = this.getPieceAt(
-            this.activePosition as CellPositionType,
-          ) as ChessPiece;
-
-          activePiece.move(this, target);
-          this.clearHighlighting();
-          this.switchPlayer();
-          this.setActivePosition(null);
-
-          //? ADD MOVES TO PGN
-        } else {
-          this.clearHighlighting();
-          this.setCellState(target, CellStates.DEFAULT);
-          this.setActivePosition(null);
-        }
-      }
-    } else {
-      if (targetPiece && targetPiece.color === this.activePlayerColor) {
-        this.setActivePosition(target);
-        targetPiece.canMove(target, this);
-        this.setCellState(target, CellStates.SELECTED);
-      }
-    }
-    return true;
-  }
-
   // OVERPIECES MOVEMENT BLOCKERS
 
   public blockLongCastle(color: ChessColors) {
@@ -236,6 +175,7 @@ export class ChessBoard {
     this.setPieceAt(to, piece);
     this.setPieceAt(from, null);
     this.enpassant = null;
+    this.getPieceAt(to)?.onmove(from, to, this);
   }
 
   public capturePiece(target: CellPositionType) {

@@ -50,9 +50,11 @@ export class Rook extends ChessPiece {
     }
   }
 
-  move(board: ChessBoard, target: CellPositionType): void {
-    const from = board.activePosition as CellPositionType;
-
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
     if (from.x === 0) {
       board.blockLongCastle(this.color);
     }
@@ -61,13 +63,6 @@ export class Rook extends ChessPiece {
       board.blockShortCastle(this.color);
     }
 
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove('Rx', target);
-    } else {
-      board.moves.recordMove('R', target);
-    }
-
-    board.movePiece(board.activePosition as CellPositionType, target);
+    // write to PGN with capture OR not
   }
 }

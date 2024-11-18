@@ -86,14 +86,11 @@ export class Queen extends ChessPiece {
       newPosition.x++;
     }
   }
-
-  move(board: ChessBoard, target: CellPositionType): void {
-    if (board.getPositionAt(target)?.state === CellStates.OCCUPIED) {
-      board.capturePiece(target);
-      board.moves.recordMove('Qx', target);
-    } else {
-      board.moves.recordMove('Q', target);
-    }
-    board.movePiece(board.activePosition as CellPositionType, target);
+  onmove(
+    from: CellPositionType,
+    to: CellPositionType,
+    board: ChessBoard,
+  ): void {
+    // write to PGN
   }
 }
