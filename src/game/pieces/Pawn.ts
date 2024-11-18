@@ -147,7 +147,6 @@ export class Pawn extends ChessPiece {
     // TAKE EN PASSANT PAWN
     if (to.y === board.enpassant?.y && to.x === board.enpassant.x) {
       if (to.y === 2) {
-        console.log('Going to kill ', to);
         board.capturePiece({y: 3, x: to.x});
       }
       if (to.y === 5) {

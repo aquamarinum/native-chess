@@ -17,10 +17,8 @@ export type CellPositionType = {
 };
 
 export class ChessBoard {
-  moves: MovesAggregator;
   cells: Array<Array<ChessCell>>;
   activePlayerColor: ChessColors;
-  activePosition: CellPositionType | null;
 
   whiteKingPos: CellPositionType;
   isWhiteKingCheched: boolean;
@@ -32,10 +30,8 @@ export class ChessBoard {
   capturedBlack: Array<ChessPiece>;
 
   constructor() {
-    this.moves = new MovesAggregator();
     this.cells = [];
     this.activePlayerColor = ChessColors.WHITE;
-    this.activePosition = null;
 
     this.whiteKingPos = {y: 7, x: 4};
     this.isWhiteKingCheched = false;
@@ -117,10 +113,6 @@ export class ChessBoard {
     else throw new Error('Cell out of the board');
   }
 
-  getActivePosition() {
-    return this.activePosition;
-  }
-
   getActivePlayerColor() {
     return this.activePlayerColor;
   }
@@ -133,10 +125,6 @@ export class ChessBoard {
   setPieceAt(pos: CellPositionType, piece: ChessPiece | null) {
     if (this.getPositionAt(pos)) this.cells[pos.y][pos.x].piece = piece;
     else throw new Error('Cell out of the board');
-  }
-
-  setActivePosition(pos: CellPositionType | null) {
-    this.activePosition = pos;
   }
 
   setEnPassant(pos: CellPositionType | null) {
@@ -174,13 +162,14 @@ export class ChessBoard {
 
     this.setPieceAt(to, piece);
     this.setPieceAt(from, null);
+
     this.enpassant = null;
     this.getPieceAt(to)?.onmove(from, to, this);
   }
 
   public capturePiece(target: CellPositionType) {
-    const piece = this.getPieceAt(target) as ChessPiece;
-    console.log('[!] CAPTURE PIECE {' + piece.type + '} AT ', target);
+    const piece = this.getPieceAt(target);
+    if (!piece) return;
     if (piece.color === ChessColors.WHITE) {
       this.capturedWhite.push(piece);
     } else {
