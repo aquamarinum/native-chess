@@ -4,38 +4,24 @@ import {styles} from './styles';
 import CellComponent from '../CellComponent';
 import {CellPositionType, ChessBoard} from '../../game/ChessBoard';
 import {ChessCell} from '../../game/ChessCell';
-import {ChessColors} from '../../game/models/ChessColors';
 
 type BoardComponentProps = {
-  board: ChessBoard;
-  setBoard: React.Dispatch<React.SetStateAction<ChessBoard>>;
-  setTimer: React.Dispatch<React.SetStateAction<ChessColors>>;
+  board: Array<Array<ChessCell>>;
+  onTapCell: (target: CellPositionType) => void;
 };
 
-const BoardComponent: React.FC<BoardComponentProps> = ({
-  board,
-  setBoard,
-  setTimer,
-}) => {
+const BoardComponent: React.FC<BoardComponentProps> = ({board, onTapCell}) => {
   console.log('[+] RENDER BOARD');
-
-  const [activeCell, setActiveCell] = useState<CellPositionType | null>(null);
-
-  const onSelectCell = (target: ChessCell) => {
-    const newBoard = board;
-
-    newBoard.onClickCell(target.position);
-    setActiveCell(newBoard.getActivePosition());
-    setTimer(newBoard.activePlayerColor);
-    setBoard(newBoard);
-  };
 
   return (
     <ScrollView>
-      {board.getBoard().map(row => (
+      {board.map(row => (
         <View style={styles.row}>
           {row.map(cell => (
-            <CellComponent cell={cell} setSelected={() => onSelectCell(cell)} />
+            <CellComponent
+              cell={cell}
+              setSelected={() => onTapCell(cell.position)}
+            />
           ))}
         </View>
       ))}

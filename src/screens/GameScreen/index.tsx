@@ -5,10 +5,11 @@ import {styles} from './styles';
 import MovesHistoryBar from '../../components/MovesHistoryBar';
 import PlayerTab from '../../components/PlayerTab';
 import BoardComponent from '../../components/BoardComponent';
-import {queen_black_icon, rook_white_icon} from '../../assets/img/chess';
+import {queen_black_icon, queen_white_icon} from '../../assets/img/chess';
 import {Game} from '../../game/Game';
 import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
+import {useChessBoard} from '../../hooks/useChessBoard';
 
 const GameScreen = () => {
   const [game, setGame] = useState(
@@ -17,36 +18,26 @@ const GameScreen = () => {
       new Player('play#22', ChessColors.BLACK, 1200),
     ),
   );
-
-  const [board, setBoard] = useState(game.getBoard());
-  const [moves, setMoves] = useState(game.getBoard().moves.getMoves());
-  const [firstPlayer, setFirstPlayer] = useState(game.getFirstPlayer());
-  const [secondPlayer, setSecondPlayer] = useState(game.getSecondPlayer());
-
-  const [activeTimer, setActiveTimer] = useState(ChessColors.WHITE);
+  const {board, activePlayerColor, onClickCell} = useChessBoard(game.board);
 
   return (
     <SafeAreaView style={styles.container}>
-      <MovesHistoryBar moves={moves} />
+      <MovesHistoryBar moves={[]} />
       <ImageBackground source={background_dark} style={styles.wrapper}>
         <PlayerTab
-          username={secondPlayer.name}
-          elo={secondPlayer.getElo()}
-          image={rook_white_icon}
-          timeLimit={10}
-          timerStatus={activeTimer === secondPlayer.color}
-        />
-        <BoardComponent
-          board={board}
-          setBoard={setBoard}
-          setTimer={setActiveTimer}
-        />
-        <PlayerTab
-          username={firstPlayer.name}
-          elo={firstPlayer.getElo()}
+          username={game.getSecondPlayer().name}
+          elo={game.getSecondPlayer().getElo()}
           image={queen_black_icon}
           timeLimit={10}
-          timerStatus={activeTimer === firstPlayer.color}
+          timerStatus={activePlayerColor === game.getSecondPlayer().color}
+        />
+        <BoardComponent board={board} onTapCell={onClickCell} />
+        <PlayerTab
+          username={game.getFirstPlayer().name}
+          elo={game.getFirstPlayer().getElo()}
+          image={queen_white_icon}
+          timeLimit={10}
+          timerStatus={activePlayerColor === game.getFirstPlayer().color}
         />
       </ImageBackground>
     </SafeAreaView>

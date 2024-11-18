@@ -51,4 +51,8 @@ export class MovesAggregator {
   getSymbolPos(col: number) {
     return this.columns[col];
   }
+
+  convertToPGN(pos: CellPositionType) {
+    return this.columns[pos.x] + (8 - pos.y);
+  }
 }
