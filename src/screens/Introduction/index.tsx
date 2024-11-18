@@ -33,10 +33,10 @@ const Introduction = () => {
     <Wrapper>
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
-          <Header>What is your name</Header>
+          <Header>Enter your username</Header>
           {error !== SignStatuses.SUCCESS && (
             <Text style={styles.label}>
-              Name should contain only latin letters and no spaces
+              Username should contain only latin letters and no spaces
             </Text>
           )}
           <TextInput
