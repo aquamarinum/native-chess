@@ -11,18 +11,12 @@ import Wrapper from '../../components/Wrapper';
 import {ScrollView} from 'react-native-gesture-handler';
 import {board_icon} from '../../assets/img';
 import {navigate} from '../../services/navigator/Navigator';
-import ChessApiService from '../../services/lichess/ChessApiService';
 
 const GameMode = () => {
   const {t} = useTranslation();
 
   const onStartGame = () => {
-    ChessApiService.createGame()
-      .then(res => {
-        console.log(res);
-      })
-      .catch(err => console.log('[E] ERROR ON GAME: ', err))
-      .finally(() => navigate('GameScreen'));
+    navigate('GameScreen');
   };
 
   return (

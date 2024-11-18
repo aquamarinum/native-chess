@@ -9,6 +9,7 @@ import {queen_black_icon, rook_white_icon} from '../../assets/img/chess';
 import {Game} from '../../game/Game';
 import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
+import ChessApiService from '../../services/chessapi/ChessApiService';
 
 const GameScreen = () => {
   const [game, setGame] = useState(
@@ -24,6 +25,12 @@ const GameScreen = () => {
   const [secondPlayer, setSecondPlayer] = useState(game.getSecondPlayer());
 
   const [activeTimer, setActiveTimer] = useState(ChessColors.WHITE);
+
+  useEffect(() => {
+    ChessApiService.createNewGame()
+      .then(res => console.log(res))
+      .catch(err => console.error(err));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
