@@ -10,6 +10,8 @@ import {Game} from '../../game/Game';
 import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
 import {useChessBoard} from '../../hooks/useChessBoard';
+import {useAppSelector} from '../../redux/store';
+import {themeSelector} from '../../redux/theme/selectors';
 
 const GameScreen = () => {
   const [game, setGame] = useState(
@@ -19,11 +21,14 @@ const GameScreen = () => {
     ),
   );
   const {board, activePlayerColor, onClickCell} = useChessBoard(game.board);
+  const isDarkMode = useAppSelector(themeSelector);
 
   return (
     <SafeAreaView style={styles.container}>
       <MovesHistoryBar moves={[]} />
-      <ImageBackground source={background_dark} style={styles.wrapper}>
+      <ImageBackground
+        source={isDarkMode ? background_dark : background_light}
+        style={styles.wrapper}>
         <PlayerTab
           username={game.getSecondPlayer().name}
           elo={game.getSecondPlayer().getElo()}

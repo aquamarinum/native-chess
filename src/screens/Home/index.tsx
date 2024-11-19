@@ -77,7 +77,7 @@ const Home = () => {
             title={item.title}
             subtitle={item.description}
             rating={item.rating}
-            onClick={() => navigate('Game')}
+            onClick={() => navigate('GameScreen')}
             image={item.image}
             league_icon={item.league_icon}
           />

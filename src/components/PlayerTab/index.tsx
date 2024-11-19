@@ -23,7 +23,7 @@ const PlayerTab: React.FC<PlayerTabProps> = ({
   const styles = createStyles(useAppSelector(themeSelector));
   return (
     <View style={styles.container}>
-      <View style={styles.photo}>
+      <View>
         <Image source={image} style={styles.photo} />
       </View>
       <View style={styles.content}>
