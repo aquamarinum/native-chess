@@ -2,5 +2,7 @@ export enum CellStates {
   AVAILABLE,
   SELECTED,
   OCCUPIED,
-  BUSY,
+  SPECIAL,
+  DEFAULT,
+  THREATENED,
 }

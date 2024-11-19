@@ -5,16 +5,12 @@ const screen_width = Dimensions.get('window').width;
 const cell_width = screen_width / 8;
 
 export const styles = StyleSheet.create({
-  board: {
-    width: screen_width,
-    height: screen_width,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: Colors.grey_light,
-  },
   cell: {
+    position: 'relative',
     width: cell_width,
     height: cell_width,
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
     borderColor: Colors.black,
   },
@@ -23,5 +19,18 @@ export const styles = StyleSheet.create({
   },
   black: {
     backgroundColor: Colors.grey_dark,
+  },
+  selected: {
+    backgroundColor: Colors.aquamarine,
+  },
+  occupied: {
+    backgroundColor: Colors.red,
+  },
+  highlighted: {
+    backgroundColor: Colors.aquamarine,
+  },
+  image: {
+    width: 20,
+    height: 30,
   },
 });

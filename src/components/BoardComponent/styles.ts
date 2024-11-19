@@ -5,16 +5,13 @@ const screen_width = Dimensions.get('window').width;
 const cell_width = screen_width / 8;
 
 export const styles = StyleSheet.create({
-  cell: {
-    width: cell_width,
-    height: cell_width,
-    borderWidth: 1,
-    borderColor: Colors.black,
-  },
-  white: {
+  board: {
+    width: screen_width,
+    height: screen_width,
+    flexWrap: 'wrap',
     backgroundColor: Colors.grey_light,
   },
-  black: {
-    backgroundColor: Colors.grey_dark,
+  row: {
+    flexDirection: 'row',
   },
 });
