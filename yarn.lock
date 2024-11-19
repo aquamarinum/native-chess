@@ -3063,6 +3063,11 @@ entities@^4.2.0, entities@^4.4.0:
 envinfo@^7.10.0:
   version "7.14.0"
 
+equine@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.npmjs.org/equine/-/equine-0.2.1.tgz"
+  integrity sha512-VlRrl2k+nt1umWoLdFndUQfqYnirj0Ufk1EAQ2Ap9jqZBtCPUKMvj+e+z3kTQPBONmTZoPC/lkrMIVh2wGd3Gw==
+
 error-ex@^1.3.1:
   version "1.3.2"
   dependencies:
