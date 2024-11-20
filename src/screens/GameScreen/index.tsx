@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, SafeAreaView} from 'react-native';
 import {background_dark, background_light} from '../../assets/img';
 import {styles} from './styles';
@@ -11,18 +11,20 @@ import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
 import {useAppSelector} from '../../redux/store';
 import {themeSelector} from '../../redux/theme/selectors';
-import {gameIdSelector} from '../../redux/game/selectors';
-import {useOfflineGame} from '../../hooks/useOfflineGame';
+import {gameIdSelector, premovesSelector} from '../../redux/game/selectors';
 import {useOnlineGame} from '../../hooks/useOnlineGame';
+import {ChessBoard} from '../../game/ChessBoard';
 
 const GameScreen = () => {
-  const [game, setGame] = useState(
-    new Game(
-      new Player('play#1', ChessColors.WHITE, 1600),
-      new Player('play#22', ChessColors.BLACK, 1200),
-    ),
-  );
+  const premoves = useAppSelector(premovesSelector);
   const gameid = useAppSelector(gameIdSelector);
+
+  const game = new Game(
+    new Player('play#1', ChessColors.WHITE, 1600),
+    new Player('play#22', ChessColors.BLACK, 1200),
+    premoves,
+  );
+
   const {board, moves, activePlayerColor, onClickCell} = useOnlineGame(
     game.board,
     gameid,

@@ -84,18 +84,18 @@ export class ChessBoard {
     }
 
     // SET EMPTY OTHERS
-    for (let i = 0; i < 8; i++) {
-      this.cells[2][i].piece = null;
-    }
-    for (let i = 0; i < 8; i++) {
-      this.cells[3][i].piece = null;
-    }
-    for (let i = 0; i < 8; i++) {
-      this.cells[4][i].piece = null;
-    }
-    for (let i = 0; i < 8; i++) {
-      this.cells[5][i].piece = null;
-    }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[2][i].piece = null;
+    // }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[3][i].piece = null;
+    // }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[4][i].piece = null;
+    // }
+    // for (let i = 0; i < 8; i++) {
+    //   this.cells[5][i].piece = null;
+    // }
   }
 
   getBoard() {
@@ -178,15 +178,15 @@ export class ChessBoard {
   // PIECES OPERATIONS
 
   public movePiece(from: CellPositionType, to: CellPositionType) {
-    const piece = this.getPieceAt(from) as ChessPiece;
-
+    const piece = this.getPieceAt(from);
+    if (!piece) return;
     this.setPieceAt(to, piece);
     this.setPieceAt(from, null);
 
     this.enpassant = null;
     this.getPieceAt(to)?.onmove(from, to, this);
 
-    return this.converter.convertToPGN(from) + this.converter.convertToPGN(to);
+    // return this.converter.convertToPGN(from) + this.converter.convertToPGN(to);
   }
 
   public capturePiece(target: CellPositionType) {
@@ -200,20 +200,11 @@ export class ChessBoard {
   }
 
   public setPieceFromPGN(move: string) {
+    if (!move) return;
     const from = this.converter.convertToPos(move.substring(0, 2));
     const to = this.converter.convertToPos(move.substring(2));
 
     this.movePiece(from, to);
-
-    this.cells.forEach(row => {
-      let r = '[';
-      row.forEach(cell => {
-        if (cell.piece) r += '*';
-        else r += '.';
-      });
-      r += ']';
-      console.log(r);
-    });
   }
 
   // HIGHLIGHTING

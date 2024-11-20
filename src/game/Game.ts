@@ -5,9 +5,10 @@ export class Game {
   board: ChessBoard;
   private players: Player[];
 
-  constructor(playerWhite: Player, playerBlack: Player) {
+  constructor(playerWhite: Player, playerBlack: Player, premoves: string[]) {
     this.board = new ChessBoard();
     this.players = [playerWhite, playerBlack];
+    premoves.forEach(val => this.board.setPieceFromPGN(val));
   }
 
   public getBoard() {

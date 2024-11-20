@@ -13,11 +13,12 @@ type BoardComponentProps = {
 const BoardComponent: React.FC<BoardComponentProps> = ({board, onTapCell}) => {
   return (
     <ScrollView>
-      {board.map(row => (
-        <View style={styles.row}>
-          {row.map(cell => (
+      {board.map((row, rowidx) => (
+        <View style={styles.row} key={rowidx}>
+          {row.map((cell, cellidx) => (
             <CellComponent
               cell={cell}
+              key={rowidx + '' + cellidx}
               setSelected={() => onTapCell(cell.position)}
             />
           ))}
