@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {ImageBackground, SafeAreaView} from 'react-native';
 import {background_dark, background_light} from '../../assets/img';
 import {styles} from './styles';
@@ -9,9 +9,11 @@ import {queen_black_icon, queen_white_icon} from '../../assets/img/chess';
 import {Game} from '../../game/Game';
 import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
-import {useChessBoard} from '../../hooks/useChessBoard';
 import {useAppSelector} from '../../redux/store';
 import {themeSelector} from '../../redux/theme/selectors';
+import {gameIdSelector} from '../../redux/game/selectors';
+import {useOfflineGame} from '../../hooks/useOfflineGame';
+import {useOnlineGame} from '../../hooks/useOnlineGame';
 
 const GameScreen = () => {
   const [game, setGame] = useState(
@@ -20,12 +22,16 @@ const GameScreen = () => {
       new Player('play#22', ChessColors.BLACK, 1200),
     ),
   );
-  const {board, activePlayerColor, onClickCell} = useChessBoard(game.board);
+  const gameid = useAppSelector(gameIdSelector);
+  const {board, moves, activePlayerColor, onClickCell} = useOnlineGame(
+    game.board,
+    gameid,
+  );
   const isDarkMode = useAppSelector(themeSelector);
 
   return (
     <SafeAreaView style={styles.container}>
-      <MovesHistoryBar moves={[]} />
+      <MovesHistoryBar moves={moves} />
       <ImageBackground
         source={isDarkMode ? background_dark : background_light}
         style={styles.wrapper}>

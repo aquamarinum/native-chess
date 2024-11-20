@@ -11,8 +11,6 @@ type BoardComponentProps = {
 };
 
 const BoardComponent: React.FC<BoardComponentProps> = ({board, onTapCell}) => {
-  console.log('[+] RENDER BOARD');
-
   return (
     <ScrollView>
       {board.map(row => (

@@ -12,12 +12,14 @@ import {goBack} from '../services/navigator/Navigator';
 import GameScreen from '../screens/GameScreen';
 import {useAppSelector} from '../redux/store';
 import {themeSelector} from '../redux/theme/selectors';
+import GameConnect from '../screens/GameConnect';
 
 export type AppStackParamList = {
   HomeTab: undefined;
   Profile: undefined;
   GameScreen: undefined;
   GameMode: undefined;
+  GameConnect: undefined;
   TimeMode: undefined;
   Settings: undefined;
   Rating: undefined;
@@ -41,6 +43,7 @@ const AppStackNavigator = () => {
       />
       <AppStack.Screen name="GameScreen" component={GameScreen} />
       <AppStack.Screen name="GameMode" component={GameMode} />
+      <AppStack.Screen name="GameConnect" component={GameConnect} />
       <AppStack.Screen name="TimeMode" component={TimeMode} />
       <AppStack.Screen name="Profile" component={Profile} />
       <AppStack.Screen name="Rating" component={Rating} />

@@ -19,6 +19,7 @@ export type CellPositionType = {
 export class ChessBoard {
   cells: Array<Array<ChessCell>>;
   activePlayerColor: ChessColors;
+  converter: MovesAggregator;
 
   whiteKingPos: CellPositionType;
   isWhiteKingCheched: boolean;
@@ -32,6 +33,7 @@ export class ChessBoard {
   constructor() {
     this.cells = [];
     this.activePlayerColor = ChessColors.WHITE;
+    this.converter = new MovesAggregator();
 
     this.whiteKingPos = {y: 7, x: 4};
     this.isWhiteKingCheched = false;
@@ -52,7 +54,7 @@ export class ChessBoard {
     this.init();
   }
 
-  private init() {
+  init() {
     this.cells[0][0].piece = new Rook(ChessColors.BLACK);
     this.cells[0][7].piece = new Rook(ChessColors.BLACK);
     this.cells[7][0].piece = new Rook(ChessColors.WHITE);
@@ -79,6 +81,20 @@ export class ChessBoard {
     }
     for (let i = 0; i < 8; i++) {
       this.cells[6][i].piece = new Pawn(ChessColors.WHITE);
+    }
+
+    // SET EMPTY OTHERS
+    for (let i = 0; i < 8; i++) {
+      this.cells[2][i].piece = null;
+    }
+    for (let i = 0; i < 8; i++) {
+      this.cells[3][i].piece = null;
+    }
+    for (let i = 0; i < 8; i++) {
+      this.cells[4][i].piece = null;
+    }
+    for (let i = 0; i < 8; i++) {
+      this.cells[5][i].piece = null;
     }
   }
 
@@ -115,6 +131,10 @@ export class ChessBoard {
 
   getActivePlayerColor() {
     return this.activePlayerColor;
+  }
+
+  setActivePlayerColor(color: ChessColors) {
+    this.activePlayerColor = color;
   }
 
   setCellState(pos: CellPositionType, state: CellStates) {
@@ -165,6 +185,8 @@ export class ChessBoard {
 
     this.enpassant = null;
     this.getPieceAt(to)?.onmove(from, to, this);
+
+    return this.converter.convertToPGN(from) + this.converter.convertToPGN(to);
   }
 
   public capturePiece(target: CellPositionType) {
@@ -175,6 +197,23 @@ export class ChessBoard {
     } else {
       this.capturedBlack.push(piece);
     }
+  }
+
+  public setPieceFromPGN(move: string) {
+    const from = this.converter.convertToPos(move.substring(0, 2));
+    const to = this.converter.convertToPos(move.substring(2));
+
+    this.movePiece(from, to);
+
+    this.cells.forEach(row => {
+      let r = '[';
+      row.forEach(cell => {
+        if (cell.piece) r += '*';
+        else r += '.';
+      });
+      r += ']';
+      console.log(r);
+    });
   }
 
   // HIGHLIGHTING

@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {User} from '../../types/User';
 import {GameModeType} from '../../types/GameModeType';
 import {TimeModes} from '../../types/TimeModes';
 
 const initialState: GameModeType = {
+  gameId: 'null',
   timeMode: TimeModes.RAPID1,
   pieceColor: 'random',
   isRating: true,
@@ -17,6 +17,9 @@ export const gameModeSlice = createSlice({
   reducers: {
     setGameMode(state, action: PayloadAction<GameModeType>) {
       state = action.payload;
+    },
+    setGameId(state, action: PayloadAction<string>) {
+      state.gameId = action.payload;
     },
     setTimeMode(state, action: PayloadAction<TimeModes>) {
       state.timeMode = action.payload;
@@ -43,6 +46,7 @@ export const {
   setLeftRating,
   setRightRating,
   setPieceColor,
+  setGameId,
 } = gameModeSlice.actions;
 
 export default gameModeSlice.reducer;

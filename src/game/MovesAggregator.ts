@@ -18,41 +18,15 @@ export class MovesAggregator {
     );
   }
 
-  recordMove(pieceSymbol: string, pos: CellPositionType) {
-    const newPos = this.columns[pos.x] + (8 - pos.y);
-    if (this.currentMove.length > 0) {
-      this.currentMove += pieceSymbol + newPos + ' ';
-      this.next();
-    } else {
-      this.currentMove += pieceSymbol + newPos + ' ';
-    }
-  }
-
-  recordMoveSpecial(content: string) {
-    if (this.currentMove.length > 0) {
-      this.currentMove += content + ' ';
-      this.next();
-    } else {
-      this.currentMove += content + ' ';
-    }
-  }
-
-  next() {
-    const completeMove = this.iteration + 1 + '. ' + this.currentMove.trimEnd();
-    this.moves.push(completeMove);
-    this.currentMove = '';
-    this.iteration++;
-  }
-
-  getMoves() {
-    return this.moves;
-  }
-
-  getSymbolPos(col: number) {
-    return this.columns[col];
-  }
-
   convertToPGN(pos: CellPositionType) {
     return this.columns[pos.x] + (8 - pos.y);
+  }
+
+  convertToPos(pgn: string) {
+    const pos: CellPositionType = {
+      y: 8 - Number(pgn[1]),
+      x: (this.columnsReverse.get(pgn[0]) as number) - 1,
+    };
+    return pos;
   }
 }
