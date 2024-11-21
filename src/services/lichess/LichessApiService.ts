@@ -49,6 +49,23 @@ export class LichessApiService {
       throw error;
     }
   };
+
+  connectToGame = async () => {
+    try {
+      const response = await axios.get(
+        `https://lichess.org/api/board/game/stream/${this.gameId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${LICHESS_API_TOKEN}`,
+          },
+        },
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching game state:', error);
+      throw error;
+    }
+  };
 }
 
 // {"black": {},

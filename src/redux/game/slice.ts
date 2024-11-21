@@ -1,15 +1,26 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {GameModeType} from '../../types/GameModeType';
 import {TimeModes} from '../../types/TimeModes';
+import {PlayerType} from '../../types/PlayerType';
 
 const initialState: GameModeType = {
   gameId: 'null',
   timeMode: TimeModes.RAPID1,
   pieceColor: 'random',
   isRating: true,
-  leftRating: 300,
-  rightRating: 300,
+  minRating: 300,
+  maxRating: 300,
+  playerBlack: {
+    name: 'Anonymous',
+    rating: undefined,
+  },
+  playerWhite: {
+    name: 'Anonymous',
+    rating: undefined,
+  },
   premoves: [],
+  speed: 'correspond',
+  initialClock: 0,
 };
 
 export const gameModeSlice = createSlice({
@@ -31,14 +42,23 @@ export const gameModeSlice = createSlice({
     setIsRating(state, action: PayloadAction<boolean>) {
       state.isRating = action.payload;
     },
-    setLeftRating(state, action: PayloadAction<number>) {
-      state.leftRating = action.payload;
+    setMinRating(state, action: PayloadAction<number>) {
+      state.minRating = action.payload;
     },
-    setRightRating(state, action: PayloadAction<number>) {
-      state.rightRating = action.payload;
+    setMaxRating(state, action: PayloadAction<number>) {
+      state.maxRating = action.payload;
     },
     setPremoves(state, action: PayloadAction<string[]>) {
       state.premoves = action.payload;
+    },
+    setWhitePlayer(state, action: PayloadAction<PlayerType>) {
+      state.playerWhite = action.payload;
+    },
+    setBlackPlayer(state, action: PayloadAction<PlayerType>) {
+      state.playerBlack = action.payload;
+    },
+    setGameSpeed(state, action: PayloadAction<string>) {
+      state.speed = action.payload;
     },
   },
 });
@@ -47,11 +67,14 @@ export const {
   setGameMode,
   setTimeMode,
   setIsRating,
-  setLeftRating,
-  setRightRating,
+  setMinRating,
+  setMaxRating,
   setPieceColor,
   setGameId,
   setPremoves,
+  setWhitePlayer,
+  setBlackPlayer,
+  setGameSpeed,
 } = gameModeSlice.actions;
 
 export default gameModeSlice.reducer;

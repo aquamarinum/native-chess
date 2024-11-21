@@ -11,21 +11,29 @@ import {Player} from '../../game/Player';
 import {ChessColors} from '../../game/models/ChessColors';
 import {useAppSelector} from '../../redux/store';
 import {themeSelector} from '../../redux/theme/selectors';
-import {gameIdSelector, premovesSelector} from '../../redux/game/selectors';
+import {
+  blackPlayerGameSelector,
+  gameIdSelector,
+  premovesSelector,
+  whitePlayerGameSelector,
+} from '../../redux/game/selectors';
 import {useOnlineGame} from '../../hooks/useOnlineGame';
 import {ChessBoard} from '../../game/ChessBoard';
+import {useOfflineGame} from '../../hooks/useOfflineGame';
 
 const GameScreen = () => {
   const premoves = useAppSelector(premovesSelector);
   const gameid = useAppSelector(gameIdSelector);
+  const whitePlayer = useAppSelector(whitePlayerGameSelector);
+  const blackPlayer = useAppSelector(blackPlayerGameSelector);
 
   const game = new Game(
-    new Player('play#1', ChessColors.WHITE, 1600),
-    new Player('play#22', ChessColors.BLACK, 1200),
+    new Player(whitePlayer.name, ChessColors.WHITE, whitePlayer.rating),
+    new Player(blackPlayer.name, ChessColors.BLACK, blackPlayer.rating),
     premoves,
   );
 
-  const {board, moves, activePlayerColor, onClickCell} = useOnlineGame(
+  const {board, moves, activePlayerColor, onClickCell} = useOfflineGame(
     game.board,
     gameid,
   );
@@ -38,16 +46,16 @@ const GameScreen = () => {
         source={isDarkMode ? background_dark : background_light}
         style={styles.wrapper}>
         <PlayerTab
-          username={game.getSecondPlayer().name}
-          elo={game.getSecondPlayer().getElo()}
+          username={blackPlayer.name}
+          elo={blackPlayer.rating}
           image={queen_black_icon}
           timeLimit={10}
           timerStatus={activePlayerColor === game.getSecondPlayer().color}
         />
         <BoardComponent board={board} onTapCell={onClickCell} />
         <PlayerTab
-          username={game.getFirstPlayer().name}
-          elo={game.getFirstPlayer().getElo()}
+          username={whitePlayer.name}
+          elo={whitePlayer.rating}
           image={queen_white_icon}
           timeLimit={10}
           timerStatus={activePlayerColor === game.getFirstPlayer().color}

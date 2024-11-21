@@ -10,7 +10,6 @@ import {premovesSelector} from '../redux/game/selectors';
 export function useOnlineGame(game: ChessBoard, gameid: string) {
   const lichess = new LichessApiService(gameid);
   const converter = new MovesAggregator();
-  const playerid = 'aquamarinum';
 
   const [board, setBoard] = useState(game.cells);
   const [moves, setMoves] = useState<Array<string>>(
@@ -25,25 +24,23 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
     ChessColors.WHITE,
   );
 
-  useEffect(() => {
-    const interval = 3000;
-    const intervalRef = setInterval(() => {
-      lichess.getGameState().then(state => {
-        if (state && state.moves) {
-          updateMoves(state.moves);
-        }
-      });
-    }, interval);
+  // useEffect(() => {
+  //   const interval = 3000;
+  //   const intervalRef = setInterval(() => {
+  //     lichess.getGameState().then(state => {
+  //       if (state && state.moves) {
+  //         updateMoves(state.moves);
+  //       }
+  //     });
+  //   }, interval);
 
-    return () => {
-      clearInterval(intervalRef);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalRef);
+  //   };
+  // }, []);
 
   const updateMoves = (newMoves: string) => {
     const newMovesArray = newMoves.split(' ');
-    console.warn('NEW MOVES: => ', newMovesArray);
-    console.warn('OLD MOVES: => ', moves);
     if (newMovesArray.length - savedLength.current > 0) {
       console.log('updating...........', savedLength.current);
       const newBoard = game.cells;
@@ -69,8 +66,8 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
   };
 
   const onClickCell = (target: CellPositionType) => {
-    console.log('TURN ME ->', activePlayerColor, ' --- ', currentPlayerColor);
-    console.log('ACTIVE CELL ===>', activeCell);
+    console.warn('TURN ME ->', activePlayerColor, ' --- ', currentPlayerColor);
+    console.warn('ACTIVE CELL ===>', activeCell);
     //! IF NOT MY TURN
     if (currentPlayerColor !== activePlayerColor) {
       return;
@@ -101,12 +98,12 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
             ? ChessColors.BLACK
             : ChessColors.WHITE,
         );
-        lichess
-          .sendMove(move)
-          .then(res => {
-            console.log('move sended');
-          })
-          .catch(err => console.log('[E] UNRECOGNIZED ERROR'));
+        // lichess
+        //   .sendMove(move)
+        //   .then(res => {
+        //     console.log('move sended');
+        //   })
+        //   .catch(err => console.log('[E] UNRECOGNIZED ERROR'));
       }
 
       if (game.getPositionAt(target)?.state === CellStates.OCCUPIED) {
@@ -121,14 +118,14 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
             ? ChessColors.BLACK
             : ChessColors.WHITE,
         );
-        lichess
-          .sendMove(move)
-          .then(res => {
-            if (res) {
-              console.log('move sended');
-            }
-          })
-          .catch(err => console.log('[E] UNRECOGNIZED ERROR'));
+        // lichess
+        //   .sendMove(move)
+        //   .then(res => {
+        //     if (res) {
+        //       console.log('move sended');
+        //     }
+        //   })
+        //   .catch(err => console.log('[E] UNRECOGNIZED ERROR'));
       }
       game.clearHighlighting();
       setActiveCell(null);

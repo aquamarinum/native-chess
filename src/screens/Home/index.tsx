@@ -67,13 +67,6 @@ const cards: gameCardType[] = [
 
 const Home = () => {
   const {t} = useTranslation();
-  const converter = new MovesAggregator();
-  const res = 'e2e4 c7c5 f2f4 d7d6 g1f3 b8c6 f1c4 g8f6 d2d3 g7g6 e1g1 f8g7 b1c3'
-    .split(' ')
-    .forEach(val => {
-      console.log('[TEST] ', converter.convertToPos(val.substring(0, 2)));
-      console.log('[TEST] ', converter.convertToPos(val.substring(2)));
-    });
 
   return (
     <Wrapper>

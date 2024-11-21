@@ -7,7 +7,7 @@ import {themeSelector} from '../../redux/theme/selectors';
 
 type PlayerTabProps = {
   username: string;
-  elo: number;
+  elo: number | undefined;
   image: ImageSourcePropType | undefined;
   timeLimit: number;
   timerStatus: boolean;
@@ -28,7 +28,7 @@ const PlayerTab: React.FC<PlayerTabProps> = ({
       </View>
       <View style={styles.content}>
         <Text style={styles.content_header}>{username}</Text>
-        <Text style={styles.content_text}>{elo}</Text>
+        <Text style={styles.content_text}>{elo ? elo : '-'}</Text>
       </View>
       <Timer limit={timeLimit} isActive={timerStatus} />
     </View>

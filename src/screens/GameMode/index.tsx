@@ -15,9 +15,9 @@ import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {gameModeSelector} from '../../redux/game/selectors';
 import {
   setIsRating,
-  setLeftRating,
+  setMinRating,
   setPieceColor,
-  setRightRating,
+  setMaxRating,
 } from '../../redux/game/slice';
 import RadioList from '../../components/RadioList';
 import RadioListItem from '../../components/RadioList/RadioListItem';
@@ -84,24 +84,26 @@ const GameMode = () => {
           </View>
           <View style={styles.setting}>
             <ShadowButton
-              content={'-' + gameMode.leftRating}
+              content={'-' + gameMode.minRating}
               event={() =>
-                dispatch(setLeftRating(changeRatingGrade(gameMode.leftRating)))
+                dispatch(setMinRating(changeRatingGrade(gameMode.minRating)))
               }
             />
             <Title>{userRating.toString()}</Title>
             <ShadowButton
-              content={'+' + gameMode.rightRating}
+              content={'+' + gameMode.maxRating}
               event={() =>
-                dispatch(
-                  setRightRating(changeRatingGrade(gameMode.rightRating)),
-                )
+                dispatch(setMaxRating(changeRatingGrade(gameMode.maxRating)))
               }
             />
           </View>
         </View>
       </ScrollView>
-      <MainButton active content={t('Play')} onClick={() => navigate('Game')} />
+      <MainButton
+        active
+        content={t('Play')}
+        onClick={() => navigate('GameScreen')}
+      />
     </Wrapper>
   );
 };
