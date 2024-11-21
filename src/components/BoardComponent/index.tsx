@@ -18,8 +18,8 @@ const BoardComponent: React.FC<BoardComponentProps> = ({board, onTapCell}) => {
           {row.map((cell, cellidx) => (
             <CellComponent
               cell={cell}
-              key={rowidx + '' + cellidx}
               setSelected={() => onTapCell(cell.position)}
+              key={rowidx * 10 + cellidx}
             />
           ))}
         </View>

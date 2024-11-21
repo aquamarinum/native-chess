@@ -126,7 +126,10 @@ export class ChessBoard {
   getPieceAt(pos: CellPositionType) {
     const cell = this.getPositionAt(pos);
     if (cell) return cell.piece;
-    else throw new Error('Cell out of the board');
+    else {
+      console.error(pos);
+      throw new Error('Cell out of the board');
+    }
   }
 
   getActivePlayerColor() {

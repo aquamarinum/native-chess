@@ -26,6 +26,7 @@ const GameConnect = () => {
     lichess
       .getGameState()
       .then(res => {
+        console.log('CONNECT BY', res);
         if (res) {
           const premoves: string[] = res.moves.split(' ');
           dispatch(setPremoves(premoves));
