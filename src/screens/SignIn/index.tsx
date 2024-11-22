@@ -72,20 +72,24 @@ const SignIn = () => {
       <View style={styles.container}>
         <KeyboardAvoidingView style={styles.form}>
           <Header>{t('welcome')}</Header>
-          <TextInput
-            value={login}
-            onChangeText={setLogin}
-            style={styles.input}
-            placeholder={t('login')}
-            placeholderTextColor={Colors.grey_dark}
-          />
-          <TextInput
-            value={password}
-            onChangeText={setPassword}
-            style={styles.input}
-            placeholder={t('password')}
-            placeholderTextColor={Colors.grey_dark}
-          />
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={login}
+              onChangeText={setLogin}
+              style={styles.input}
+              placeholder={t('login')}
+              placeholderTextColor={Colors.grey_dark}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              value={password}
+              onChangeText={setPassword}
+              style={styles.input}
+              placeholder={t('password')}
+              placeholderTextColor={Colors.grey_dark}
+            />
+          </View>
           <MainButton
             content={t('Sign In')}
             active={

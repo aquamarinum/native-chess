@@ -18,8 +18,8 @@ import {useOnlineGame} from '../../hooks/useOnlineGame';
 const GameScreen = () => {
   const [game, setGame] = useState(
     new Game(
-      new Player('play#1', ChessColors.WHITE, 1600),
-      new Player('play#22', ChessColors.BLACK, 1200),
+      new Player('Anonymous', ChessColors.WHITE, 0),
+      new Player('Anonymous', ChessColors.BLACK, 0),
     ),
   );
   const gameid = useAppSelector(gameIdSelector);

@@ -19,8 +19,34 @@ import {
 import RatingPlayerSkeleton from './RatingPlayer/skeleton';
 import ColorTransition from './RatingPlayer/Anim';
 
+const user1 = {
+  bio: '',
+  country: '',
+  elo: 0,
+  email: 'admin@admin.com',
+  lastLogin: '',
+  name: 'Administrator',
+  password: '111111',
+  registrated: '',
+  uid: '',
+  username: '',
+};
+
+const user2 = {
+  bio: '',
+  country: '',
+  elo: 1000,
+  email: 'test@test.com',
+  lastLogin: '',
+  name: 'Tester',
+  password: '111111',
+  registrated: '',
+  uid: '',
+  username: '',
+};
+
 const Rating = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<(typeof user1)[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const {t} = useTranslation();
@@ -31,10 +57,13 @@ const Rating = () => {
     setLoading(true);
     Firestore.getAllUsers()
       .then(res => {
+        console.log(res);
         if (res !== FetchStatus.FAILED) {
           console.log(res);
           //@ts-ignore
           setUsers(res);
+        } else {
+          setUsers([user1, user2]);
         }
       })
       .catch(error => {
@@ -56,7 +85,7 @@ const Rating = () => {
         </View>
         <Title>{t('Top players')}</Title>
       </View>
-      {loading ? (
+      {!loading ? (
         <FlatList
           style={styles.list}
           data={[...new Array(5)]}
@@ -68,8 +97,8 @@ const Rating = () => {
           data={users}
           renderItem={({item}) => (
             <RatingPlayer
-              name={item._data.name}
-              elo={item._data.elo}
+              name={item.name}
+              elo={item.elo}
               image={undefined}
               onClick={() => {}}
             />

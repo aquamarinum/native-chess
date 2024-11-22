@@ -43,7 +43,9 @@ const GameConnect = () => {
         <KeyboardAvoidingView style={styles.form}>
           <Header>Connect</Header>
           <View style={styles.inputContainer}>
-            {error && <Text style={styles.label}>Wrong game code</Text>}
+            {error && (
+              <Text style={styles.label}>Wrong game code or no internet</Text>
+            )}
             <TextInput
               value={inputValue}
               onChangeText={setInputValue}

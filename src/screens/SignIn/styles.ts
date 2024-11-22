@@ -16,6 +16,7 @@ export const createStyles = (isDarkMode: boolean) =>
     },
     form: {
       alignItems: 'center',
+      paddingHorizontal: '20%',
     },
     link_container: {
       marginTop: 10,
@@ -29,10 +30,14 @@ export const createStyles = (isDarkMode: boolean) =>
     link: {
       textDecorationLine: 'underline',
     },
+    inputContainer: {
+      width: '100%',
+      alignItems: 'center',
+      paddingVertical: '3%',
+    },
     input: {
       position: 'relative',
       width: '100%',
-      marginVertical: '3%',
       paddingVertical: '3%',
       paddingHorizontal: '4%',
       borderWidth: 2,
