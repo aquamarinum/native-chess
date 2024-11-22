@@ -69,12 +69,11 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
 
   const updateMoves = (newMoves: string) => {
     const newMovesArray = newMoves.split(' ');
-    console.warn('NEW MOVES: => ', newMovesArray);
-    console.warn('OLD MOVES: => ', moves);
+
     if (newMovesArray.length - savedLength.current > 0) {
       console.log('updating...........', savedLength.current);
       const newBoard = game.cells;
-      for (let i = moves.length; i < newMovesArray.length; i++) {
+      for (let i = savedLength.current; i < newMovesArray.length; i++) {
         game.setPieceFromPGN(newMovesArray[i]);
       }
       if (newMovesArray.length % 2 === 0) {

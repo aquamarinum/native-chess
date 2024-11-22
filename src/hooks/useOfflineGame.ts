@@ -7,7 +7,7 @@ import {MovesAggregator} from '../game/MovesAggregator';
 export function useOfflineGame(game: ChessBoard, gameid: string) {
   const converter = new MovesAggregator();
   const [board, setBoard] = useState(game.cells);
-  const [moves, setMoves] = useState<Array<string>>([]);
+  const [moves, setMoves] = useState<Array<string>>(['']);
   const [activePlayerColor, setActivePlayerColor] = useState(ChessColors.WHITE);
   const [activeCell, setActiveCell] = useState<CellPositionType | null>(null);
 
