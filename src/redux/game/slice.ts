@@ -9,6 +9,7 @@ const initialState: GameModeType = {
   isRating: true,
   leftRating: 300,
   rightRating: 300,
+  premoves: [''],
 };
 
 export const gameModeSlice = createSlice({
@@ -36,6 +37,9 @@ export const gameModeSlice = createSlice({
     setRightRating(state, action: PayloadAction<number>) {
       state.rightRating = action.payload;
     },
+    setPremoves(state, action: PayloadAction<string[]>) {
+      state.premoves = action.payload;
+    },
   },
 });
 
@@ -47,6 +51,7 @@ export const {
   setRightRating,
   setPieceColor,
   setGameId,
+  setPremoves,
 } = gameModeSlice.actions;
 
 export default gameModeSlice.reducer;

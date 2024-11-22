@@ -8,17 +8,34 @@ import {Colors} from '../../constants/Colors';
 import {createStyles} from './styles';
 import {useAppDispatch, useAppSelector} from '../../redux/store';
 import {themeSelector} from '../../redux/theme/selectors';
-import {setGameId} from '../../redux/game/slice';
+import {setGameId, setPremoves} from '../../redux/game/slice';
+import {LichessApiService} from '../../services/lichess/LichessApiService';
+import Splash from '../Splash';
 
 const GameConnect = () => {
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const styles = createStyles(useAppSelector(themeSelector));
   const dispatch = useAppDispatch();
 
   const onStartGame = () => {
+    setLoading(true);
     dispatch(setGameId(inputValue));
-    navigate('GameScreen');
+    new LichessApiService(inputValue)
+      .getGameState()
+      .then(res => {
+        if (res && res.moves) {
+          const newMoves: string[] = res.moves.split(' ');
+          dispatch(setPremoves(newMoves));
+          navigate('GameScreen');
+        }
+      })
+      .catch(err => setError(true))
+      .finally(() => setLoading(false));
   };
+
+  if (loading) return <Splash />;
 
   return (
     <Wrapper>
@@ -26,7 +43,7 @@ const GameConnect = () => {
         <KeyboardAvoidingView style={styles.form}>
           <Header>Connect</Header>
           <View style={styles.inputContainer}>
-            <Text style={styles.label}></Text>
+            {error && <Text style={styles.label}>Wrong game code</Text>}
             <TextInput
               value={inputValue}
               onChangeText={setInputValue}

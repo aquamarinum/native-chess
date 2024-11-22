@@ -7,4 +7,5 @@ export type GameModeType = {
   isRating: boolean;
   leftRating: number;
   rightRating: number;
+  premoves: string[];
 };

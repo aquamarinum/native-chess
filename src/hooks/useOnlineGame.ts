@@ -4,10 +4,13 @@ import {CellPositionType, ChessBoard} from '../game/ChessBoard';
 import {LichessApiService} from '../services/lichess/LichessApiService';
 import {MovesAggregator} from '../game/MovesAggregator';
 import {CellStates} from '../game/models/CellStates';
+import {useAppSelector} from '../redux/store';
+import {premovesSelector} from '../redux/game/selectors';
 
 export function useOnlineGame(game: ChessBoard, gameid: string) {
   const lichess = new LichessApiService(gameid);
   const converter = new MovesAggregator();
+  const premoves = useAppSelector(premovesSelector);
   const [board, setBoard] = useState(game.cells);
   const [moves, setMoves] = useState<Array<string>>([]);
   const [activeCell, setActiveCell] = useState<CellPositionType | null>(null);
@@ -18,36 +21,23 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
   const savedLength = useRef(0);
 
   useEffect(() => {
-    lichess.getGameState().then(state => {
-      if (state) {
-        if (!state.moves) {
-          setActivePlayerColor(ChessColors.WHITE);
-        } else {
-          const newMoves: string[] = state.moves.split(' ');
-          const gap = newMoves.length - moves.length;
-          console.log('NEW MOVES => ', newMoves);
-          console.log('OLD MOVES => ', moves);
-          console.log('GAP: ', gap);
-          if (gap > 0) {
-            const newBoard = board;
-            for (let i = moves.length; i < newMoves.length; i++) {
-              game.setPieceFromPGN(newMoves[i]);
-            }
-
-            if (newMoves.length % 2 === 0) {
-              game.setActivePlayerColor(ChessColors.WHITE);
-              setActivePlayerColor(ChessColors.WHITE);
-            } else {
-              game.setActivePlayerColor(ChessColors.BLACK);
-              setActivePlayerColor(ChessColors.BLACK);
-            }
-            savedLength.current = newMoves.length;
-            setMoves(newMoves);
-            setBoard(newBoard);
-          }
-        }
+    if (premoves.length > 0) {
+      const newBoard = board;
+      for (let i = 0; i < premoves.length; i++) {
+        game.setPieceFromPGN(premoves[i]);
       }
-    });
+
+      if (premoves.length % 2 === 0) {
+        game.setActivePlayerColor(ChessColors.WHITE);
+        setActivePlayerColor(ChessColors.WHITE);
+      } else {
+        game.setActivePlayerColor(ChessColors.BLACK);
+        setActivePlayerColor(ChessColors.BLACK);
+      }
+      savedLength.current = premoves.length;
+      setMoves(premoves);
+      setBoard(newBoard);
+    }
   }, []);
 
   useEffect(() => {

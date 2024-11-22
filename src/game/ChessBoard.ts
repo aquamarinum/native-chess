@@ -206,16 +206,6 @@ export class ChessBoard {
     const to = this.converter.convertToPos(move.substring(2));
 
     this.movePiece(from, to);
-
-    this.cells.forEach(row => {
-      let r = '[';
-      row.forEach(cell => {
-        if (cell.piece) r += '*';
-        else r += '.';
-      });
-      r += ']';
-      console.log(r);
-    });
   }
 
   // HIGHLIGHTING
