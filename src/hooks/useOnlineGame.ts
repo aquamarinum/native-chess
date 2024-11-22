@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {ChessColors} from '../game/models/ChessColors';
 import {CellPositionType, ChessBoard} from '../game/ChessBoard';
 import {LichessApiService} from '../services/lichess/LichessApiService';
@@ -8,7 +8,6 @@ import {CellStates} from '../game/models/CellStates';
 export function useOnlineGame(game: ChessBoard, gameid: string) {
   const lichess = new LichessApiService(gameid);
   const converter = new MovesAggregator();
-  const playerid = 'aquamarinum';
   const [board, setBoard] = useState(game.cells);
   const [moves, setMoves] = useState<Array<string>>([]);
   const [activeCell, setActiveCell] = useState<CellPositionType | null>(null);
@@ -16,6 +15,7 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
   const [currentPlayerColor, setCurrentPlayerColor] = useState<ChessColors>(
     ChessColors.WHITE,
   );
+  const savedLength = useRef(0);
 
   useEffect(() => {
     lichess.getGameState().then(state => {
@@ -41,6 +41,7 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
               game.setActivePlayerColor(ChessColors.BLACK);
               setActivePlayerColor(ChessColors.BLACK);
             }
+            savedLength.current = newMoves.length;
             setMoves(newMoves);
             setBoard(newBoard);
           }
@@ -50,30 +51,12 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
   }, []);
 
   useEffect(() => {
-    const interval = 1500;
+    const interval = 3000;
     const intervalRef = setInterval(() => {
       if (activePlayerColor !== currentPlayerColor) {
         lichess.getGameState().then(state => {
           if (state && state.moves) {
-            const newMoves: string[] = state.moves.split(' ');
-            const gap = newMoves.length - moves.length;
-
-            // if (gap > 0) {
-            //   const newBoard = board;
-            //   for (let i = moves.length; i < newMoves.length; i++) {
-            //     game.setPieceFromPGN(newMoves[i]);
-            //   }
-
-            //   if (newMoves.length % 2 === 0) {
-            //     game.setActivePlayerColor(ChessColors.WHITE);
-            //     setActivePlayerColor(ChessColors.WHITE);
-            //   } else {
-            //     game.setActivePlayerColor(ChessColors.BLACK);
-            //     setActivePlayerColor(ChessColors.BLACK);
-            //   }
-            //   setMoves(newMoves);
-            //   setBoard(newBoard);
-            // }
+            updateMoves(state.moves);
           }
         });
       }
@@ -83,6 +66,32 @@ export function useOnlineGame(game: ChessBoard, gameid: string) {
       clearInterval(intervalRef);
     };
   }, []);
+
+  const updateMoves = (newMoves: string) => {
+    const newMovesArray = newMoves.split(' ');
+    console.warn('NEW MOVES: => ', newMovesArray);
+    console.warn('OLD MOVES: => ', moves);
+    if (newMovesArray.length - savedLength.current > 0) {
+      console.log('updating...........', savedLength.current);
+      const newBoard = game.cells;
+      for (let i = moves.length; i < newMovesArray.length; i++) {
+        game.setPieceFromPGN(newMovesArray[i]);
+      }
+      if (newMovesArray.length % 2 === 0) {
+        game.setActivePlayerColor(ChessColors.WHITE);
+        setActivePlayerColor(ChessColors.WHITE);
+      } else {
+        game.setActivePlayerColor(ChessColors.BLACK);
+        setActivePlayerColor(ChessColors.BLACK);
+      }
+      savedLength.current = newMovesArray.length;
+      setBoard(newBoard);
+      setMoves(prev => {
+        console.log('SETTING NEW STATE TO', prev);
+        return newMovesArray;
+      });
+    }
+  };
 
   const onClickCell = (target: CellPositionType) => {
     //! IF NOT MY TURN

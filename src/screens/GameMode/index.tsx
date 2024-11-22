@@ -101,7 +101,11 @@ const GameMode = () => {
           </View>
         </View>
       </ScrollView>
-      <MainButton active content={t('Play')} onClick={() => navigate('Game')} />
+      <MainButton
+        active
+        content={t('Play')}
+        onClick={() => navigate('GameScreen')}
+      />
     </Wrapper>
   );
 };

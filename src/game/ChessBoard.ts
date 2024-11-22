@@ -178,7 +178,9 @@ export class ChessBoard {
   // PIECES OPERATIONS
 
   public movePiece(from: CellPositionType, to: CellPositionType) {
-    const piece = this.getPieceAt(from) as ChessPiece;
+    const piece = this.getPieceAt(from);
+
+    if (!piece) return;
 
     this.setPieceAt(to, piece);
     this.setPieceAt(from, null);
